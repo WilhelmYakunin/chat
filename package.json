@@ -13,7 +13,8 @@
     "start": "tsc && vite build && vite preview",
     "build": "tsc && vite build",
     "build:client": "vite build --outDir dist/client --ssrManifest",
-    "build:server": "vite build --outDir dist/server --ssr src/entry-server.js"
+    "build:server": "vite build --outDir dist/server --ssr src/entry-server.js",
+    "lint": "sass lint"
   },
   "keywords": [
     "messeger",
@@ -40,6 +41,7 @@
   },
   "dependencies": {
     "dotenv": "^16.1.4",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "sass-lint": "^1.13.1"
   }
 }
