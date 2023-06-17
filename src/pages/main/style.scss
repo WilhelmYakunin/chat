@@ -1,0 +1,135 @@
+@import '../../../global.scss';
+
+.chat-page {
+    @media (max-width: 1200px) {
+        width: 90vw;
+    }
+
+    @media (min-width: 1200px) {
+        width: 1200px;        
+    }
+
+    padding: 20px;
+    min-height: 90vh;
+    box-sizing: content-box;
+
+    display: flex;
+    justify-content: space-between;
+
+    &__board { 
+        @media (max-width: 1200px) {
+            width: 90vw;
+        }
+
+        @media (min-width: 540px) {
+            min-width: 300px;        
+        }
+             
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__controls {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__add-chat {
+        gap: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    &__avatar > img {
+        height: 32px;
+        object-fit: cover;
+        border: 2px solid $main-background;
+        border-radius: 50%;
+        box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
+    }
+
+    &__chats-header {
+        margin: 0;
+        color: $main-text;
+    }
+
+    &__add-tree {
+        cursor: pointer;
+        height: 30px;
+        width: 30px;
+        font-size: 22px;
+        background-color: $fiature-color;
+        border-color: $fiature-color;
+        border-radius: 50%;
+        color: $main-text;
+        margin-left: auto;
+        border-width: 0;
+        box-shadow: -2px -2px 3px gray, 3px 3px 2px #000;
+    }
+
+    &__search {
+        padding: 10px 20px;
+        border-radius: 20px;
+        border-width: 0;
+        background-color: darken($main-background, 1);
+        color: $main-text;
+        outline: 0;
+        box-shadow: inset 0px -1px 3px gray, inset 3px 3px 3px #000;
+
+        &::placeholder {
+            color: $main-text;
+        }
+    }
+
+    &__app-controls {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 15px;
+        border: 1px solid $main-background;
+        border-radius: 20px;
+        box-shadow: 0px -1px 3px gray, 3px 3px 3px #000;
+    }
+
+    &__app-control-setter {
+        cursor: pointer;
+        padding: 10px;
+        display: inline-flex;
+
+        border-radius: 100%;
+        box-shadow: 3px 3px 3px #000;
+
+        &--pressed {
+            cursor: pointer;
+            padding: 10px;
+            display: inline-flex;
+            border-radius: 100%;
+            box-shadow: inset 3px 3px 3px #000;
+        }
+    }
+
+    
+    &__chat-box {
+        @media (max-width: 540px) {
+            border-width: 0 !important;
+            clip: rect(1px, 1px, 1px, 1px) !important;
+            height: 1px !important;
+            overflow: hidden !important;
+            padding: 0 !important;
+            position: absolute !important;
+            white-space: nowrap !important;
+            width: 1px !important;      
+        }
+        
+        @media (min-width: 540px) {
+            min-width: 70%;      
+        }
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $main-text;
+    }
+
+}

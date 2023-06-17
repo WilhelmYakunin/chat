@@ -1,0 +1,12 @@
+@import '../global.scss'; 
+
+.main {
+    margin: 0;
+    padding: 0;
+       
+    min-height: calc(100vh - $bottom-aside);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $main-background;
+}
