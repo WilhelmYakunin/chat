@@ -26,5 +26,6 @@ export const words = {
   SERVER_ERROR: "We're trying to cope with the problem",
   TO_HOME: 'Get back',
   CHATS_HEADER: 'Chats',
+  MESSAGE: 'Put a message',
   SEARCH_PLACEHOLDER: 'Search',
 };

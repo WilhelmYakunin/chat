@@ -7,6 +7,7 @@ import { getImageUrl } from '../../reuseable/helpers';
 import { words } from '../../langs';
 
 import './style.scss';
+import label from '../../reuseable/labelTextInput';
 
 const bemElem = (bem?: string) =>
   bem ? 'chat-page' + '__' + bem : 'chat-page';
@@ -85,7 +86,22 @@ const mainPage = () => {
 
   const chatBox = document.createElement('section');
   chatBox.className = bemElem('chat-box');
-  chatBox.innerHTML = '<p>no message here</p>';
+
+  const chat = document.createElement('article');
+  chat.innerHTML = '<p>no message here</p>';
+  chatBox.appendChild(chat);
+
+  const inputMessageLabel = label({ forAttr: 'message' });
+  inputMessageLabel.className = bemElem('message-label');
+  const inputMessage = textInput({
+    name: 'message',
+    type: 'text',
+    placeHolder: words.MESSAGE,
+  });
+  inputMessageLabel.appendChild(inputMessage);
+  inputMessage.className = bemElem('input-message');
+  chatBox.appendChild(inputMessageLabel);
+
   chatContainer.appendChild(chatBox);
 
   return render(chatContainer);

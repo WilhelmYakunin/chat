@@ -73,8 +73,8 @@
         padding: 10px 20px;
         border-radius: 20px;
         border-width: 0;
-        background-color: darken($main-background, 1);
         color: $main-text;
+        background-color: darken($main-background, 1);
         outline: 0;
         box-shadow: inset 0px -1px 3px gray, inset 3px 3px 3px #000;
 
@@ -127,9 +127,30 @@
         }
 
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
         color: $main-text;
+    }
+
+    &__message-label {
+        display: flex;
+        padding: 0 10px;
+        
+    }
+
+    &__input-message {
+        flex:  .85;
+        color: $main-text;
+        padding: 10px 20px;
+        border-radius: 20px;
+        border-width: 0;
+        background-color: darken($main-background, 1);
+        outline: 0;
+        box-shadow: inset 0px -1px 3px gray, inset 3px 3px 3px #000;
+
+        &::placeholder {
+            color: $main-text;
+        }
     }
 
 }

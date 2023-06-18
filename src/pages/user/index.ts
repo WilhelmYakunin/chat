@@ -21,9 +21,9 @@ const userPage = () => {
   });
   avatar.className = bemElem('avatar');
 
-  const changeAvatarLabel = label({ forAttr: 'change-avatar' });
+  const changeAvatarLabel = label({ forAttr: 'avatar' });
   const changeAvatarInput = textInput({
-    name: 'change-avatar',
+    name: 'avatar',
     type: 'file',
   });
   changeAvatarLabel.textContent = words.CHANGE_AVATAR;
@@ -71,9 +71,9 @@ const userPage = () => {
   userNameContainer.appendChild(firstNameLabel);
   userNameContainer.appendChild(secondNameLabel);
 
-  const displyNameLabel = label({ forAttr: 'dispalay-name' });
+  const displyNameLabel = label({ forAttr: 'display-name' });
   const displyNameInput = textInput({
-    name: 'dispalay-name',
+    name: 'display-name',
     type: 'text',
     placeHolder: words.DISPLAY_NAME,
   });
@@ -98,18 +98,18 @@ const userPage = () => {
   emailInput.className = bemElem('input');
   emainLabel.appendChild(emailInput);
 
-  const passwordLable = label({ forAttr: 'old-password' });
+  const passwordLable = label({ forAttr: 'oldPassword' });
   const passwordInput = textInput({
-    name: 'old-password',
+    name: 'oldPassword',
     type: 'password',
     placeHolder: words.OLD_PASSWORD,
   });
   passwordInput.className = bemElem('input');
   passwordLable.appendChild(passwordInput);
 
-  const confirmPasswordLable = label({ forAttr: 'new-password' });
+  const confirmPasswordLable = label({ forAttr: 'newPassword' });
   const confirmPasswordInput = textInput({
-    name: 'new-password',
+    name: 'newPassword',
     type: 'confirm-password',
     placeHolder: words.NEW_PASSWORD,
   });
