@@ -1,0 +1,147 @@
+@import '../../../global.scss'; 
+
+
+
+.user {
+    &__wrapper {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    &__header-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__header {
+        margin: 0;
+        color: $main-text;
+    }
+
+    &__avatar > img {
+        height: 64px;
+        object-fit: cover;
+        border: 2px solid $main-background;
+        border-radius: 50%;
+        box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
+    }
+
+    &__username-container {
+        display: flex;
+
+        justify-content: space-between;
+    }
+      
+    &__input {
+        width: 90%;
+        padding: 10px;
+        background-color: transparent;
+        color: $main-text;
+        border-color: $fiature-color;
+        border-radius: 20px;
+        outline: 0;
+
+        &-change-avatar {
+            cursor: pointer;
+            padding: 5px;
+            display: block;
+            border: 1px solid $fiature-color;
+            color: $main-text;
+            transition: all .4s;
+            text-align: center;
+        }
+
+        &-change-avatar > input {
+            cursor: pointer;
+            position: absolute;
+            top: 0; 
+            left: 0;
+            opacity: 0;
+        }
+
+        &-name {
+            width: 80%;
+            padding: 10px;
+            background-color: transparent;
+            color: $main-text;
+            border-color: $fiature-color;
+            border-radius: 20px;
+            outline: 0;
+        }
+    }
+
+    &__policy {
+        display: flex;
+    }
+
+    &__policy-input {
+        display: none;
+
+        &:checked + label::before {
+            width: 10px;
+            top: -7px;
+            left: 7px;
+            border-radius: 0;
+            opacity: 1;
+            border-top-color: transparent;
+            border-left-color: transparent;
+            -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        & + label:before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid $main-text;
+            position: absolute;
+            left: 0;
+            top: -2px;
+            opacity: .6;
+            -webkit-transition: all .12s, border-color .08s;
+            transition: all .12s, border-color .08s;
+        }
+
+        & + label {
+            cursor: pointer;
+            display: block;
+            position: relative;
+            padding-left: 30px;
+ 
+            color: $main-text;
+            user-select: none;
+          }
+    }
+
+    &__policy-link {
+        margin-left: 5px;
+        cursor: pointer;
+        text-decoration: none;
+        color: $fiature-color;
+    }
+
+    &__apply-changes-button {
+        cursor: pointer;
+        box-sizing: content-box;
+        padding: 10px;
+        background-color: transparent;
+        color: $main-text;
+        border-color: $fiature-color;
+        background-color: $fiature-color;
+        border-radius: 20px;
+    }
+
+    &__back-navigate {
+        cursor: pointer;
+        text-decoration: none;
+        padding: 10px 30px;
+        border: 1px solid $fiature-color;
+        color: $fiature-color;
+        background-color: transparent;
+        text-align: center;        
+    }
+} 
