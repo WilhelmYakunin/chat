@@ -1,12 +1,12 @@
-import render from '../../reuseable/render';
-import profileIcon from '../../reuseable/profile';
-import createForm from '../../reuseable/form';
-import textInput from '../../reuseable/textInput';
-import label from '../../reuseable/labelTextInput';
-import btn from '../../reuseable/button';
-import checkbox from '../../reuseable/checkbox';
-import textLink from '../../reuseable/textLink';
-import { getImageUrl } from '../../reuseable/helpers';
+import render from '../../components/render';
+import profileIcon from '../../components/profile';
+import createForm from '../../components/form';
+import textInput from '../../components/textInput';
+import label from '../../components/labelTextInput';
+import btn from '../../components/button';
+import checkbox from '../../components/checkbox';
+import textLink from '../../components/textLink';
+import { getImageUrl } from '../../components/helpers';
 
 import { words } from '../../langs/index';
 import { routes } from '../../routes';

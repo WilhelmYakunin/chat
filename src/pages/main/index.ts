@@ -1,13 +1,13 @@
-import render from '../../reuseable/render';
-import profileIcon from '../../reuseable/profile';
-import textInput from '../../reuseable/textInput';
-import submitBtn from '../../reuseable/button';
-import { getImageUrl } from '../../reuseable/helpers';
+import render from '../../components/render';
+import profileIcon from '../../components/profile';
+import textInput from '../../components/textInput';
+import submitBtn from '../../components/button';
+import { getImageUrl } from '../../components/helpers';
 
 import { words } from '../../langs';
 
 import './style.scss';
-import label from '../../reuseable/labelTextInput';
+import label from '../../components/labelTextInput';
 
 const bemElem = (bem?: string) =>
   bem ? 'chat-page' + '__' + bem : 'chat-page';

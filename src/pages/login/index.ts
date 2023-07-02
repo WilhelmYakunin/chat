@@ -1,10 +1,10 @@
-import render from '../../reuseable/render';
-import createForm from '../../reuseable/form';
-import textInput from '../../reuseable/textInput';
-import label from '../../reuseable/labelTextInput';
-import btn from '../../reuseable/button';
-import checkbox from '../../reuseable/checkbox';
-import textLink from '../../reuseable/textLink';
+import render from '../../components/render';
+import createForm from '../../components/form';
+import textInput from '../../components/textInput';
+import label from '../../components/labelTextInput';
+import btn from '../../components/button';
+import checkbox from '../../components/checkbox';
+import textLink from '../../components/textLink';
 
 import { words } from '../../langs/index';
 import { routes } from '../../routes';
@@ -55,7 +55,7 @@ const loginPage = () => {
   remeberContainer.appendChild(forgotLink);
   remeberContainer.className = bemElem('remember-container');
 
-  const signInBtn = btn({ value: words.SIGN_IN, type: 'button' });
+  const signInBtn = btn({ value: words.SIGN_IN, type: 'submit' });
   signInBtn.className = bemElem('auth-button');
 
   const loginForm = createForm({
@@ -76,6 +76,11 @@ const loginPage = () => {
   loginContainer.appendChild(loginForm);
   loginContainer.appendChild(loginAside);
 
+  loginForm.addEventListener('submit', async (e): Promise<void> => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(loginForm));
+    console.log(data);
+  });
   return render(loginContainer);
 };
 

@@ -1,5 +1,5 @@
-import render from '../../reuseable/render';
-import textLink from '../../reuseable/textLink';
+import render from '../../components/render';
+import textLink from '../../components/textLink';
 import './style.scss';
 
 import { words } from '../../langs/index';
