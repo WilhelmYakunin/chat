@@ -3,7 +3,7 @@ import path from 'path';
 import express from 'express';
 import { dirname } from 'path';
 import { createServer as createViteServer } from 'vite';
-import { IncomingHttpHeaders, ServerResponse } from 'http';
+
 import { port } from './vite.config.ts';
 
 async function createServer() {
@@ -39,6 +39,3 @@ async function createServer() {
 }
 
 createServer();
-
-export type IncomingHTTPHeaders = IncomingHttpHeaders;
-export type IncomingHTTPResponse = ServerResponse;
