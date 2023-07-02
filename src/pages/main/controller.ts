@@ -4,5 +4,6 @@ export const validate = (data: { [x: string]: FormDataEntryValue }) => {
     if (typeof value === 'string') {
       value.match(/^$|\s+/);
     }
+    return acc;
   }, {});
 };
