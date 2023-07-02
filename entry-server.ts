@@ -6,9 +6,6 @@ import { createServer as createViteServer } from 'vite';
 import { IncomingHttpHeaders, ServerResponse } from 'http';
 import { port } from './vite.config.ts';
 
-export type IncomingHTTPHeaders = IncomingHttpHeaders;
-export type IncomingHTTPResponse = ServerResponse;
-
 async function createServer() {
   const app = express();
   const vite = await createViteServer({
@@ -42,3 +39,6 @@ async function createServer() {
 }
 
 createServer();
+
+export type IncomingHTTPHeaders = IncomingHttpHeaders;
+export type IncomingHTTPResponse = ServerResponse;
