@@ -1,13 +1,15 @@
 import render from '../../components/render';
 import profileIcon from '../../components/profile';
 import textInput from '../../components/textInput';
+import label from '../../components/labelTextInput';
 import submitBtn from '../../components/button';
+import form from '../../components/form';
 import { getImageUrl } from '../../components/helpers';
 
 import { words } from '../../langs';
+import { messageFileds } from './model';
 
 import './style.scss';
-import label from '../../components/labelTextInput';
 
 const bemElem = (bem?: string) =>
   bem ? 'chat-page' + '__' + bem : 'chat-page';
@@ -91,16 +93,18 @@ const mainPage = () => {
   chat.innerHTML = '<p>no message here</p>';
   chatBox.appendChild(chat);
 
-  const inputMessageLabel = label({ forAttr: 'message' });
+  const inputMessageLabel = label({ forAttr: messageFileds.message });
   inputMessageLabel.className = bemElem('message-label');
   const inputMessage = textInput({
-    name: 'message',
+    name: messageFileds.message,
     type: 'text',
     placeHolder: words.MESSAGE,
   });
   inputMessageLabel.appendChild(inputMessage);
   inputMessage.className = bemElem('input-message');
-  chatBox.appendChild(inputMessageLabel);
+
+  const messageForm = form({ chidlren: [inputMessageLabel] });
+  chatBox.appendChild(messageForm);
 
   chatContainer.appendChild(chatBox);
 

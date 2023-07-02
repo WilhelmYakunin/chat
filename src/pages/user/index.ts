@@ -11,6 +11,8 @@ import { getImageUrl } from '../../components/helpers';
 import { words } from '../../langs/index';
 import { routes } from '../../routes';
 
+import { userInfoFields } from './model';
+
 import './style.scss';
 
 const bemElem = (bem: string) => 'user' + '__' + bem;
@@ -21,9 +23,9 @@ const userPage = () => {
   });
   avatar.className = bemElem('avatar');
 
-  const changeAvatarLabel = label({ forAttr: 'avatar' });
+  const changeAvatarLabel = label({ forAttr: userInfoFields.avatar });
   const changeAvatarInput = textInput({
-    name: 'avatar',
+    name: userInfoFields.avatar,
     type: 'file',
   });
   changeAvatarLabel.textContent = words.CHANGE_AVATAR;
@@ -47,9 +49,9 @@ const userPage = () => {
   headerContainer.appendChild(avatar);
   headerContainer.appendChild(changeAvatar);
 
-  const firstNameLabel = label({ forAttr: 'first_name' });
+  const firstNameLabel = label({ forAttr: userInfoFields.first_name });
   const firstNameInput = textInput({
-    name: 'first_name',
+    name: userInfoFields.first_name,
     type: 'text',
     placeHolder: words.FIRST_NAME,
   });
@@ -57,9 +59,9 @@ const userPage = () => {
   firstNameInput.tabIndex = 1;
   firstNameLabel.appendChild(firstNameInput);
 
-  const secondNameLabel = label({ forAttr: 'second_name' });
+  const secondNameLabel = label({ forAttr: userInfoFields.second_name });
   const secondNameInput = textInput({
-    name: 'second_name',
+    name: userInfoFields.second_name,
     type: 'text',
     placeHolder: words.SECOND_NAME,
   });
@@ -71,64 +73,67 @@ const userPage = () => {
   userNameContainer.appendChild(firstNameLabel);
   userNameContainer.appendChild(secondNameLabel);
 
-  const displyNameLabel = label({ forAttr: 'display-name' });
+  const displyNameLabel = label({ forAttr: userInfoFields.display_name });
   const displyNameInput = textInput({
-    name: 'display-name',
+    name: userInfoFields.display_name,
     type: 'text',
     placeHolder: words.DISPLAY_NAME,
   });
   displyNameInput.className = bemElem('input');
   displyNameLabel.appendChild(displyNameInput);
 
-  const loginLabel = label({ forAttr: 'login' });
+  const loginLabel = label({ forAttr: userInfoFields.login });
   const loginInput = textInput({
-    name: 'login',
+    name: userInfoFields.login,
     type: 'text',
     placeHolder: words.LOGIN_PLACEHOLDER,
   });
   loginInput.className = bemElem('input');
   loginLabel.appendChild(loginInput);
 
-  const emainLabel = label({ forAttr: 'email' });
+  const emainLabel = label({ forAttr: userInfoFields.email });
   const emailInput = textInput({
-    name: 'email',
+    name: userInfoFields.email,
     type: 'email',
     placeHolder: words.EMAIL,
   });
   emailInput.className = bemElem('input');
   emainLabel.appendChild(emailInput);
 
-  const passwordLable = label({ forAttr: 'oldPassword' });
+  const passwordLable = label({ forAttr: userInfoFields.old_password });
   const passwordInput = textInput({
-    name: 'oldPassword',
+    name: userInfoFields.old_password,
     type: 'password',
     placeHolder: words.OLD_PASSWORD,
   });
   passwordInput.className = bemElem('input');
   passwordLable.appendChild(passwordInput);
 
-  const confirmPasswordLable = label({ forAttr: 'newPassword' });
+  const confirmPasswordLable = label({ forAttr: userInfoFields.new_password });
   const confirmPasswordInput = textInput({
-    name: 'newPassword',
+    name: userInfoFields.new_password,
     type: 'confirm-password',
     placeHolder: words.NEW_PASSWORD,
   });
   confirmPasswordInput.className = bemElem('input');
   confirmPasswordLable.appendChild(confirmPasswordInput);
 
-  const phoneLabel = label({ forAttr: 'phone' });
+  const phoneLabel = label({ forAttr: userInfoFields.phone });
   const phoneInput = textInput({
-    name: 'phone',
+    name: userInfoFields.phone,
     type: 'phone',
     placeHolder: words.PHONE,
   });
   phoneInput.className = bemElem('input');
   phoneLabel.appendChild(phoneInput);
 
-  const policyLabel = label({ forAttr: 'policy' });
+  const policyLabel = label({ forAttr: userInfoFields.policy });
   policyLabel.className = bemElem('policy-label');
   policyLabel.textContent = words.CONFIRM_POLICY;
-  const policyInput = checkbox({ name: 'policy', id: 'policy' });
+  const policyInput = checkbox({
+    name: userInfoFields.policy,
+    id: userInfoFields.policy,
+  });
   policyInput.className = bemElem('policy-input');
   const policyLink = textLink({ href: routes.policy(), text: words.PRIVACY });
   policyLink.className = bemElem('policy-link');

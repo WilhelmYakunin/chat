@@ -9,6 +9,8 @@ import textLink from '../../components/textLink';
 import { words } from '../../langs/index';
 import { routes } from '../../routes';
 
+import { loginFields } from './model';
+
 import './style.scss';
 
 const bemElem = (bem: string) => 'login-form' + '__' + bem;
@@ -18,9 +20,9 @@ const loginPage = () => {
   header.textContent = words.SIGN_IN;
   header.className = bemElem('header');
 
-  const loginLabel = label({ forAttr: 'login' });
+  const loginLabel = label({ forAttr: loginFields.login });
   const loginInput = textInput({
-    name: 'login',
+    name: loginFields.login,
     type: 'text',
     placeHolder: words.LOGIN_PLACEHOLDER,
   });
@@ -28,19 +30,22 @@ const loginPage = () => {
   loginInput.tabIndex = 1;
   loginLabel.appendChild(loginInput);
 
-  const passwordLable = label({ forAttr: 'password' });
+  const passwordLable = label({ forAttr: loginFields.password });
   const passwordInput = textInput({
-    name: 'password',
+    name: loginFields.password,
     type: 'password',
     placeHolder: words.PASSWORD_PLACEHOLDER,
   });
   passwordInput.className = bemElem('input');
   passwordLable.appendChild(passwordInput);
 
-  const remeberLabel = label({ forAttr: 'remember' });
+  const remeberLabel = label({ forAttr: loginFields.remember });
   remeberLabel.className = bemElem('remembre-label');
   remeberLabel.textContent = words.REMEMBER;
-  const remebreInput = checkbox({ name: 'remember', id: 'remember' });
+  const remebreInput = checkbox({
+    name: loginFields.remember,
+    id: loginFields.remember,
+  });
   remebreInput.className = bemElem('remebre-input');
   const rememebrWrapper = document.createElement('div');
   rememebrWrapper.className = bemElem('remember');
