@@ -8,6 +8,7 @@ import { getImageUrl } from '../../components/helpers';
 
 import { words } from '../../langs';
 import { messageFileds } from './model';
+import { validate } from './controller';
 
 import './style.scss';
 
@@ -104,6 +105,12 @@ const mainPage = () => {
   inputMessage.className = bemElem('input-message');
 
   const messageForm = form({ chidlren: [inputMessageLabel] });
+  messageForm.addEventListener('submit', async (e): Promise<void> => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(messageForm));
+    validate(data);
+    console.log(data);
+  });
   chatBox.appendChild(messageForm);
 
   chatContainer.appendChild(chatBox);

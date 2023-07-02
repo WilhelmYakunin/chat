@@ -125,6 +125,11 @@ const siginupPage = () => {
     ],
   });
   siginupForm.className = bemElem('wrapper');
+  siginupForm.addEventListener('submit', async (e): Promise<void> => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(siginupForm));
+    console.log(data);
+  });
 
   const signuoAside = document.createElement('aside');
   signuoAside.className = bemElem('aside');

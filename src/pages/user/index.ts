@@ -153,7 +153,7 @@ const userPage = () => {
   const container = document.createElement('div');
   container.appendChild(back);
 
-  const siginupForm = createForm({
+  const userForm = createForm({
     chidlren: [
       userNameContainer,
       displyNameLabel,
@@ -167,11 +167,16 @@ const userPage = () => {
       back,
     ],
   });
-  siginupForm.className = bemElem('wrapper');
+  userForm.className = bemElem('wrapper');
+  userForm.addEventListener('submit', async (e): Promise<void> => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(userForm));
+    console.log(data);
+  });
 
   const userProfileContainer = document.createElement('div');
   userProfileContainer.appendChild(headerContainer);
-  userProfileContainer.appendChild(siginupForm);
+  userProfileContainer.appendChild(userForm);
 
   return render(userProfileContainer);
 };
