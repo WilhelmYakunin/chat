@@ -1,27 +1,26 @@
 @import '../../../global.scss';
 
 .chat-page {
-    @media (max-width: 1200px) {
+    @media (width <= 1200px) {
         width: 90vw;
     }
 
-    @media (min-width: 1200px) {
+    @media (width >= 1200px) {
         width: 1200px;        
     }
 
     padding: 20px;
     min-height: 90vh;
     box-sizing: content-box;
-
     display: flex;
     justify-content: space-between;
 
     &__board { 
-        @media (max-width: 1200px) {
+        @media (width <= 1200px) {
             width: 90vw;
         }
 
-        @media (min-width: 540px) {
+        @media (width >= 540px) {
             min-width: 300px;        
         }
              
@@ -45,14 +44,14 @@
     &__avatar > img {
         height: 32px;
         object-fit: cover;
-        border: 2px solid $main-background;
+        border: 2px solid $foo-main-background;
         border-radius: 50%;
         box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
     }
 
     &__chats-header {
         margin: 0;
-        color: $main-text;
+        color: $foo-main-text;
     }
 
     &__add-tree {
@@ -60,10 +59,10 @@
         height: 30px;
         width: 30px;
         font-size: 22px;
-        background-color: $fiature-color;
-        border-color: $fiature-color;
+        background-color: $foo-fiature-color;
+        border-color: $foo-fiature-color;
         border-radius: 50%;
-        color: $main-text;
+        color: $foo-main-text;
         margin-left: auto;
         border-width: 0;
         box-shadow: -2px -2px 3px gray, 3px 3px 2px #000;
@@ -73,13 +72,13 @@
         padding: 10px 20px;
         border-radius: 20px;
         border-width: 0;
-        color: $main-text;
-        background-color: darken($main-background, 1);
+        color: $foo-main-text;
+        background-color: $foo-main-background;
         outline: 0;
-        box-shadow: inset 0px -1px 3px gray, inset 3px 3px 3px #000;
+        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
 
         &::placeholder {
-            color: $main-text;
+            color: $foo-main-text;
         }
     }
 
@@ -87,16 +86,15 @@
         display: flex;
         justify-content: space-between;
         padding: 5px 15px;
-        border: 1px solid $main-background;
+        border: 1px solid $foo-main-background;
         border-radius: 20px;
-        box-shadow: 0px -1px 3px gray, 3px 3px 3px #000;
+        box-shadow: 0 -1px 3px gray, 3px 3px 3px #000;
     }
 
     &__app-control-setter {
         cursor: pointer;
         padding: 10px;
         display: inline-flex;
-
         border-radius: 100%;
         box-shadow: 3px 3px 3px #000;
 
@@ -111,7 +109,7 @@
 
     
     &__chat-box {
-        @media (max-width: 540px) {
+        @media (width <= 540px) {
             border-width: 0 !important;
             clip: rect(1px, 1px, 1px, 1px) !important;
             height: 1px !important;
@@ -122,14 +120,14 @@
             width: 1px !important;      
         }
         
-        @media (min-width: 540px) {
+        @media (width >= 540px) {
             min-width: 70%;      
         }
 
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        color: $main-text;
+        color: $foo-main-text;
     }
 
     &__message-label {
@@ -140,16 +138,16 @@
 
     &__input-message {
         flex:  .85;
-        color: $main-text;
+        color: $foo-main-text;;
         padding: 10px 20px;
         border-radius: 20px;
         border-width: 0;
-        background-color: darken($main-background, 1);
+        background-color: $foo-main-background, 1;
         outline: 0;
-        box-shadow: inset 0px -1px 3px gray, inset 3px 3px 3px #000;
+        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
 
         &::placeholder {
-            color: $main-text;
+            color: $foo-main-text;;
         }
     }
 

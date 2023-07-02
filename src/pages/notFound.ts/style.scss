@@ -3,23 +3,20 @@
 .notfound {
     &__container {
         min-height: 100vh;
-
         display: flex;
         flex-direction: column;
         justify-content: center;
         gap: 20px;
-
         text-align: center;
-        color: $main-text;
+        color: $foo-main-text;
     }
 
     &__back-navigate {
         cursor: pointer;
         text-decoration: none;
         padding: 10px 30px;
-        border: 1px solid $fiature-color;
-        color: $fiature-color;
-
+        border: 1px solid $foo-fiature-color;
+        color: $foo-fiature-color;
         background-color: transparent;        
     }
 } 

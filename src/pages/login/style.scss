@@ -1,28 +1,27 @@
-@import '../../../global.scss'; 
+@import '../../../global.scss';
 
-$inputwidth: 260px;
+$foo-inputwidth: 260px;
 
 .login-form {
     &__wrapper {
         position: relative;
-        min-width: $inputwidth;
+        min-width: $foo-inputwidth;
         min-height: 380px;
-
         display: flex;
         flex-direction: column;
         gap: 30px;
     }
 
     &__header {
-        color: $main-text;
+        color: $foo-main-text;
     }
         
     &__input {
-        min-width: $inputwidth;
+        min-width: $foo-inputwidth;
         padding: 10px;
         background-color: transparent;
-        color: $main-text;
-        border-color: $fiature-color;
+        color: $foo-main-text;
+        border-color: $foo-fiature-color;
         border-radius: 20px;
         outline: 0;
     }
@@ -35,8 +34,7 @@ $inputwidth: 260px;
     &__remember {
         display: flex;
         gap: 5px;
-
-        color: $main-text;
+        color: $foo-main-text;
     }
 
     &__remember-label {
@@ -46,6 +44,19 @@ $inputwidth: 260px;
     &__remebre-input {
         display: none;
 
+        + label::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid $foo-main-text;
+            position: absolute;
+            left: 0;
+            top: -2px;
+            opacity: .6;
+            transition: all .12s, border-color .08s;
+        }
+
         &:checked + label::before {
             width: 10px;
             top: -7px;
@@ -54,65 +65,47 @@ $inputwidth: 260px;
             opacity: 1;
             border-top-color: transparent;
             border-left-color: transparent;
-            -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
         }
 
-        & + label:before {
-            content: '';
-            display: block;
-            width: 20px;
-            height: 20px;
-            border: 1px solid $main-text;
-            position: absolute;
-            left: 0;
-            top: -2px;
-            opacity: .6;
-            -webkit-transition: all .12s, border-color .08s;
-            transition: all .12s, border-color .08s;
-        }
-
-        & + label {
+        + label {
             cursor: pointer;
             display: block;
             position: relative;
             padding-left: 30px;
- 
-            color: $main-text;
+            color: $foo-main-text;
             user-select: none;
-          }
+        }
     }
 
     &__forgot-link {
         cursor: pointer;
         text-decoration: none;
-        color: $fiature-color;
+        color: $foo-fiature-color;
     }
 
     &__auth-button {
         cursor: pointer;
         box-sizing: content-box;
-        min-width: $inputwidth;
+        min-width: $foo-inputwidth;
         padding: 10px;
-        background-color: transparent;
-        color: $main-text;
-        border-color: $fiature-color;
-        background-color: $fiature-color;
+        color: $foo-main-text;
+        border-color: $foo-fiature-color;
+        background-color: $foo-fiature-color;
         border-radius: 20px;
     }
 
     &__aside {
         position: fixed;
         bottom: 40px;
-        
         display: flex;
-        gap: $bottom-aside;
-        color: $main-text;
+        gap: $foo-bottom-aside;
+        color: $foo-main-text;
     }
 
     &__signup-link {
         cursor: pointer;
         text-decoration: none;
-        color: $fiature-color;
+        color: $foo-fiature-color;
     }
 } 
