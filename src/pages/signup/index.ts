@@ -16,7 +16,7 @@ import './style.scss';
 import bem from 'bem-ts';
 import { signupFormSchema } from './service';
 
-const block = bem('signupForm');
+const block = bem('signup');
 
 const siginupPage = () => {
   const header = document.createElement('h2');

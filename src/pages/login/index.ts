@@ -17,7 +17,7 @@ import { loginFormSchema } from './service';
 import './style.scss';
 import bem from 'bem-ts';
 
-const block = bem('loginForm');
+const block = bem('login');
 
 const loginPage = () => {
   const header = document.createElement('h2');

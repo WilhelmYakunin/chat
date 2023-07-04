@@ -14,7 +14,7 @@ import { messageFormSchema } from './service';
 import './style.scss';
 import bem from 'bem-ts';
 
-const block = bem('chatPage');
+const block = bem('chat');
 
 const mainPage = () => {
   const chatContainer = document.createElement('div');
