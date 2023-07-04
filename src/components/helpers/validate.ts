@@ -18,14 +18,16 @@ const validateFormValues = (
         description: schema[key].description,
       };
     } else {
-      acc[key] = words.VALIDATION.VALID;
+      acc[key] = {
+        check: words.VALIDATION.VALID,
+      };
     }
     return acc;
   }, {} as Icheck);
 };
 
 export interface Icheck {
-  [x: string]: { check: string; description: string } | string;
+  [x: string]: { check: string; description?: string };
 }
 
 export default validateFormValues;
