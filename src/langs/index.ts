@@ -33,8 +33,16 @@ export const words = {
     ON_ERROR: 'invalid',
     VALID: 'valid',
     PATTERTNS: {
-      NAME: 'Latin or Cyrillic, the first letter must be capital, no spaces and no numbers, only a hyphen is allowed',
+      FIRST_NAME:
+        'Latin or Cyrillic, the first letter must be capital, no spaces and no numbers, only a hyphen is allowed',
+      SECOND_NAME:
+        'Latin or Cyrillic, the first letter must be capital, no spaces and no numbers, only a hyphen is allowed',
       LOGIN: '3-20 Latin char, no spaces, hyphens and underscores are allowed',
+      DISPLAY_NAME: 'Must be not empty',
+      OLD_PASSWORD:
+        '8 to 40 characters, at least one uppercase letter and number required',
+      NEW_PASSWORD:
+        '8 to 40 characters, at least one uppercase letter and number required',
       PASSWORD:
         '8 to 40 characters, at least one uppercase letter and number required',
       EMAIL: 'Enter valid e-mail',
@@ -42,4 +50,22 @@ export const words = {
       MESSAGE: 'Must be not empty',
     },
   },
+};
+
+export const PATTERTNS: { [x: string]: string } = {
+  FIRST_NAME:
+    'Latin or Cyrillic, the first letter must be capital, no spaces and no numbers, only a hyphen is allowed',
+  SECOND_NAME:
+    'Latin or Cyrillic, the first letter must be capital, no spaces and no numbers, only a hyphen is allowed',
+  LOGIN: '3-20 Latin char, no spaces, hyphens and underscores are allowed',
+  DISPLAY_NAME: 'Must be not empty',
+  OLD_PASSWORD:
+    '8 to 40 characters, at least one uppercase letter and number required',
+  NEW_PASSWORD:
+    '8 to 40 characters, at least one uppercase letter and number required',
+  PASSWORD:
+    '8 to 40 characters, at least one uppercase letter and number required',
+  EMAIL: 'Enter valid e-mail',
+  PHONE: '10 to 15 characters, consists of numbers, may start with a plus',
+  MESSAGE: 'Must be not empty',
 };

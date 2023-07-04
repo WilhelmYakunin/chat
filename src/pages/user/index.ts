@@ -8,20 +8,23 @@ import checkbox from '../../components/checkbox';
 import textLink from '../../components/textLink';
 import { getImageUrl } from '../../components/helpers';
 
-import { words } from '../../langs/index';
+import { words, PATTERTNS } from '../../langs/index';
 import { routes } from '../../routes';
 
 import { userInfoFields } from './model';
+import validateFormValues from '../../components/helpers/validate';
+import { userFormSchema } from './service';
 
 import './style.scss';
+import bem from 'bem-ts';
 
-const bemElem = (bem: string) => 'user' + '__' + bem;
+const block = bem('user');
 
 const userPage = () => {
   const avatar = profileIcon({
     iconLink: getImageUrl('/pictures/test_ico.png'),
   });
-  avatar.className = bemElem('avatar');
+  avatar.className = block('avatar');
 
   const changeAvatarLabel = label({ forAttr: userInfoFields.avatar });
   const changeAvatarInput = textInput({
@@ -31,55 +34,53 @@ const userPage = () => {
   changeAvatarLabel.textContent = words.CHANGE_AVATAR;
   changeAvatarInput.multiple = true;
   changeAvatarInput.accept = 'imgae/png';
-  changeAvatarLabel.className = bemElem('input-change-avatar');
+  changeAvatarLabel.className = block('inputChangeAvatar');
   changeAvatarLabel.appendChild(avatar);
   changeAvatarLabel.appendChild(changeAvatarInput);
 
   const header = document.createElement('h2');
   header.textContent = words.PROFILE;
-  header.className = bemElem('header');
+  header.className = block('header');
 
   const changeAvatar = document.createElement('div');
-  changeAvatar.className = bemElem('change-avatar-wrapper');
+  changeAvatar.className = block('changeAvatarWrapper');
   changeAvatar.appendChild(header);
   changeAvatar.appendChild(changeAvatarLabel);
 
   const headerContainer = document.createElement('div');
-  headerContainer.className = bemElem('header-container');
+  headerContainer.className = block('headerContainer');
   headerContainer.appendChild(avatar);
   headerContainer.appendChild(changeAvatar);
 
   const firstNameLabel = label({ forAttr: userInfoFields.first_name });
+  firstNameLabel.className = block('label');
   const firstNameInput = textInput({
     name: userInfoFields.first_name,
     type: 'text',
     placeHolder: words.FIRST_NAME,
   });
-  firstNameInput.className = bemElem('input-name');
+  firstNameInput.className = block('input');
   firstNameInput.tabIndex = 1;
   firstNameLabel.appendChild(firstNameInput);
 
   const secondNameLabel = label({ forAttr: userInfoFields.second_name });
+  secondNameLabel.className = block('label');
   const secondNameInput = textInput({
     name: userInfoFields.second_name,
     type: 'text',
     placeHolder: words.SECOND_NAME,
   });
-  secondNameInput.className = bemElem('input-name');
+  secondNameInput.className = block('input');
   secondNameLabel.appendChild(secondNameInput);
 
-  const userNameContainer = document.createElement('div');
-  userNameContainer.className = bemElem('username-container');
-  userNameContainer.appendChild(firstNameLabel);
-  userNameContainer.appendChild(secondNameLabel);
-
   const displyNameLabel = label({ forAttr: userInfoFields.display_name });
+  displyNameLabel.className = block('label');
   const displyNameInput = textInput({
     name: userInfoFields.display_name,
     type: 'text',
     placeHolder: words.DISPLAY_NAME,
   });
-  displyNameInput.className = bemElem('input');
+  displyNameInput.className = block('input');
   displyNameLabel.appendChild(displyNameInput);
 
   const loginLabel = label({ forAttr: userInfoFields.login });
@@ -88,7 +89,7 @@ const userPage = () => {
     type: 'text',
     placeHolder: words.LOGIN_PLACEHOLDER,
   });
-  loginInput.className = bemElem('input');
+  loginInput.className = block('input');
   loginLabel.appendChild(loginInput);
 
   const emainLabel = label({ forAttr: userInfoFields.email });
@@ -97,7 +98,7 @@ const userPage = () => {
     type: 'email',
     placeHolder: words.EMAIL,
   });
-  emailInput.className = bemElem('input');
+  emailInput.className = block('input');
   emainLabel.appendChild(emailInput);
 
   const passwordLable = label({ forAttr: userInfoFields.old_password });
@@ -106,7 +107,7 @@ const userPage = () => {
     type: 'password',
     placeHolder: words.OLD_PASSWORD,
   });
-  passwordInput.className = bemElem('input');
+  passwordInput.className = block('input');
   passwordLable.appendChild(passwordInput);
 
   const confirmPasswordLable = label({ forAttr: userInfoFields.new_password });
@@ -115,7 +116,7 @@ const userPage = () => {
     type: 'confirm-password',
     placeHolder: words.NEW_PASSWORD,
   });
-  confirmPasswordInput.className = bemElem('input');
+  confirmPasswordInput.className = block('input');
   confirmPasswordLable.appendChild(confirmPasswordInput);
 
   const phoneLabel = label({ forAttr: userInfoFields.phone });
@@ -124,38 +125,78 @@ const userPage = () => {
     type: 'phone',
     placeHolder: words.PHONE,
   });
-  phoneInput.className = bemElem('input');
+  phoneInput.className = block('input');
   phoneLabel.appendChild(phoneInput);
 
   const policyLabel = label({ forAttr: userInfoFields.policy });
-  policyLabel.className = bemElem('policy-label');
+  policyLabel.className = block('policyLabel');
   policyLabel.textContent = words.CONFIRM_POLICY;
   const policyInput = checkbox({
     name: userInfoFields.policy,
     id: userInfoFields.policy,
   });
-  policyInput.className = bemElem('policy-input');
+  policyInput.className = block('policyInput');
   const policyLink = textLink({ href: routes.policy(), text: words.PRIVACY });
-  policyLink.className = bemElem('policy-link');
+  policyLink.className = block('policyLink');
 
   const policyWrapper = document.createElement('div');
-  policyWrapper.className = bemElem('policy');
+  policyWrapper.className = block('policy');
   policyWrapper.appendChild(policyInput);
   policyWrapper.appendChild(policyLabel);
   policyWrapper.appendChild(policyLink);
 
-  const applyChangesBtn = btn({ value: words.APPLY_CHANGES, type: 'button' });
-  applyChangesBtn.className = bemElem('apply-changes-button');
+  const applyChangesBtn = btn({ value: words.APPLY_CHANGES, type: 'submit' });
+  applyChangesBtn.className = block('applyChangesButton');
 
   const back = textLink({ href: document.referrer, text: words.TO_HOME });
-  back.className = bemElem('back-navigate');
+  back.className = block('backNavigate');
 
   const container = document.createElement('div');
   container.appendChild(back);
 
+  [
+    firstNameInput,
+    secondNameInput,
+    loginInput,
+    displyNameInput,
+    emailInput,
+    passwordInput,
+    confirmPasswordInput,
+    phoneInput,
+  ].forEach((el) => {
+    if (el.parentElement) {
+      const pattern = document.createElement('span');
+      pattern.className = block('pattern');
+      pattern.textContent = PATTERTNS[el.name.toUpperCase()];
+      el.parentElement.className = block('label');
+      el.parentElement.appendChild(pattern);
+    }
+
+    el.addEventListener('blur', (e): void => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(userForm));
+      const validation = validateFormValues(userFormSchema, data);
+      Object.keys(validation).forEach((key) => {
+        if (validation[key].check === words.VALIDATION.ON_ERROR) {
+          const invalid = block('input', {
+            [words.VALIDATION.ON_ERROR]: true,
+          });
+          userForm[key].parentElement.children[1].className = block('pattern', {
+            shown: true,
+          });
+          return (userForm[key].className = invalid);
+        }
+
+        userForm[key].parentElement.children[1].className = block('pattern');
+        return (userForm[key].className = block('input'));
+      });
+    });
+  });
+
   const userForm = createForm({
     chidlren: [
-      userNameContainer,
+      firstNameLabel,
+      secondNameLabel,
       displyNameLabel,
       loginLabel,
       emainLabel,
@@ -167,10 +208,26 @@ const userPage = () => {
       back,
     ],
   });
-  userForm.className = bemElem('wrapper');
+  userForm.className = block('wrapper');
   userForm.addEventListener('submit', async (e): Promise<void> => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(userForm));
+    const validation = validateFormValues(userFormSchema, data);
+    Object.keys(validation).forEach((key) => {
+      if (validation[key].check === words.VALIDATION.ON_ERROR) {
+        const invalid = block('input', {
+          [words.VALIDATION.ON_ERROR]: true,
+        });
+        userForm[key].parentElement.children[1].className = block('pattern', {
+          shown: true,
+        });
+        return (userForm[key].className = invalid);
+      }
+
+      userForm[key].parentElement.children[1].className = block('pattern');
+      return (userForm[key].className = block('input'));
+    });
+
     console.log(data);
   });
 

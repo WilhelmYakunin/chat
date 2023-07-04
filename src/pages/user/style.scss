@@ -8,7 +8,7 @@
         gap: 30px;
     }
 
-    &__header-container {
+    &__headerContainer {
         display: flex;
         align-items: center;
         gap: 10px;
@@ -19,6 +19,24 @@
         color: $foo-main-text;
     }
 
+    &__label {
+        padding: 0 10px;
+        display: flex;
+        flex-direction: column;     
+    }
+
+    &__pattern {
+       color: transparent;
+
+        &--shown {
+            margin: 0;
+            padding: 0;
+            display: inline;
+            font-size: 12px;
+            color: red;
+        }
+    }
+
     &__avatar > img {
         height: 64px;
         object-fit: cover;
@@ -27,9 +45,15 @@
         box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
     }
 
-    &__username-container {
+    &__usernameContainer {
+        max-width: 400px;
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        :last-child {
+            flex-basis: 95%;
+        }
     }
       
     &__input {
@@ -37,11 +61,20 @@
         padding: 10px;
         background-color: transparent;
         color: $foo-main-text;
-        border-color: $foo-fiature-color;
+        border-width: 0;
         border-radius: 20px;
         outline: 0;
+        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
 
-        &-change-avatar {
+        &::placeholder {
+            color: $foo-main-text;;
+        }
+
+        &--invalid {
+            border: 1px solid $foo-fiature-color;
+        }
+
+        &ChangeAvatar {
             cursor: pointer;
             padding: 5px;
             display: block;
@@ -51,22 +84,12 @@
             text-align: center;
         }
 
-        &-change-avatar > input {
+        &ChangeAvatar > input {
             cursor: pointer;
             position: absolute;
             top: 0; 
             left: 0;
             opacity: 0;
-        }
-
-        &-name {
-            width: 80%;
-            padding: 10px;
-            background-color: transparent;
-            color: $foo-main-text;
-            border-color: $foo-fiature-color;
-            border-radius: 20px;
-            outline: 0;
         }
     }
 
@@ -74,7 +97,7 @@
         display: flex;
     }
 
-    &__policy-input {
+    &__policyInput {
         display: none;
 
         + label::before {
@@ -111,14 +134,14 @@
           }
     }
 
-    &__policy-link {
+    &__policyLink {
         margin-left: 5px;
         cursor: pointer;
         text-decoration: none;
         color: $foo-fiature-color;
     }
 
-    &__apply-changes-button {
+    &__applyChangesButton {
         cursor: pointer;
         box-sizing: content-box;
         padding: 10px;
@@ -128,7 +151,7 @@
         border-radius: 20px;
     }
 
-    &__back-navigate {
+    &__backNavigate {
         cursor: pointer;
         text-decoration: none;
         padding: 10px 30px;

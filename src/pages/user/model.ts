@@ -5,7 +5,7 @@ export enum userInfoFields {
   display_name = 'display_name',
   login = 'login',
   email = 'email',
-  old_password = 'old-password',
+  old_password = 'old_password',
   new_password = 'new_password',
   phone = 'phone',
   policy = 'policy',
