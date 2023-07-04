@@ -1,4 +1,4 @@
-export enum SignupFields {
+export enum signupFields {
   first_name = 'first_name',
   second_name = 'second_name',
   login = 'login',

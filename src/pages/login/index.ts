@@ -6,7 +6,7 @@ import btn from '../../components/button';
 import checkbox from '../../components/checkbox';
 import textLink from '../../components/textLink';
 
-import { words } from '../../langs/index';
+import { words, PATTERTNS } from '../../langs/index';
 import { routes } from '../../routes';
 
 import { loginFields } from './model';
@@ -25,7 +25,6 @@ const loginPage = () => {
   header.className = block('header');
 
   const loginLabel = label({ forAttr: loginFields.login });
-  loginLabel.className = block('label');
   const loginInput = textInput({
     name: loginFields.login,
     type: 'text',
@@ -34,32 +33,8 @@ const loginPage = () => {
   loginInput.className = block('input');
   loginInput.tabIndex = 1;
   loginLabel.appendChild(loginInput);
-  const loginPattern = document.createElement('span');
-  loginPattern.className = block('pattern');
-  loginPattern.textContent = words.VALIDATION.PATTERTNS.LOGIN;
-  loginLabel.appendChild(loginPattern);
-
-  loginInput.addEventListener('blur', (e): void => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(loginForm));
-    const validation = validateFormValues(loginFormSchema, data);
-    Object.keys(validation).forEach((key) => {
-      if (validation[key].check === words.VALIDATION.ON_ERROR) {
-        const invalid = block('input', {
-          [words.VALIDATION.ON_ERROR]: true,
-        });
-        loginForm[key].parentElement.children[1].className = block('pattern', {
-          shown: true,
-        });
-        return (loginForm[key].className = invalid);
-      }
-      loginForm[key].parentElement.children[1].className = block('pattern');
-      return (loginForm[key].className = block('input'));
-    });
-  });
 
   const passwordLable = label({ forAttr: loginFields.password });
-  passwordLable.className = block('label');
   const passwordInput = textInput({
     name: loginFields.password,
     type: 'password',
@@ -67,28 +42,6 @@ const loginPage = () => {
   });
   passwordInput.className = block('input');
   passwordLable.appendChild(passwordInput);
-  const passwordPattern = document.createElement('span');
-  passwordPattern.className = block('pattern');
-  passwordPattern.textContent = words.VALIDATION.PATTERTNS.PASSWORD;
-  passwordLable.appendChild(passwordPattern);
-  passwordInput.addEventListener('blur', (e): void => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(loginForm));
-    const validation = validateFormValues(loginFormSchema, data);
-    Object.keys(validation).forEach((key) => {
-      if (validation[key].check === words.VALIDATION.ON_ERROR) {
-        const invalid = block('input', {
-          [words.VALIDATION.ON_ERROR]: true,
-        });
-        loginForm[key].parentElement.children[1].className = block('pattern', {
-          shown: true,
-        });
-        return (loginForm[key].className = invalid);
-      }
-      loginForm[key].parentElement.children[1].className = block('pattern');
-      return (loginForm[key].className = block('input'));
-    });
-  });
 
   const remeberLabel = label({ forAttr: loginFields.remember });
   remeberLabel.className = block('rememberLabel');
@@ -117,10 +70,59 @@ const loginPage = () => {
   const loginForm = createForm({
     chidlren: [header, loginLabel, passwordLable, remeberContainer, signInBtn],
   });
+
+  [loginInput, passwordInput].forEach((el) => {
+    if (el.parentElement) {
+      const pattern = document.createElement('span');
+      pattern.className = block('pattern');
+      pattern.textContent = PATTERTNS[el.name.toUpperCase()];
+      el.parentElement.className = block('label');
+      el.parentElement.appendChild(pattern);
+    }
+
+    el.addEventListener('blur', (e): void => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(loginForm));
+      const validation = validateFormValues(loginFormSchema, data);
+      Object.keys(validation).forEach((key) => {
+        if (validation[key].check === words.VALIDATION.ON_ERROR) {
+          const invalid = block('input', {
+            [words.VALIDATION.ON_ERROR]: true,
+          });
+          loginForm[key].parentElement.children[1].className = block(
+            'pattern',
+            {
+              shown: true,
+            }
+          );
+          return (loginForm[key].className = invalid);
+        }
+
+        loginForm[key].parentElement.children[1].className = block('pattern');
+        return (loginForm[key].className = block('input'));
+      });
+    });
+  });
+
   loginForm.className = block('wrapper');
   loginForm.addEventListener('submit', (e): void => {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(loginForm));
+    const validation = validateFormValues(loginFormSchema, data);
+    Object.keys(validation).forEach((key) => {
+      if (validation[key].check === words.VALIDATION.ON_ERROR) {
+        const invalid = block('input', {
+          [words.VALIDATION.ON_ERROR]: true,
+        });
+        loginForm[key].parentElement.children[1].className = block('pattern', {
+          shown: true,
+        });
+        return (loginForm[key].className = invalid);
+      }
+
+      loginForm[key].parentElement.children[1].className = block('pattern');
+      return (loginForm[key].className = block('input'));
+    });
 
     console.log(data);
   });

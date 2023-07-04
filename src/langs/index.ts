@@ -41,6 +41,8 @@ export const words = {
       DISPLAY_NAME: 'Must be not empty',
       OLD_PASSWORD:
         '8 to 40 characters, at least one uppercase letter and number required',
+      CONFIRM_PASSWORD:
+        '8 to 40 characters, at least one uppercase letter and number required',
       NEW_PASSWORD:
         '8 to 40 characters, at least one uppercase letter and number required',
       PASSWORD:
