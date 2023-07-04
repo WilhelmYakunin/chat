@@ -3,8 +3,9 @@ import textLink from '../../components/textLink';
 import './style.scss';
 
 import { words } from '../../langs/index';
+import bem from 'bem-ts';
 
-const bemElem = (bem: string) => 'server-error' + '__' + bem;
+const block = bem('server-error');
 
 const notFoundPage = () => {
   const spanNum = document.createElement('span');
@@ -14,13 +15,13 @@ const notFoundPage = () => {
   info.textContent = words.SERVER_ERROR;
 
   const back = textLink({ href: document.referrer, text: words.TO_HOME });
-  back.className = bemElem('back-navigate');
+  back.className = block('backNavigate');
 
   const container = document.createElement('div');
   container.appendChild(spanNum);
   container.appendChild(info);
   container.appendChild(back);
-  container.className = bemElem('container');
+  container.className = block('container');
 
   return render(container);
 };

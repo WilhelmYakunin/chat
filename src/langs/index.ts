@@ -28,4 +28,18 @@ export const words = {
   CHATS_HEADER: 'Chats',
   MESSAGE: 'Put a message',
   SEARCH_PLACEHOLDER: 'Search',
+  VALIDATION: {
+    UNKNOWN_FIELD: 'Unknow input field: ',
+    ON_ERROR: 'invalid',
+    VALID: 'valid',
+    PATTERTNS: {
+      NAME: 'Latin or Cyrillic, the first letter must be capital, no spaces and no numbers, only a hyphen is allowed',
+      LOGIN: '3-20 Latin char, no spaces, hyphens and underscores are allowed',
+      PASSWORD:
+        '8 to 40 characters, at least one uppercase letter and number required',
+      EMAIL: 'Enter valid e-mail',
+      PHONE: '10 to 15 characters, consists of numbers, may start with a plus',
+      MESSAGE: 'Must be not empty',
+    },
+  },
 };

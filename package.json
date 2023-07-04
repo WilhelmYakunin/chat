@@ -42,10 +42,14 @@
     "vite-plugin-dts": "^3.0.2"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.2",
+    "bem-classnames": "^1.0.7",
+    "bem-ts": "^0.13.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "sass-lint": "^1.13.1",
     "stylelint-config-standard": "^33.0.0",
-    "stylelint-scss": "^5.0.1"
+    "stylelint-scss": "^5.0.1",
+    "uuid": "^9.0.0"
   }
 }

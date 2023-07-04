@@ -1,6 +1,6 @@
 @import '../../../global.scss';
 
-.chat-page {
+.chatPage {
     @media (width <= 1200px) {
         width: 90vw;
     }
@@ -35,7 +35,7 @@
         gap: 20px;
     }
 
-    &__add-chat {
+    &__addChat {
         gap: 10px;
         display: flex;
         align-items: center;
@@ -49,12 +49,12 @@
         box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
     }
 
-    &__chats-header {
+    &__chatsHeader {
         margin: 0;
         color: $foo-main-text;
     }
 
-    &__add-tree {
+    &__addTree {
         cursor: pointer;
         height: 30px;
         width: 30px;
@@ -82,7 +82,7 @@
         }
     }
 
-    &__app-controls {
+    &__appControls {
         display: flex;
         justify-content: space-between;
         padding: 5px 15px;
@@ -91,7 +91,7 @@
         box-shadow: 0 -1px 3px gray, 3px 3px 3px #000;
     }
 
-    &__app-control-setter {
+    &__appControlSetter {
         cursor: pointer;
         padding: 10px;
         display: inline-flex;
@@ -108,7 +108,7 @@
     }
 
     
-    &__chat-box {
+    &__chatBox {
         @media (width <= 540px) {
             border-width: 0 !important;
             clip: rect(1px, 1px, 1px, 1px) !important;
@@ -130,13 +130,13 @@
         color: $foo-main-text;
     }
 
-    &__message-label {
-        display: flex;
+    &__label {
         padding: 0 10px;
-        
+        display: flex;
+        flex-direction: column;     
     }
 
-    &__input-message {
+    &__input { 
         flex:  .85;
         color: $foo-main-text;;
         padding: 10px 20px;
@@ -148,6 +148,22 @@
 
         &::placeholder {
             color: $foo-main-text;;
+        }
+
+        &--invalid {
+            border: 1px solid $foo-fiature-color;
+        }
+    }
+    
+    &__pattern {
+        color: transparent;
+
+        &--shown {
+            margin: 0;
+            padding: 0;
+            display: inline;
+            font-size: 12px;
+            color: red;
         }
     }
 

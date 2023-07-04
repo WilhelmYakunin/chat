@@ -11,69 +11,126 @@ import { routes } from '../../routes';
 
 import { loginFields } from './model';
 
-import './style.scss';
+import validateFormValues from '../../components/helpers/validate';
+import { loginFormSchema } from './service';
 
-const bemElem = (bem: string) => 'login-form' + '__' + bem;
+import './style.scss';
+import bem from 'bem-ts';
+
+const block = bem('loginForm');
 
 const loginPage = () => {
   const header = document.createElement('h2');
   header.textContent = words.SIGN_IN;
-  header.className = bemElem('header');
+  header.className = block('header');
 
   const loginLabel = label({ forAttr: loginFields.login });
+  loginLabel.className = block('label');
   const loginInput = textInput({
     name: loginFields.login,
     type: 'text',
     placeHolder: words.LOGIN_PLACEHOLDER,
   });
-  loginInput.className = bemElem('input');
+  loginInput.className = block('input');
   loginInput.tabIndex = 1;
   loginLabel.appendChild(loginInput);
+  const loginPattern = document.createElement('span');
+  loginPattern.className = block('pattern');
+  loginPattern.textContent = words.VALIDATION.PATTERTNS.LOGIN;
+  loginLabel.appendChild(loginPattern);
+
+  loginInput.addEventListener('blur', (e): void => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(loginForm));
+    const validation = validateFormValues(loginFormSchema, data);
+    Object.keys(validation).forEach((key) => {
+      if (validation[key].check === words.VALIDATION.ON_ERROR) {
+        const invalid = block('input', {
+          [words.VALIDATION.ON_ERROR]: true,
+        });
+        loginForm[key].parentElement.children[1].className = block('pattern', {
+          shown: true,
+        });
+        return (loginForm[key].className = invalid);
+      }
+      loginForm[key].parentElement.children[1].className = block('pattern');
+      return (loginForm[key].className = block('input'));
+    });
+  });
 
   const passwordLable = label({ forAttr: loginFields.password });
+  passwordLable.className = block('label');
   const passwordInput = textInput({
     name: loginFields.password,
     type: 'password',
     placeHolder: words.PASSWORD_PLACEHOLDER,
   });
-  passwordInput.className = bemElem('input');
+  passwordInput.className = block('input');
   passwordLable.appendChild(passwordInput);
+  const passwordPattern = document.createElement('span');
+  passwordPattern.className = block('pattern');
+  passwordPattern.textContent = words.VALIDATION.PATTERTNS.PASSWORD;
+  passwordLable.appendChild(passwordPattern);
+  passwordInput.addEventListener('blur', (e): void => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(loginForm));
+    const validation = validateFormValues(loginFormSchema, data);
+    Object.keys(validation).forEach((key) => {
+      if (validation[key].check === words.VALIDATION.ON_ERROR) {
+        const invalid = block('input', {
+          [words.VALIDATION.ON_ERROR]: true,
+        });
+        loginForm[key].parentElement.children[1].className = block('pattern', {
+          shown: true,
+        });
+        return (loginForm[key].className = invalid);
+      }
+      loginForm[key].parentElement.children[1].className = block('pattern');
+      return (loginForm[key].className = block('input'));
+    });
+  });
 
   const remeberLabel = label({ forAttr: loginFields.remember });
-  remeberLabel.className = bemElem('remembre-label');
+  remeberLabel.className = block('rememberLabel');
   remeberLabel.textContent = words.REMEMBER;
   const remebreInput = checkbox({
     name: loginFields.remember,
     id: loginFields.remember,
   });
-  remebreInput.className = bemElem('remebre-input');
+  remebreInput.className = block('inputRemember');
   const rememebrWrapper = document.createElement('div');
-  rememebrWrapper.className = bemElem('remember');
+  rememebrWrapper.className = block('rememberWrapper');
   rememebrWrapper.appendChild(remebreInput);
   rememebrWrapper.appendChild(remeberLabel);
 
   const remeberContainer = document.createElement('div');
   const forgotLink = textLink({ href: routes.forgot(), text: words.FORGOT });
-  forgotLink.className = bemElem('forgot-link');
+  forgotLink.className = block('forgotLink');
 
   remeberContainer.appendChild(rememebrWrapper);
   remeberContainer.appendChild(forgotLink);
-  remeberContainer.className = bemElem('remember-container');
+  remeberContainer.className = block('rememberContainer');
 
   const signInBtn = btn({ value: words.SIGN_IN, type: 'submit' });
-  signInBtn.className = bemElem('auth-button');
+  signInBtn.className = block('authButton');
 
   const loginForm = createForm({
     chidlren: [header, loginLabel, passwordLable, remeberContainer, signInBtn],
   });
-  loginForm.className = bemElem('wrapper');
+  loginForm.className = block('wrapper');
+  loginForm.addEventListener('submit', (e): void => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(loginForm));
+
+    console.log(data);
+  });
 
   const loginAside = document.createElement('aside');
-  loginAside.className = bemElem('aside');
+  loginAside.className = block('aside');
   const noaccount = document.createElement('span');
   noaccount.textContent = words.NO_ACCOUNT;
   const singupLink = textLink({ href: routes.singup(), text: words.SIGN_UP });
-  singupLink.className = bemElem('signup-link');
+  singupLink.className = block('signupLink');
   loginAside.appendChild(noaccount);
   loginAside.appendChild(singupLink);
 
@@ -81,11 +138,6 @@ const loginPage = () => {
   loginContainer.appendChild(loginForm);
   loginContainer.appendChild(loginAside);
 
-  loginForm.addEventListener('submit', async (e): Promise<void> => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(loginForm));
-    console.log(data);
-  });
   return render(loginContainer);
 };
 
