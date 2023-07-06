@@ -79,6 +79,8 @@ export const PATTERTNS: { [x: string]: string } = {
     '8 to 40 characters, at least one uppercase letter and number required',
   PASSWORD:
     '8 to 40 characters, at least one uppercase letter and number required',
+  PASSWORD_CONFIRM:
+    '8 to 40 characters, at least one uppercase letter and number required',
   EMAIL: 'Enter valid e-mail',
   PHONE: '10 to 15 characters, consists of numbers, may start with a plus',
   MESSAGE: 'Must be not empty',
