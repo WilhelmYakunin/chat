@@ -1,5 +1,4 @@
 import render from '../../components/render';
-import textInput from '../../components/textInput';
 import label from '../../components/labelTextInput';
 import checkbox from '../../components/checkbox';
 import textLink from '../../components/textLink';
