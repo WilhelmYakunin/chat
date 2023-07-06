@@ -1,6 +1,6 @@
 import { words } from '../../langs/index';
 
-const bemElem = (bem: string) => 'serverError' + '__' + bem;
+const bemElem = (bem: string) => 'servererror' + '__' + bem;
 
 export const template = `<div class=${bemElem('container')}>
         <span>${words.SERVER_ERROR_NUMBER}</span>

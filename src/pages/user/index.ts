@@ -1,9 +1,7 @@
 import render from '../../components/render';
 import profileIcon from '../../components/profile';
-import createForm from '../../components/form';
 import textInput from '../../components/textInput';
 import label from '../../components/labelTextInput';
-import btn from '../../components/button';
 import checkbox from '../../components/checkbox';
 import textLink from '../../components/textLink';
 import { getImageUrl } from '../../components/helpers';
@@ -12,9 +10,7 @@ import { words, PATTERTNS, PLACEHOLDER } from '../../langs/index';
 import { routes } from '../../routes';
 
 import { userInfoFields } from './model';
-import validateFormValues, {
-  validateInput,
-} from '../../components/helpers/validate';
+import { validateInput } from '../../components/helpers/validate';
 import { userFormSchema } from './service';
 
 import './style.scss';
