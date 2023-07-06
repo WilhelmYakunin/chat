@@ -4,6 +4,27 @@ export interface Ischema {
   [x: string]: { pattern: RegExp; description: string };
 }
 
+export const validateInput = ({
+  target,
+  rule,
+}: {
+  target: HTMLElement;
+  rule: RegExp;
+}): void | string => {
+  const pattern = target.nextElementSibling;
+
+  const hasInvalidClass = pattern?.className?.slice(-7) === '--shown';
+  if (pattern) {
+    !(target as HTMLTextAreaElement).value.match(rule) && !hasInvalidClass
+      ? (pattern.className += '--shown')
+      : pattern.className;
+
+    !!(target as HTMLTextAreaElement).value.match(rule) && hasInvalidClass
+      ? (pattern.className = pattern.className?.slice(0, -7))
+      : pattern.className;
+  }
+};
+
 const validateFormValues = (
   schema: Ischema,
   data: { [x: string]: FormDataEntryValue }

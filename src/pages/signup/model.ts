@@ -4,7 +4,7 @@ export enum signupFields {
   login = 'login',
   email = 'email',
   password = 'password',
-  password_confirm = 'confirm-password',
+  password_confirm = 'password_confirm',
   phone = 'phone',
   policy = 'policy',
 }

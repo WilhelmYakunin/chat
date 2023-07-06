@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import EventBus from './eventBus';
-
+import { compile } from 'handlebars';
 export default class Block {
   static EVENTS = {
     INIT: 'init',
@@ -9,15 +9,26 @@ export default class Block {
     FLOW_RENDER: 'flow:render',
   } as const;
 
-  protected _element: HTMLElement = document.createElement('div');
-  protected _meta: { tagName: string; props: unknown } = {
-    tagName: 'div',
-    props: undefined,
+  protected _element: HTMLElement | HTMLFormElement =
+    document.createElement('div');
+  protected _meta: {
+    tagName: string;
+    props: {
+      [x: string]: unknown;
+      template?: string;
+      data?: unknown;
+      children?: Block[];
+      events?: {
+        eventName: keyof HTMLElementEventMap;
+        callback: EventListener;
+      }[];
+    };
+  } = {
+    tagName: '',
+    props: {},
   };
   public id = uuid();
-  public children: { [id: string]: Block } = {};
-  public customEvents: Event[] = [];
-  protected eventBus: () => EventBus;
+  private eventBus: EventBus;
   public props: { [x: string]: unknown } = {};
 
   /** JSDoc
@@ -27,36 +38,33 @@ export default class Block {
    * @returns {void}
    */
   constructor(tagName = 'div', props = {}) {
-    const eventBus = new EventBus();
     this._meta = {
       tagName,
       props,
     };
-
-    this.props = this._makePropsProxy(props);
-
-    this.eventBus = () => eventBus;
-
+    const eventBus = new EventBus();
+    this.eventBus = eventBus;
     this._registerEvents(eventBus);
     eventBus.emit(Block.EVENTS.INIT);
+
+    this.props = this._makePropsProxy(props);
   }
 
-  _registerEvents(eventBus: EventBus) {
+  private _registerEvents(eventBus: EventBus) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
   }
 
-  _createResources() {
-    const tagName = this._meta?.tagName;
-    this._element = this._createDocumentElement(tagName);
+  private _createResources() {
+    this._element = this._createDocumentElement();
   }
 
   protected init() {
     this._createResources();
 
-    this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
+    this.eventBus.emit(Block.EVENTS.FLOW_RENDER);
   }
 
   private _componentDidMount() {
@@ -68,7 +76,7 @@ export default class Block {
   }
 
   protected dispatchComponentDidMount() {
-    this.eventBus().emit(Block.EVENTS.FLOW_CDM);
+    this.eventBus.emit(Block.EVENTS.FLOW_CDM);
   }
 
   private _componentDidUpdate() {
@@ -96,13 +104,18 @@ export default class Block {
   }
 
   private _render() {
-    const block = this.render();
     this._registerEvents;
+    this._removeEvents();
 
-    this._element.innerHTML = block;
+    const { children } = this._meta.props;
+    if (children && children.length !== 0)
+      children.forEach((child) => {
+        this._element?.appendChild(child.getContent());
+      });
+    this._addEvents();
   }
 
-  protected render(): string {
+  render(): string {
     return '';
   }
 
@@ -111,7 +124,7 @@ export default class Block {
   }
 
   private _makePropsProxy(props: { [x: string]: unknown }) {
-    const ctxEventBus = this.eventBus();
+    const ctxEventBus = this.eventBus;
 
     return new Proxy(props, {
       get(target, prop: string) {
@@ -130,7 +143,44 @@ export default class Block {
     });
   }
 
-  _createDocumentElement(tagName: string) {
-    return document.createElement(tagName);
+  _createDocumentElement() {
+    const { template, data } = this._meta.props;
+    const parser = new DOMParser();
+    if (template) {
+      const html = parser.parseFromString(compile(template)(data), 'text/html');
+
+      return html.body.firstChild as HTMLElement;
+    }
+    return document.createElement(this._meta.tagName);
+  }
+
+  private _addEvents() {
+    const { events } = this._meta.props;
+
+    if (events) {
+      events.forEach(({ eventName, callback }) => {
+        if (this._element)
+          this._element.addEventListener(String(eventName), callback);
+      });
+    }
+  }
+
+  private _removeEvents() {
+    const { events } = this._meta.props;
+
+    if (events) {
+      events.forEach(({ eventName, callback }) => {
+        if (this._element)
+          this._element.removeEventListener(eventName, callback);
+      });
+    }
+  }
+
+  show() {
+    if (this._element) (this._element as HTMLElement).style.display = 'block';
+  }
+
+  hide() {
+    if (this._element) (this._element as HTMLElement).style.display = 'none';
   }
 }

@@ -19,7 +19,7 @@ export const words = {
   DISPLAY_NAME: 'Dispaly name',
   OLD_PASSWORD: 'Old password',
   NEW_PASSWORD: 'New password',
-  APPLY_CHANGES: 'Applay changes',
+  APPLY_CHANGES: 'Apply changes',
   NOT_FOUND: 'Page not found',
   NOT_FOUND_NUMBER: '404',
   SERVER_ERROR_NUMBER: '5**',
@@ -52,6 +52,18 @@ export const words = {
       MESSAGE: 'Must be not empty',
     },
   },
+};
+export const PLACEHOLDER: { [x: string]: string } = {
+  first_name: 'First name',
+  second_name: 'Second name',
+  display_name: 'Display name',
+  login: 'login',
+  email: 'E-mail',
+  old_password: 'Old password',
+  new_password: 'New password',
+  phone: 'Phone',
+  password: 'Password',
+  password_confirm: 'Confirm password',
 };
 
 export const PATTERTNS: { [x: string]: string } = {

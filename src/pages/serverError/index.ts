@@ -1,29 +1,13 @@
 import render from '../../components/render';
-import textLink from '../../components/textLink';
+import Block from '../../components/block';
 import './style.scss';
 
-import { words } from '../../langs/index';
-import bem from 'bem-ts';
+import { template } from './template';
 
-const block = bem('server-error');
+const serverErrorPage = () => {
+  const block = new Block('div', { template });
 
-const notFoundPage = () => {
-  const spanNum = document.createElement('span');
-  spanNum.textContent = words.SERVER_ERROR_NUMBER;
-
-  const info = document.createElement('span');
-  info.textContent = words.SERVER_ERROR;
-
-  const back = textLink({ href: document.referrer, text: words.TO_HOME });
-  back.className = block('backNavigate');
-
-  const container = document.createElement('div');
-  container.appendChild(spanNum);
-  container.appendChild(info);
-  container.appendChild(back);
-  container.className = block('container');
-
-  return render(container);
+  return render(block.getContent());
 };
 
-export default notFoundPage;
+export default serverErrorPage;

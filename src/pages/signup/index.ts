@@ -1,27 +1,36 @@
 import render from '../../components/render';
-import createForm from '../../components/form';
 import textInput from '../../components/textInput';
 import label from '../../components/labelTextInput';
-import btn from '../../components/button';
 import checkbox from '../../components/checkbox';
 import textLink from '../../components/textLink';
 
-import { words, PATTERTNS } from '../../langs/index';
+import { words, PATTERTNS, PLACEHOLDER } from '../../langs/index';
 import { routes } from '../../routes';
 
 import { signupFields } from './model';
-import validateFormValues from '../../components/helpers/validate';
+import { validateInput } from '../../components/helpers/validate';
 
 import './style.scss';
 import bem from 'bem-ts';
 import { signupFormSchema } from './service';
+import Block from '../../components/block';
+import {
+  formTemplate,
+  headerTmeplate,
+  inputTemplate,
+  labelTemplate,
+  patternTemplate,
+  submitBtnTemplate,
+} from './templates';
+import { userInfoFields } from '../user/model';
 
 const block = bem('signup');
 
 const siginupPage = () => {
-  const header = document.createElement('h2');
-  header.textContent = words.SIGN_UP;
-  header.className = block('header');
+  const header = new Block('h2', {
+    template: headerTmeplate,
+    data: { text: words.SIGN_UP, class: block('header') },
+  });
 
   const firstNameLabel = label({ forAttr: signupFields.first_name });
   const firstNameInput = textInput({
@@ -106,89 +115,89 @@ const siginupPage = () => {
   policyWrapper.appendChild(policyLabel);
   policyWrapper.appendChild(policyLink);
 
-  const signUpBtn = btn({ value: words.SIGN_UP, type: 'submit' });
-  signUpBtn.className = block('authButton');
+  const signUpBtn = new Block('input', {
+    template: submitBtnTemplate,
+    data: {
+      type: 'submit',
+      class: block('authButton'),
+      value: words.APPLY_CHANGES,
+    },
+  });
 
-  [
-    firstNameInput,
-    secondNameInput,
-    loginInput,
-    emailInput,
-    passwordInput,
-    confirmPasswordInput,
-    phoneInput,
-  ].forEach((el) => {
-    if (el.parentElement) {
-      const pattern = document.createElement('span');
-      pattern.className = block('pattern');
-      pattern.textContent = PATTERTNS[el.name.toUpperCase()];
-      el.parentElement.className = block('label');
-      el.parentElement.appendChild(pattern);
-    }
-
-    el.addEventListener('blur', (e): void => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(siginupForm));
-      const validation = validateFormValues(signupFormSchema, data);
-      Object.keys(validation).forEach((key) => {
-        if (validation[key].check === words.VALIDATION.ON_ERROR) {
-          const invalid = block('input', {
-            [words.VALIDATION.ON_ERROR]: true,
-          });
-          siginupForm[key].parentElement.children[1].className = block(
-            'pattern',
-            {
-              shown: true,
-            }
-          );
-          return (siginupForm[key].className = invalid);
-        }
-
-        siginupForm[key].parentElement.children[1].className = block('pattern');
-        return (siginupForm[key].className = block('input'));
-      });
+  const fields = [header];
+  for (const key in signupFormSchema) {
+    const input = new Block('input', {
+      template: inputTemplate,
+      data: {
+        name: signupFields[key as keyof typeof signupFields],
+        class: block('input'),
+        placeholder: PLACEHOLDER[key as keyof typeof signupFormSchema],
+        tabIndex: key === 'first_name' && '1',
+      },
+      events: [
+        {
+          eventName: 'blur',
+          callback: (e: Event) =>
+            validateInput({
+              target: e.target as HTMLElement,
+              rule: signupFormSchema[key as keyof typeof userInfoFields]
+                .pattern,
+            }),
+        },
+      ],
     });
-  });
 
-  const siginupForm = createForm({
-    chidlren: [
-      header,
-      firstNameLabel,
-      secondNameLabel,
-      loginLabel,
-      emainLabel,
-      passwordLable,
-      confirmPasswordLable,
-      phoneLabel,
-      policyWrapper,
-      signUpBtn,
-    ],
-  });
-  siginupForm.className = block('wrapper');
-  siginupForm.addEventListener('submit', async (e): Promise<void> => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(siginupForm));
-    const validation = validateFormValues(signupFormSchema, data);
-    Object.keys(validation).forEach((key) => {
-      if (validation[key].check === words.VALIDATION.ON_ERROR) {
-        const invalid = block('input', {
-          [words.VALIDATION.ON_ERROR]: true,
-        });
-        siginupForm[key].parentElement.children[1].className = block(
-          'pattern',
-          {
-            shown: true,
+    const pattern = new Block('span', {
+      template: patternTemplate,
+      data: {
+        class: block('pattern'),
+        text: PATTERTNS[key.toUpperCase() as keyof typeof signupFormSchema],
+      },
+    });
+
+    const lable = new Block('label', {
+      template: labelTemplate,
+      data: {
+        forAttr: signupFormSchema[key as keyof typeof signupFormSchema],
+        labelClass: block('label'),
+      },
+      children: [input, pattern],
+    });
+
+    fields.push(lable);
+  }
+
+  fields.push(signUpBtn);
+
+  const siginupForm = new Block('form', {
+    template: formTemplate,
+    data: {
+      class: block('wrapper'),
+    },
+    children: fields,
+    events: [
+      {
+        eventName: 'submit',
+        callback: (e: Event): void => {
+          e.preventDefault();
+          const data: { [x: string]: unknown } = {};
+          for (const key in signupFormSchema) {
+            const el = (e.target as HTMLFormElement).elements[
+              key as keyof HTMLFormControlsCollection
+            ];
+
+            data[key] = (el as unknown as HTMLInputElement).value;
+            validateInput({
+              target: el as HTMLElement,
+              rule: signupFormSchema[key].pattern,
+            });
           }
-        );
-        return (siginupForm[key].className = invalid);
-      }
 
-      siginupForm[key].parentElement.children[1].className = block('pattern');
-      return (siginupForm[key].className = block('input'));
-    });
-
-    console.log(data);
-  });
+          console.log(data);
+        },
+      },
+    ],
+  }).getContent();
 
   const signuoAside = document.createElement('aside');
   signuoAside.className = block('aside');

@@ -1,18 +1,23 @@
 import render from '../../components/render';
 import profileIcon from '../../components/profile';
 import textInput from '../../components/textInput';
-import label from '../../components/labelTextInput';
 import submitBtn from '../../components/button';
-import form from '../../components/form';
 import { getImageUrl } from '../../components/helpers';
 
 import { words } from '../../langs';
 import { messageFileds } from './model';
-import validateFormValues from '../../components/helpers/validate';
+import { validateInput } from '../../components/helpers/validate';
 import { messageFormSchema } from './service';
 
 import './style.scss';
 import bem from 'bem-ts';
+import Block from '../../components/block';
+import {
+  formTemplate,
+  inputTemplate,
+  labelTemplate,
+  patternTemplate,
+} from './templates';
 
 const block = bem('chat');
 
@@ -95,65 +100,68 @@ const mainPage = () => {
   chat.innerHTML = '<p>no message here</p>';
   chatBox.appendChild(chat);
 
-  const inputMessageLabel = label({ forAttr: messageFileds.message });
-  inputMessageLabel.className = block('label');
-  const inputMessage = textInput({
-    name: messageFileds.message,
-    type: 'text',
-    placeHolder: words.MESSAGE,
-  });
-  inputMessageLabel.appendChild(inputMessage);
-  inputMessage.className = block('input');
-  const messagePattern = document.createElement('span');
-  messagePattern.className = block('pattern');
-  messagePattern.textContent = words.VALIDATION.PATTERTNS.MESSAGE;
-  inputMessageLabel.appendChild(messagePattern);
-  inputMessage.addEventListener('blur', (e): void => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(messageForm));
-    const validation = validateFormValues(messageFormSchema, data);
-    Object.keys(validation).forEach((key) => {
-      if (validation[key].check === words.VALIDATION.ON_ERROR) {
-        const invalid = block('input', {
-          [words.VALIDATION.ON_ERROR]: true,
-        });
-        messageForm[key].parentElement.children[1].className = block(
-          'pattern',
-          {
-            shown: true,
-          }
-        );
-        return (messageForm[key].className = invalid);
-      }
-      messageForm[key].parentElement.children[1].className = block('pattern');
-      return (messageForm[key].className = block('input'));
-    });
+  const messageInput = new Block('input', {
+    template: inputTemplate,
+    data: {
+      name: messageFileds.message,
+      class: block('input'),
+      placeholder: words.MESSAGE,
+      tabIndex: 1,
+    },
+    events: [
+      {
+        eventName: 'blur',
+        callback: (e: Event) =>
+          validateInput({
+            target: e.target as HTMLElement,
+            rule: messageFormSchema.message.pattern,
+          }),
+      },
+    ],
   });
 
-  const messageForm = form({ chidlren: [inputMessageLabel] });
-
-  messageForm.addEventListener('submit', (e): void => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(messageForm));
-    const validation = validateFormValues(messageFormSchema, data);
-    Object.keys(validation).forEach((key) => {
-      if (validation[key].check === words.VALIDATION.ON_ERROR) {
-        const invalid = block('input', {
-          [words.VALIDATION.ON_ERROR]: true,
-        });
-        messageForm[key].parentElement.children[1].className = block(
-          'pattern',
-          {
-            shown: true,
-          }
-        );
-        return (messageForm[key].className = invalid);
-      }
-      messageForm[key].parentElement.children[1].className = block('pattern');
-      return (messageForm[key].className = block('input'));
-    });
-    console.log(data);
+  const messagePattern = new Block('div', {
+    template: patternTemplate,
+    data: {
+      class: block('pattern'),
+      text: words.VALIDATION.PATTERTNS.MESSAGE,
+    },
   });
+
+  const inputMessageLabel = new Block('label', {
+    template: labelTemplate,
+    data: {
+      forAttr: messageFileds.message,
+      labelClass: block('label'),
+    },
+    children: [messageInput, messagePattern],
+  });
+
+  const messageForm = new Block('form', {
+    template: formTemplate,
+    children: [inputMessageLabel],
+    events: [
+      {
+        eventName: 'submit',
+        callback: (e: Event): void => {
+          e.preventDefault();
+          const data: { [x: string]: unknown } = {};
+          for (const key in messageFormSchema) {
+            const el = (e.target as HTMLFormElement).elements[
+              key as keyof HTMLFormControlsCollection
+            ];
+            data[key] = (el as unknown as HTMLInputElement).value;
+            validateInput({
+              target: el as HTMLElement,
+              rule: messageFormSchema[key].pattern,
+            });
+          }
+
+          console.log(data);
+        },
+      },
+    ],
+  }).getContent();
 
   chatBox.appendChild(messageForm);
 

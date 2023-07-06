@@ -1,47 +1,109 @@
 import render from '../../components/render';
-import createForm from '../../components/form';
-import textInput from '../../components/textInput';
 import label from '../../components/labelTextInput';
-import btn from '../../components/button';
 import checkbox from '../../components/checkbox';
 import textLink from '../../components/textLink';
 
-import { words, PATTERTNS } from '../../langs/index';
+import { words } from '../../langs/index';
 import { routes } from '../../routes';
 
 import { loginFields } from './model';
 
-import validateFormValues from '../../components/helpers/validate';
+import { validateInput } from '../../components/helpers/validate';
 import { loginFormSchema } from './service';
 
 import './style.scss';
 import bem from 'bem-ts';
+import Block from '../../components/block';
+import {
+  formTemplate,
+  headerTmeplate,
+  inputTemplate,
+  labelTemplate,
+  patternTemplate,
+  submitBtnTemplate,
+} from './templates';
 
 const block = bem('login');
 
 const loginPage = () => {
-  const header = document.createElement('h2');
-  header.textContent = words.SIGN_IN;
-  header.className = block('header');
-
-  const loginLabel = label({ forAttr: loginFields.login });
-  const loginInput = textInput({
-    name: loginFields.login,
-    type: 'text',
-    placeHolder: words.LOGIN_PLACEHOLDER,
+  const header = new Block('h2', {
+    template: headerTmeplate,
+    data: { text: words.SIGN_IN, class: block('header') },
   });
-  loginInput.className = block('input');
-  loginInput.tabIndex = 1;
-  loginLabel.appendChild(loginInput);
 
-  const passwordLable = label({ forAttr: loginFields.password });
-  const passwordInput = textInput({
-    name: loginFields.password,
-    type: 'password',
-    placeHolder: words.PASSWORD_PLACEHOLDER,
+  const loginINput = new Block('input', {
+    template: inputTemplate,
+    data: {
+      name: loginFields.login,
+      class: block('input'),
+      placeholder: words.LOGIN_PLACEHOLDER,
+      tabIndex: 1,
+    },
+    events: [
+      {
+        eventName: 'blur',
+        callback: (e: Event) =>
+          validateInput({
+            target: e.target as HTMLElement,
+            rule: loginFormSchema.login.pattern,
+          }),
+      },
+    ],
   });
-  passwordInput.className = block('input');
-  passwordLable.appendChild(passwordInput);
+
+  const loginPattern = new Block('div', {
+    template: patternTemplate,
+    data: {
+      class: block('pattern'),
+      text: words.VALIDATION.PATTERTNS.LOGIN,
+    },
+  });
+
+  const loginLabel = new Block('label', {
+    template: labelTemplate,
+    data: {
+      forAttr: loginFields.login,
+      labelClass: block('label'),
+    },
+    children: [loginINput, loginPattern],
+  });
+
+  const passwordInput = new Block('input', {
+    template: inputTemplate,
+    data: {
+      name: loginFields.password,
+      class: block('input'),
+      placeholder: words.PASSWORD_PLACEHOLDER,
+      tabIndex: 1,
+    },
+    events: [
+      {
+        eventName: 'blur',
+        callback: (e: Event) =>
+          validateInput({
+            target: e.target as HTMLElement,
+            rule: loginFormSchema.password.pattern,
+          }),
+      },
+    ],
+  });
+
+  const passwordPattern = new Block('div', {
+    template: patternTemplate,
+    data: {
+      class: block('pattern'),
+      text: words.VALIDATION.PATTERTNS.LOGIN,
+    },
+  });
+
+  const passwordLable = new Block('label', {
+    template: labelTemplate,
+    data: {
+      forAttr: loginFields.password,
+      labelClass: block('label'),
+    },
+    children: [passwordInput, passwordPattern],
+  });
 
   const remeberLabel = label({ forAttr: loginFields.remember });
   remeberLabel.className = block('rememberLabel');
@@ -55,7 +117,6 @@ const loginPage = () => {
   rememebrWrapper.className = block('rememberWrapper');
   rememebrWrapper.appendChild(remebreInput);
   rememebrWrapper.appendChild(remeberLabel);
-
   const remeberContainer = document.createElement('div');
   const forgotLink = textLink({ href: routes.forgot(), text: words.FORGOT });
   forgotLink.className = block('forgotLink');
@@ -64,68 +125,37 @@ const loginPage = () => {
   remeberContainer.appendChild(forgotLink);
   remeberContainer.className = block('rememberContainer');
 
-  const signInBtn = btn({ value: words.SIGN_IN, type: 'submit' });
-  signInBtn.className = block('authButton');
-
-  const loginForm = createForm({
-    chidlren: [header, loginLabel, passwordLable, remeberContainer, signInBtn],
+  const signInBtn = new Block('input', {
+    template: submitBtnTemplate,
+    data: { type: 'submit', class: block('authButton'), value: words.SIGN_IN },
   });
 
-  [loginInput, passwordInput].forEach((el) => {
-    if (el.parentElement) {
-      const pattern = document.createElement('span');
-      pattern.className = block('pattern');
-      pattern.textContent = PATTERTNS[el.name.toUpperCase()];
-      el.parentElement.className = block('label');
-      el.parentElement.appendChild(pattern);
-    }
+  const loginForm = new Block('form', {
+    template: formTemplate,
+    data: { class: block('wrapper') },
+    children: [header, loginLabel, passwordLable, signInBtn],
+    events: [
+      {
+        eventName: 'submit',
+        callback: (e: Event): void => {
+          e.preventDefault();
+          const data: { [x: string]: unknown } = {};
+          for (const key in loginFormSchema) {
+            const el = (e.target as HTMLFormElement).elements[
+              key as keyof HTMLFormControlsCollection
+            ];
+            data[key] = (el as unknown as HTMLInputElement).value;
+            validateInput({
+              target: el as HTMLElement,
+              rule: loginFormSchema[key].pattern,
+            });
+          }
 
-    el.addEventListener('blur', (e): void => {
-      e.preventDefault();
-      const data = Object.fromEntries(new FormData(loginForm));
-      const validation = validateFormValues(loginFormSchema, data);
-      Object.keys(validation).forEach((key) => {
-        if (validation[key].check === words.VALIDATION.ON_ERROR) {
-          const invalid = block('input', {
-            [words.VALIDATION.ON_ERROR]: true,
-          });
-          loginForm[key].parentElement.children[1].className = block(
-            'pattern',
-            {
-              shown: true,
-            }
-          );
-          return (loginForm[key].className = invalid);
-        }
-
-        loginForm[key].parentElement.children[1].className = block('pattern');
-        return (loginForm[key].className = block('input'));
-      });
-    });
-  });
-
-  loginForm.className = block('wrapper');
-  loginForm.addEventListener('submit', (e): void => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(loginForm));
-    const validation = validateFormValues(loginFormSchema, data);
-    Object.keys(validation).forEach((key) => {
-      if (validation[key].check === words.VALIDATION.ON_ERROR) {
-        const invalid = block('input', {
-          [words.VALIDATION.ON_ERROR]: true,
-        });
-        loginForm[key].parentElement.children[1].className = block('pattern', {
-          shown: true,
-        });
-        return (loginForm[key].className = invalid);
-      }
-
-      loginForm[key].parentElement.children[1].className = block('pattern');
-      return (loginForm[key].className = block('input'));
-    });
-
-    console.log(data);
-  });
+          console.log(data);
+        },
+      },
+    ],
+  }).getContent();
 
   const loginAside = document.createElement('aside');
   loginAside.className = block('aside');
