@@ -1,6 +1,4 @@
-@import '../../../global.scss'; 
-
-
+@import '../../../global.scss';
 
 .user {
     &__wrapper {
@@ -10,7 +8,7 @@
         gap: 30px;
     }
 
-    &__header-container {
+    &__headerContainer {
         display: flex;
         align-items: center;
         gap: 10px;
@@ -18,58 +16,81 @@
 
     &__header {
         margin: 0;
-        color: $main-text;
+        color: $foo-main-text;
+    }
+
+    &__label {
+        padding: 0 10px;
+        display: flex;
+        flex-direction: column;     
+    }
+
+    &__pattern {
+       color: transparent;
+
+        &--shown {
+            margin: 0;
+            padding: 0;
+            display: inline;
+            font-size: 12px;
+            color: red;
+        }
     }
 
     &__avatar > img {
         height: 64px;
         object-fit: cover;
-        border: 2px solid $main-background;
+        border: 2px solid $foo-main-background;
         border-radius: 50%;
         box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
     }
 
-    &__username-container {
+    &__usernameContainer {
+        max-width: 400px;
         display: flex;
-
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        
+        :last-child {
+            flex-basis: 95%;
+        }
     }
       
     &__input {
         width: 90%;
         padding: 10px;
         background-color: transparent;
-        color: $main-text;
-        border-color: $fiature-color;
+        color: $foo-main-text;
+        border-width: 0;
         border-radius: 20px;
         outline: 0;
+        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
 
-        &-change-avatar {
+        &::placeholder {
+            color: $foo-main-text;;
+        }
+
+        &--invalid {
+            border: 1px solid $foo-fiature-color;
+        }
+
+        &ChangeAvatar {
             cursor: pointer;
             padding: 5px;
             display: block;
-            border: 1px solid $fiature-color;
-            color: $main-text;
+            border: 1px solid $foo-fiature-color;
+            color: $foo-main-text;
             transition: all .4s;
             text-align: center;
         }
 
-        &-change-avatar > input {
+        &ChangeAvatar > input {
             cursor: pointer;
             position: absolute;
             top: 0; 
             left: 0;
             opacity: 0;
-        }
-
-        &-name {
-            width: 80%;
-            padding: 10px;
-            background-color: transparent;
-            color: $main-text;
-            border-color: $fiature-color;
-            border-radius: 20px;
-            outline: 0;
         }
     }
 
@@ -77,9 +98,22 @@
         display: flex;
     }
 
-    &__policy-input {
+    &__policyInput {
         display: none;
 
+        + label::before {
+            content: '';
+            display: block;
+            width: 20px;
+            height: 20px;
+            border: 1px solid $foo-main-text;
+            position: absolute;
+            left: 0;
+            top: -2px;
+            opacity: .6;
+            transition: all .12s, border-color .08s;
+        }
+        
         &:checked + label::before {
             width: 10px;
             top: -7px;
@@ -88,59 +122,42 @@
             opacity: 1;
             border-top-color: transparent;
             border-left-color: transparent;
-            -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
         }
 
-        & + label:before {
-            content: '';
-            display: block;
-            width: 20px;
-            height: 20px;
-            border: 1px solid $main-text;
-            position: absolute;
-            left: 0;
-            top: -2px;
-            opacity: .6;
-            -webkit-transition: all .12s, border-color .08s;
-            transition: all .12s, border-color .08s;
-        }
-
-        & + label {
+        + label {
             cursor: pointer;
             display: block;
             position: relative;
             padding-left: 30px;
- 
-            color: $main-text;
+            color: $foo-main-text;
             user-select: none;
           }
     }
 
-    &__policy-link {
+    &__policyLink {
         margin-left: 5px;
         cursor: pointer;
         text-decoration: none;
-        color: $fiature-color;
+        color: $foo-fiature-color;
     }
 
-    &__apply-changes-button {
+    &__applyChangesButton {
         cursor: pointer;
         box-sizing: content-box;
         padding: 10px;
-        background-color: transparent;
-        color: $main-text;
-        border-color: $fiature-color;
-        background-color: $fiature-color;
+        color: $foo-main-text;
+        border-color: $foo-fiature-color;
+        background-color: $foo-fiature-color;
         border-radius: 20px;
     }
 
-    &__back-navigate {
+    &__backNavigate {
         cursor: pointer;
         text-decoration: none;
         padding: 10px 30px;
-        border: 1px solid $fiature-color;
-        color: $fiature-color;
+        border: 1px solid $foo-fiature-color;
+        color: $foo-fiature-color;
         background-color: transparent;
         text-align: center;        
     }

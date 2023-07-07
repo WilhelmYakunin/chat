@@ -1,130 +1,144 @@
-import render from '../../reuseable/render';
-import createForm from '../../reuseable/form';
-import textInput from '../../reuseable/textInput';
-import label from '../../reuseable/labelTextInput';
-import btn from '../../reuseable/button';
-import checkbox from '../../reuseable/checkbox';
-import textLink from '../../reuseable/textLink';
+import render from '../../components/render';
+import label from '../../components/labelTextInput';
+import checkbox from '../../components/checkbox';
+import textLink from '../../components/textLink';
 
-import { words } from '../../langs/index';
+import { words, PATTERTNS, PLACEHOLDER } from '../../langs/index';
 import { routes } from '../../routes';
 
-import './style.scss';
+import { signupFields } from './model';
+import { validateInput } from '../../components/helpers/validate';
 
-const bemElem = (bem: string) => 'signup-form' + '__' + bem;
+import './style.scss';
+import bem from 'bem-ts';
+import { signupFormSchema } from './service';
+import Block from '../../components/block';
+import {
+  formTemplate,
+  headerTmeplate,
+  inputTemplate,
+  labelTemplate,
+  patternTemplate,
+  submitBtnTemplate,
+} from './templates';
+import { userInfoFields } from '../user/model';
+
+const block = bem('signup');
 
 const siginupPage = () => {
-  const header = document.createElement('h2');
-  header.textContent = words.SIGN_UP;
-  header.className = bemElem('header');
-
-  const firstNameLabel = label({ forAttr: 'first_name' });
-  const firstNameInput = textInput({
-    name: 'first_name',
-    type: 'text',
-    placeHolder: words.FIRST_NAME,
+  const header = new Block('h2', {
+    template: headerTmeplate,
+    data: { text: words.SIGN_UP, class: block('header') },
   });
-  firstNameInput.className = bemElem('input-name');
-  firstNameInput.tabIndex = 1;
-  firstNameLabel.appendChild(firstNameInput);
 
-  const secondNameLabel = label({ forAttr: 'second_name' });
-  const secondNameInput = textInput({
-    name: 'second_name',
-    type: 'text',
-    placeHolder: words.SECOND_NAME,
-  });
-  secondNameInput.className = bemElem('input-name');
-  secondNameLabel.appendChild(secondNameInput);
-
-  const userNameContainer = document.createElement('div');
-  userNameContainer.className = bemElem('username-container');
-  userNameContainer.appendChild(firstNameLabel);
-  userNameContainer.appendChild(secondNameLabel);
-
-  const loginLabel = label({ forAttr: 'login' });
-  const loginInput = textInput({
-    name: 'login',
-    type: 'text',
-    placeHolder: words.LOGIN_PLACEHOLDER,
-  });
-  loginInput.className = bemElem('input');
-  loginLabel.appendChild(loginInput);
-
-  const emainLabel = label({ forAttr: 'email' });
-  const emailInput = textInput({
-    name: 'email',
-    type: 'email',
-    placeHolder: words.EMAIL,
-  });
-  emailInput.className = bemElem('input');
-  emainLabel.appendChild(emailInput);
-
-  const passwordLable = label({ forAttr: 'password' });
-  const passwordInput = textInput({
-    name: 'password',
-    type: 'password',
-    placeHolder: words.PASSWORD_PLACEHOLDER,
-  });
-  passwordInput.className = bemElem('input');
-  passwordLable.appendChild(passwordInput);
-
-  const confirmPasswordLable = label({ forAttr: 'confirm-password' });
-  const confirmPasswordInput = textInput({
-    name: 'confirm-password',
-    type: 'confirm-password',
-    placeHolder: words.CONFIRM_PASSWORD,
-  });
-  confirmPasswordInput.className = bemElem('input');
-  confirmPasswordLable.appendChild(confirmPasswordInput);
-
-  const phoneLabel = label({ forAttr: 'phone' });
-  const phoneInput = textInput({
-    name: 'phone',
-    type: 'phone',
-    placeHolder: words.PHONE,
-  });
-  phoneInput.className = bemElem('input');
-  phoneLabel.appendChild(phoneInput);
-
-  const policyLabel = label({ forAttr: 'policy' });
-  policyLabel.className = bemElem('policy-label');
+  const policyLabel = label({ forAttr: signupFields.policy });
+  policyLabel.className = block('policyLabel');
   policyLabel.textContent = words.CONFIRM_POLICY;
-  const policyInput = checkbox({ name: 'policy', id: 'policy' });
-  policyInput.className = bemElem('policy-input');
+  const policyInput = checkbox({
+    name: signupFields.policy,
+    id: signupFields.policy,
+  });
+  policyInput.className = block('policyInput');
   const policyLink = textLink({ href: routes.policy(), text: words.PRIVACY });
-  policyLink.className = bemElem('policy-link');
+  policyLink.className = block('policyLink');
 
   const policyWrapper = document.createElement('div');
-  policyWrapper.className = bemElem('policy');
+  policyWrapper.className = block('policy');
   policyWrapper.appendChild(policyInput);
   policyWrapper.appendChild(policyLabel);
   policyWrapper.appendChild(policyLink);
 
-  const signUpBtn = btn({ value: words.SIGN_UP, type: 'button' });
-  signUpBtn.className = bemElem('auth-button');
-
-  const siginupForm = createForm({
-    chidlren: [
-      header,
-      userNameContainer,
-      loginLabel,
-      emainLabel,
-      passwordLable,
-      confirmPasswordLable,
-      phoneLabel,
-      policyWrapper,
-      signUpBtn,
-    ],
+  const signUpBtn = new Block('input', {
+    template: submitBtnTemplate,
+    data: {
+      type: 'submit',
+      class: block('authButton'),
+      value: words.APPLY_CHANGES,
+    },
   });
-  siginupForm.className = bemElem('wrapper');
+
+  const fields = [header];
+
+  for (const key in signupFormSchema) {
+    const input = new Block('input', {
+      template: inputTemplate,
+      data: {
+        name: signupFields[key as keyof typeof signupFields],
+        class: block('input'),
+        placeholder: PLACEHOLDER[key as keyof typeof signupFormSchema],
+        tabIndex: key === 'first_name' && '1',
+      },
+      events: [
+        {
+          eventName: 'blur',
+          callback: (e: Event) =>
+            validateInput({
+              target: e.target as HTMLElement,
+              rule: signupFormSchema[key as keyof typeof userInfoFields]
+                .pattern,
+            }),
+        },
+      ],
+    });
+
+    const pattern = new Block('span', {
+      template: patternTemplate,
+      data: {
+        class: block('pattern'),
+        text: PATTERTNS[key.toUpperCase() as keyof typeof signupFormSchema],
+      },
+    });
+
+    const lable = new Block('label', {
+      template: labelTemplate,
+      data: {
+        forAttr: signupFields[key as keyof typeof signupFields],
+        labelClass: block('label'),
+      },
+      children: [input, pattern],
+    });
+
+    fields.push(lable);
+  }
+
+  fields.push(signUpBtn);
+
+  const siginupForm = new Block('form', {
+    template: formTemplate,
+    data: {
+      class: block('wrapper'),
+    },
+    children: fields,
+    events: [
+      {
+        eventName: 'submit',
+        callback: (e: Event): void => {
+          e.preventDefault();
+          const data: { [x: string]: unknown } = {};
+          for (const key in signupFormSchema) {
+            const el = (e.target as HTMLFormElement).elements[
+              key as keyof HTMLFormControlsCollection
+            ];
+
+            data[key] = (el as unknown as HTMLInputElement).value;
+            validateInput({
+              target: el as HTMLElement,
+              rule: signupFormSchema[key].pattern,
+            });
+          }
+
+          console.log(data);
+        },
+      },
+    ],
+  }).getContent();
 
   const signuoAside = document.createElement('aside');
-  signuoAside.className = bemElem('aside');
+  signuoAside.className = block('aside');
   const isaccount = document.createElement('span');
   isaccount.textContent = words.IS_ACCOUNT;
   const singinLink = textLink({ href: routes.login(), text: words.SIGN_IN });
-  singinLink.className = bemElem('signin-link');
+  singinLink.className = block('signinLink');
   signuoAside.appendChild(isaccount);
   signuoAside.appendChild(singinLink);
 

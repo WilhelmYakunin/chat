@@ -1,74 +1,168 @@
-import render from '../../reuseable/render';
-import createForm from '../../reuseable/form';
-import textInput from '../../reuseable/textInput';
-import label from '../../reuseable/labelTextInput';
-import btn from '../../reuseable/button';
-import checkbox from '../../reuseable/checkbox';
-import textLink from '../../reuseable/textLink';
+import render from '../../components/render';
+import label from '../../components/labelTextInput';
+import checkbox from '../../components/checkbox';
+import textLink from '../../components/textLink';
 
 import { words } from '../../langs/index';
 import { routes } from '../../routes';
 
-import './style.scss';
+import { loginFields } from './model';
 
-const bemElem = (bem: string) => 'login-form' + '__' + bem;
+import { validateInput } from '../../components/helpers/validate';
+import { loginFormSchema } from './service';
+
+import './style.scss';
+import bem from 'bem-ts';
+import Block from '../../components/block';
+import {
+  formTemplate,
+  headerTmeplate,
+  inputTemplate,
+  labelTemplate,
+  patternTemplate,
+  submitBtnTemplate,
+} from './templates';
+
+const block = bem('login');
 
 const loginPage = () => {
-  const header = document.createElement('h2');
-  header.textContent = words.SIGN_IN;
-  header.className = bemElem('header');
-
-  const loginLabel = label({ forAttr: 'login' });
-  const loginInput = textInput({
-    name: 'login',
-    type: 'text',
-    placeHolder: words.LOGIN_PLACEHOLDER,
+  const header = new Block('h2', {
+    template: headerTmeplate,
+    data: { text: words.SIGN_IN, class: block('header') },
   });
-  loginInput.className = bemElem('input');
-  loginInput.tabIndex = 1;
-  loginLabel.appendChild(loginInput);
 
-  const passwordLable = label({ forAttr: 'password' });
-  const passwordInput = textInput({
-    name: 'password',
-    type: 'password',
-    placeHolder: words.PASSWORD_PLACEHOLDER,
+  const loginINput = new Block('input', {
+    template: inputTemplate,
+    data: {
+      name: loginFields.login,
+      class: block('input'),
+      placeholder: words.LOGIN_PLACEHOLDER,
+      tabIndex: 1,
+    },
+    events: [
+      {
+        eventName: 'blur',
+        callback: (e: Event) =>
+          validateInput({
+            target: e.target as HTMLElement,
+            rule: loginFormSchema.login.pattern,
+          }),
+      },
+    ],
   });
-  passwordInput.className = bemElem('input');
-  passwordLable.appendChild(passwordInput);
 
-  const remeberLabel = label({ forAttr: 'remember' });
-  remeberLabel.className = bemElem('remembre-label');
+  const loginPattern = new Block('div', {
+    template: patternTemplate,
+    data: {
+      class: block('pattern'),
+      text: words.VALIDATION.PATTERTNS.LOGIN,
+    },
+  });
+
+  const loginLabel = new Block('label', {
+    template: labelTemplate,
+    data: {
+      forAttr: loginFields.login,
+      labelClass: block('label'),
+    },
+    children: [loginINput, loginPattern],
+  });
+
+  const passwordInput = new Block('input', {
+    template: inputTemplate,
+    data: {
+      name: loginFields.password,
+      class: block('input'),
+      placeholder: words.PASSWORD_PLACEHOLDER,
+      tabIndex: 1,
+    },
+    events: [
+      {
+        eventName: 'blur',
+        callback: (e: Event) =>
+          validateInput({
+            target: e.target as HTMLElement,
+            rule: loginFormSchema.password.pattern,
+          }),
+      },
+    ],
+  });
+
+  const passwordPattern = new Block('div', {
+    template: patternTemplate,
+    data: {
+      class: block('pattern'),
+      text: words.VALIDATION.PATTERTNS.LOGIN,
+    },
+  });
+
+  const passwordLable = new Block('label', {
+    template: labelTemplate,
+    data: {
+      forAttr: loginFields.password,
+      labelClass: block('label'),
+    },
+    children: [passwordInput, passwordPattern],
+  });
+
+  const remeberLabel = label({ forAttr: loginFields.remember });
+  remeberLabel.className = block('rememberLabel');
   remeberLabel.textContent = words.REMEMBER;
-  const remebreInput = checkbox({ name: 'remember', id: 'remember' });
-  remebreInput.className = bemElem('remebre-input');
+  const remebreInput = checkbox({
+    name: loginFields.remember,
+    id: loginFields.remember,
+  });
+  remebreInput.className = block('inputRemember');
   const rememebrWrapper = document.createElement('div');
-  rememebrWrapper.className = bemElem('remember');
+  rememebrWrapper.className = block('rememberWrapper');
   rememebrWrapper.appendChild(remebreInput);
   rememebrWrapper.appendChild(remeberLabel);
-
   const remeberContainer = document.createElement('div');
   const forgotLink = textLink({ href: routes.forgot(), text: words.FORGOT });
-  forgotLink.className = bemElem('forgot-link');
+  forgotLink.className = block('forgotLink');
 
   remeberContainer.appendChild(rememebrWrapper);
   remeberContainer.appendChild(forgotLink);
-  remeberContainer.className = bemElem('remember-container');
+  remeberContainer.className = block('rememberContainer');
 
-  const signInBtn = btn({ value: words.SIGN_IN, type: 'button' });
-  signInBtn.className = bemElem('auth-button');
-
-  const loginForm = createForm({
-    chidlren: [header, loginLabel, passwordLable, remeberContainer, signInBtn],
+  const signInBtn = new Block('input', {
+    template: submitBtnTemplate,
+    data: { type: 'submit', class: block('authButton'), value: words.SIGN_IN },
   });
-  loginForm.className = bemElem('wrapper');
+
+  const loginForm = new Block('form', {
+    template: formTemplate,
+    data: { class: block('wrapper') },
+    children: [header, loginLabel, passwordLable, signInBtn],
+    events: [
+      {
+        eventName: 'submit',
+        callback: (e: Event): void => {
+          e.preventDefault();
+          const data: { [x: string]: unknown } = {};
+          for (const key in loginFormSchema) {
+            const el = (e.target as HTMLFormElement).elements[
+              key as keyof HTMLFormControlsCollection
+            ];
+            data[key] = (el as unknown as HTMLInputElement).value;
+            validateInput({
+              target: el as HTMLElement,
+              rule: loginFormSchema[key].pattern,
+            });
+          }
+
+          console.log(data);
+        },
+      },
+    ],
+  }).getContent();
 
   const loginAside = document.createElement('aside');
-  loginAside.className = bemElem('aside');
+  loginAside.className = block('aside');
   const noaccount = document.createElement('span');
   noaccount.textContent = words.NO_ACCOUNT;
   const singupLink = textLink({ href: routes.singup(), text: words.SIGN_UP });
-  singupLink.className = bemElem('signup-link');
+  singupLink.className = block('signupLink');
   loginAside.appendChild(noaccount);
   loginAside.appendChild(singupLink);
 

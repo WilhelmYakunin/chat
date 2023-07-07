@@ -2,13 +2,14 @@
 
 # messenger
 
-The site core deployed [here](https://wechatmessenger.netlify.app/)<br>
+The site core deployed [here](https://deploy--shiny-gecko-fbdfaa.netlify.app/)<br>
 
 <ul>
-  <li>[Sign up](https://wechatmessenger.netlify.app/signup)</li>
-  <li>[Log in](https://wechatmessenger.netlify.app/login)</li>
-  <li>[404](https://wechatmessenger.netlify.app/404)</li>
+  <li>[Sign up](https://deploy--shiny-gecko-fbdfaa.netlify.app/signup)</li>
+  <li>[Log in](https://deploy--shiny-gecko-fbdfaa.netlify.app/login)</li>
+  <li>[404](https://deploy--shiny-gecko-fbdfaa.netlify.app/404)</li>
  </ul>
+ 
  
  If you see a 5** page () please report me a bug. I really appreciate your feedbackk forward: https://t.me/wilhelm_yakunin
  

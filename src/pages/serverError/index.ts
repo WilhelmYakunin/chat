@@ -1,28 +1,13 @@
-import render from '../../reuseable/render';
-import textLink from '../../reuseable/textLink';
+import render from '../../components/render';
+import Block from '../../components/block';
 import './style.scss';
 
-import { words } from '../../langs/index';
+import { template } from './template';
 
-const bemElem = (bem: string) => 'server-error' + '__' + bem;
+const serverErrorPage = () => {
+  const block = new Block('div', { template });
 
-const notFoundPage = () => {
-  const spanNum = document.createElement('span');
-  spanNum.textContent = words.SERVER_ERROR_NUMBER;
-
-  const info = document.createElement('span');
-  info.textContent = words.SERVER_ERROR;
-
-  const back = textLink({ href: document.referrer, text: words.TO_HOME });
-  back.className = bemElem('back-navigate');
-
-  const container = document.createElement('div');
-  container.appendChild(spanNum);
-  container.appendChild(info);
-  container.appendChild(back);
-  container.className = bemElem('container');
-
-  return render(container);
+  return render(block.getContent());
 };
 
-export default notFoundPage;
+export default serverErrorPage;

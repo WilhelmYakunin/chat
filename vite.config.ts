@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import postcssNesting from 'postcss-nesting';
 import { env } from 'process';
+import dts from 'vite-plugin-dts';
 
 import { config } from 'dotenv';
 config();
@@ -14,6 +15,7 @@ export default defineConfig({
   preview: {
     port: port,
   },
+  plugins: [dts()],
   css: {
     postcss: {
       plugins: [postcssNesting],

@@ -1,28 +1,13 @@
-import render from '../../reuseable/render';
-import textLink from '../../reuseable/textLink';
+import Block from '../../components/block';
+import render from '../../components/render';
+import { template } from './template';
+
 import './style.scss';
 
-import { words } from '../../langs/index';
-
-const bemElem = (bem: string) => 'notfound' + '__' + bem;
-
 const notFoundPage = () => {
-  const spanNum = document.createElement('span');
-  spanNum.textContent = words.NOT_FOUND_NUMBER;
+  const block = new Block('div', { template });
 
-  const info = document.createElement('span');
-  info.textContent = words.NOT_FOUND;
-
-  const back = textLink({ href: document.referrer, text: words.TO_HOME });
-  back.className = bemElem('back-navigate');
-
-  const container = document.createElement('div');
-  container.appendChild(spanNum);
-  container.appendChild(info);
-  container.appendChild(back);
-  container.className = bemElem('container');
-
-  return render(container);
+  return render(block.getContent());
 };
 
 export default notFoundPage;
