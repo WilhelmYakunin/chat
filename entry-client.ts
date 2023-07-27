@@ -1,31 +1,16 @@
 import loginPage from './src/pages/login';
 import signupPage from './src/pages/signup';
-import mainPage from './src/pages/main';
+import messengerPage from './src/pages/main/messenger';
 import userPage from './src/pages/user';
-import notFoundPage from './src/pages/notFound.ts';
-import serverError from './src/pages/serverError';
-import { routes } from './src/routes';
+import { routes } from './src/router/routes';
+import Router from './src/router/router';
 
-const { pathname } = window.location;
-const { main, profile, login, singup } = routes;
+const { login, singup, messenger, settings } = routes;
+const router = new Router('app');
 
-try {
-  switch (pathname) {
-    case main():
-      mainPage();
-      break;
-    case profile():
-      userPage();
-      break;
-    case login():
-      loginPage();
-      break;
-    case singup():
-      signupPage();
-      break;
-    default:
-      notFoundPage();
-  }
-} catch (err) {
-  serverError();
-}
+router
+  .use(login(), loginPage())
+  .use(messenger(), messengerPage())
+  .use(singup(), signupPage())
+  .use(settings(), userPage())
+  .start();

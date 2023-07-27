@@ -8,36 +8,46 @@ $foo-inputwidth: 250px;
         min-width: $foo-inputwidth;
         display: flex;
         flex-direction: column;
-        gap: 30px;
     }
 
     &__header {
-        margin: 0;
         color: $foo-main-text;
     }
 
     &__label {
-        padding: 0 10px;
+        height: 80px;
+        max-width: $foo-inputwidth;
         display: flex;
-        flex-direction: column;     
+        flex-direction: column;
+        align-items: center;
+        align-self: center;
+        justify-content: space-around;
     }
-     
+        
     &__input {
-        width: 85%;
-        color: $foo-main-text;;
-        padding: 10px 20px;
+        min-width: $foo-inputwidth;
+        padding: 10px;
+        color: $foo-main-text;
         border-radius: 20px;
-        border-width: 0;
         background-color: $foo-main-background;
         outline: 0;
-        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
-
-        &::placeholder {
-            color: $foo-main-text;;
-        }
+        border-width: 0;
+        box-shadow: inset 0 -1px 1px gray, inset 1px 1px 1px #000;
 
         &--invalid {
-            border: 1px solid $foo-fiature-color;
+            border-width: 1px;
+            border-color: $foo-fiature-color;
+            outline: 0;
+            box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
+        }
+    }
+
+    &__pattern {
+        font-size: 12px;
+        color: transparent;
+
+        &--shown {
+            color: red;
         }
     }
 
@@ -104,11 +114,11 @@ $foo-inputwidth: 250px;
         border-color: $foo-fiature-color;
         background-color: $foo-fiature-color;
         border-radius: 20px;
+        border: 0;
     }
 
     &__aside {
-        position: fixed;
-        bottom: $foo-bottom-aside;
+        margin-top: 20px;
         display: flex;
         gap: $foo-bottom-aside;
         color: $foo-main-text;

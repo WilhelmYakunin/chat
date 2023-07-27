@@ -6,10 +6,9 @@ $foo-inputwidth: 260px;
     &__wrapper {
         position: relative;
         min-width: $foo-inputwidth;
-        min-height: 380px;
         display: flex;
         flex-direction: column;
-        gap: 30px;
+        padding: 20px;
     }
 
     &__header {
@@ -17,11 +16,13 @@ $foo-inputwidth: 260px;
     }
 
     &__label {
+        height: 80px;
         max-width: $foo-inputwidth;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        align-self: center;
+        justify-content: space-around;
     }
         
     &__input {
@@ -43,13 +44,10 @@ $foo-inputwidth: 260px;
     }
 
     &__pattern {
+        font-size: 12px;
         color: transparent;
 
         &--shown {
-            margin: 0;
-            padding: 0;
-            display: inline;
-            font-size: 12px;
             color: red;
         }
     }
@@ -121,11 +119,11 @@ $foo-inputwidth: 260px;
         border-color: $foo-fiature-color;
         background-color: $foo-fiature-color;
         border-radius: 20px;
+        border: 0;
     }
 
     &__aside {
-        position: fixed;
-        bottom: 40px;
+        margin-bottom: 40px;
         display: flex;
         gap: $foo-bottom-aside;
         color: $foo-main-text;

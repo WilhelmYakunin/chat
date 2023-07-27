@@ -1,10 +1,5 @@
-import render from '../../components/render';
-import label from '../../components/labelTextInput';
-import checkbox from '../../components/checkbox';
-import textLink from '../../components/textLink';
-
 import { words, PATTERTNS, PLACEHOLDER } from '../../langs/index';
-import { routes } from '../../routes';
+import { routes } from '../../router/routes';
 
 import { signupFields } from './model';
 import { validateInput } from '../../components/helpers/validate';
@@ -29,32 +24,6 @@ const siginupPage = () => {
   const header = new Block('h2', {
     template: headerTmeplate,
     data: { text: words.SIGN_UP, class: block('header') },
-  });
-
-  const policyLabel = label({ forAttr: signupFields.policy });
-  policyLabel.className = block('policyLabel');
-  policyLabel.textContent = words.CONFIRM_POLICY;
-  const policyInput = checkbox({
-    name: signupFields.policy,
-    id: signupFields.policy,
-  });
-  policyInput.className = block('policyInput');
-  const policyLink = textLink({ href: routes.policy(), text: words.PRIVACY });
-  policyLink.className = block('policyLink');
-
-  const policyWrapper = document.createElement('div');
-  policyWrapper.className = block('policy');
-  policyWrapper.appendChild(policyInput);
-  policyWrapper.appendChild(policyLabel);
-  policyWrapper.appendChild(policyLink);
-
-  const signUpBtn = new Block('input', {
-    template: submitBtnTemplate,
-    data: {
-      type: 'submit',
-      class: block('authButton'),
-      value: words.APPLY_CHANGES,
-    },
   });
 
   const fields = [header];
@@ -101,6 +70,15 @@ const siginupPage = () => {
     fields.push(lable);
   }
 
+  const signUpBtn = new Block('input', {
+    template: submitBtnTemplate,
+    data: {
+      type: 'submit',
+      class: block('authButton'),
+      value: words.SIGN_UP,
+    },
+  });
+
   fields.push(signUpBtn);
 
   const siginupForm = new Block('form', {
@@ -131,22 +109,27 @@ const siginupPage = () => {
         },
       },
     ],
-  }).getContent();
+  });
 
-  const signuoAside = document.createElement('aside');
-  signuoAside.className = block('aside');
-  const isaccount = document.createElement('span');
-  isaccount.textContent = words.IS_ACCOUNT;
-  const singinLink = textLink({ href: routes.login(), text: words.SIGN_IN });
-  singinLink.className = block('signinLink');
-  signuoAside.appendChild(isaccount);
-  signuoAside.appendChild(singinLink);
+  const signuoAside = new Block('aside', {
+    template: `<aside class={{class}}>
+      <span>{{{text}}}</span>
+      <a class={{linkclass}} href={{linkhref}}>{{{textlink}}}</a>
+      </aside>`,
+    data: {
+      class: block('aside'),
+      text: words.IS_ACCOUNT,
+      linkclass: block('signinLink'),
+      textlink: words.SIGN_IN,
+      linkhref: routes.login(),
+    },
+  });
 
-  const loginContainer = document.createElement('div');
-  loginContainer.appendChild(siginupForm);
-  loginContainer.appendChild(signuoAside);
+  const loginContainer = new Block('div', {
+    children: [siginupForm, signuoAside],
+  });
 
-  return render(loginContainer);
+  return loginContainer;
 };
 
 export default siginupPage;

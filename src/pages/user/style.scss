@@ -1,40 +1,17 @@
 @import '../../../global.scss';
 
+$foo-inputwidth: 250px;
+
 .user {
     &__wrapper {
-        padding: 20px;
+        padding: 40px;
         display: flex;
         flex-direction: column;
-        gap: 30px;
     }
 
     &__headerContainer {
         display: flex;
         align-items: center;
-        gap: 10px;
-    }
-
-    &__header {
-        margin: 0;
-        color: $foo-main-text;
-    }
-
-    &__label {
-        padding: 0 10px;
-        display: flex;
-        flex-direction: column;     
-    }
-
-    &__pattern {
-       color: transparent;
-
-        &--shown {
-            margin: 0;
-            padding: 0;
-            display: inline;
-            font-size: 12px;
-            color: red;
-        }
     }
 
     &__avatar > img {
@@ -45,34 +22,35 @@
         box-shadow: -1px -1px 1px gray, 1px 1px 1px #000;
     }
 
-    &__usernameContainer {
-        max-width: 400px;
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 10px;
-        
-        :last-child {
-            flex-basis: 95%;
-        }
-    }
-      
-    &__input {
-        width: 90%;
-        padding: 10px;
-        background-color: transparent;
+    &__header {
         color: $foo-main-text;
-        border-width: 0;
-        border-radius: 20px;
-        outline: 0;
-        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
+    }
 
-        &::placeholder {
-            color: $foo-main-text;;
-        }
+    &__label {
+        min-height: 80px;
+        max-width: $foo-inputwidth;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        align-self: center;
+        justify-content: space-around;
+    }
+        
+    &__input {
+        min-width: $foo-inputwidth;
+        padding: 10px;
+        color: $foo-main-text;
+        border-radius: 20px;
+        background-color: $foo-main-background;
+        outline: 0;
+        border-width: 0;
+        box-shadow: inset 0 -1px 1px gray, inset 1px 1px 1px #000;
 
         &--invalid {
-            border: 1px solid $foo-fiature-color;
+            border-width: 1px;
+            border-color: $foo-fiature-color;
+            outline: 0;
+            box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
         }
 
         &ChangeAvatar {
@@ -91,6 +69,15 @@
             top: 0; 
             left: 0;
             opacity: 0;
+        }
+    }
+
+    &__pattern {
+        font-size: 12px;
+        color: transparent;
+
+        &--shown {
+            color: red;
         }
     }
 
@@ -145,11 +132,15 @@
     &__applyChangesButton {
         cursor: pointer;
         box-sizing: content-box;
+        max-width: $foo-inputwidth;
+        width: 100%;
         padding: 10px;
+        align-self: center;
         color: $foo-main-text;
         border-color: $foo-fiature-color;
         background-color: $foo-fiature-color;
         border-radius: 20px;
+        border: 0;
     }
 
     &__backNavigate {

@@ -1,13 +1,6 @@
-import render from '../../components/render';
-import profileIcon from '../../components/profile';
-import textInput from '../../components/textInput';
-import label from '../../components/labelTextInput';
-import checkbox from '../../components/checkbox';
-import textLink from '../../components/textLink';
 import { getImageUrl } from '../../components/helpers';
 
 import { words, PATTERTNS, PLACEHOLDER } from '../../langs/index';
-import { routes } from '../../routes';
 
 import { userInfoFields } from './model';
 import { validateInput } from '../../components/helpers/validate';
@@ -27,59 +20,44 @@ import {
 const block = bem('user');
 
 const userPage = () => {
-  const avatar = profileIcon({
-    iconLink: getImageUrl('/pictures/test_ico.png'),
+  const avatar = new Block('div', {
+    template: `<div class={{class}}>
+    <img alt='user depiction' src={{iconlink}}></img>
+    </div>`,
+    data: {
+      class: block('avatar'),
+      iconlink: getImageUrl('/pictures/test_ico.png'),
+    },
   });
-  avatar.className = block('avatar');
 
-  const changeAvatarLabel = label({ forAttr: 'avatar' });
-  const changeAvatarInput = textInput({
-    name: 'avatar',
-    type: 'file',
+  const changeAvatarLabel = new Block('label', {
+    template: `<label for={{forAttr}} class={{class}}>
+    {{{label}}}
+      <input class={{inutclass}} type='file' accept='imgae/png' multiple name='avatar'></input> 
+    </label>`,
+    data: {
+      forAttr: 'avatar',
+      label: words.CHANGE_AVATAR,
+      class: block('inputChangeAvatar'),
+    },
   });
-  changeAvatarLabel.textContent = words.CHANGE_AVATAR;
-  changeAvatarInput.multiple = true;
-  changeAvatarInput.accept = 'imgae/png';
-  changeAvatarLabel.className = block('inputChangeAvatar');
-  changeAvatarLabel.appendChild(avatar);
-  changeAvatarLabel.appendChild(changeAvatarInput);
 
-  const header = document.createElement('h2');
-  header.textContent = words.PROFILE;
-  header.className = block('header');
-
-  const changeAvatar = document.createElement('div');
-  changeAvatar.className = block('changeAvatarWrapper');
-  changeAvatar.appendChild(header);
-  changeAvatar.appendChild(changeAvatarLabel);
-
-  const headerContainer = document.createElement('div');
-  headerContainer.className = block('headerContainer');
-  headerContainer.appendChild(avatar);
-  headerContainer.appendChild(changeAvatar);
-
-  const policyLabel = label({ forAttr: 'policy' });
-  policyLabel.className = block('policyLabel');
-  policyLabel.textContent = words.CONFIRM_POLICY;
-  const policyInput = checkbox({
-    name: 'policy',
-    id: 'policy',
+  const header = new Block('h2', {
+    template: '<h2 class={{class}}>{{text}}</h2>',
+    data: { class: block('header'), text: words.PROFILE },
   });
-  policyInput.className = block('policyInput');
-  const policyLink = textLink({ href: routes.policy(), text: words.PRIVACY });
-  policyLink.className = block('policyLink');
 
-  const policyWrapper = document.createElement('div');
-  policyWrapper.className = block('policy');
-  policyWrapper.appendChild(policyInput);
-  policyWrapper.appendChild(policyLabel);
-  policyWrapper.appendChild(policyLink);
+  const changeAvatar = new Block('div', {
+    template: '<div class={{class}}></div>',
+    data: { class: block('changeAvatarWrapper') },
+    children: [header, changeAvatarLabel],
+  });
 
-  const back = textLink({ href: document.referrer, text: words.TO_HOME });
-  back.className = block('backNavigate');
-
-  const container = document.createElement('div');
-  container.appendChild(back);
+  const headerContainer = new Block('div', {
+    template: '<div class={{class}}></div>',
+    data: { class: block('headerContainer') },
+    children: [avatar, changeAvatar],
+  });
 
   const fields = [];
   for (const key in userInfoFields) {
@@ -158,13 +136,13 @@ const userPage = () => {
         },
       },
     ],
-  }).getContent();
+  });
 
-  const userProfileContainer = document.createElement('div');
-  userProfileContainer.appendChild(headerContainer);
-  userProfileContainer.appendChild(userForm);
+  const userProfileContainer = new Block('div', {
+    children: [headerContainer, userForm],
+  });
 
-  return render(userProfileContainer);
+  return userProfileContainer;
 };
 
 export default userPage;

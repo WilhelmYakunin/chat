@@ -2,6 +2,7 @@ import { v4 as uuid } from 'uuid';
 import EventBus from './eventBus';
 import { compile } from 'handlebars';
 export default class Block {
+  [x: string]: unknown;
   static EVENTS = {
     INIT: 'init',
     FLOW_CDM: 'flow:component-did-mount',

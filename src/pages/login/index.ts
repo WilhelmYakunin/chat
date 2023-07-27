@@ -1,10 +1,5 @@
-import render from '../../components/render';
-import label from '../../components/labelTextInput';
-import checkbox from '../../components/checkbox';
-import textLink from '../../components/textLink';
-
 import { words } from '../../langs/index';
-import { routes } from '../../routes';
+import { routes } from '../../router/routes';
 
 import { loginFields } from './model';
 
@@ -25,7 +20,7 @@ import {
 
 const block = bem('login');
 
-const loginPage = () => {
+const loginPage = (): Block => {
   const header = new Block('h2', {
     template: headerTmeplate,
     data: { text: words.SIGN_IN, class: block('header') },
@@ -105,26 +100,6 @@ const loginPage = () => {
     children: [passwordInput, passwordPattern],
   });
 
-  const remeberLabel = label({ forAttr: loginFields.remember });
-  remeberLabel.className = block('rememberLabel');
-  remeberLabel.textContent = words.REMEMBER;
-  const remebreInput = checkbox({
-    name: loginFields.remember,
-    id: loginFields.remember,
-  });
-  remebreInput.className = block('inputRemember');
-  const rememebrWrapper = document.createElement('div');
-  rememebrWrapper.className = block('rememberWrapper');
-  rememebrWrapper.appendChild(remebreInput);
-  rememebrWrapper.appendChild(remeberLabel);
-  const remeberContainer = document.createElement('div');
-  const forgotLink = textLink({ href: routes.forgot(), text: words.FORGOT });
-  forgotLink.className = block('forgotLink');
-
-  remeberContainer.appendChild(rememebrWrapper);
-  remeberContainer.appendChild(forgotLink);
-  remeberContainer.className = block('rememberContainer');
-
   const signInBtn = new Block('input', {
     template: submitBtnTemplate,
     data: { type: 'submit', class: block('authButton'), value: words.SIGN_IN },
@@ -155,22 +130,33 @@ const loginPage = () => {
         },
       },
     ],
-  }).getContent();
+  });
 
-  const loginAside = document.createElement('aside');
-  loginAside.className = block('aside');
-  const noaccount = document.createElement('span');
-  noaccount.textContent = words.NO_ACCOUNT;
-  const singupLink = textLink({ href: routes.singup(), text: words.SIGN_UP });
-  singupLink.className = block('signupLink');
-  loginAside.appendChild(noaccount);
-  loginAside.appendChild(singupLink);
+  const signupspan = new Block('span', {
+    template: '<span>{{text}}</span>',
+    data: { text: words.NO_ACCOUNT },
+  });
 
-  const loginContainer = document.createElement('div');
-  loginContainer.appendChild(loginForm);
-  loginContainer.appendChild(loginAside);
+  const signupLink = new Block('a', {
+    template: '<a class={{linkclass}} href={{link}}>{{{textlink}}}</a>',
+    data: {
+      linkclass: block('signupLink'),
+      link: routes.singup(),
+      textlink: words.SIGN_UP,
+    },
+  });
 
-  return render(loginContainer);
+  const signupaside = new Block('aside', {
+    template: '<aside class={{class}}></aside>',
+    data: { class: block('aside') },
+    children: [signupspan, signupLink],
+  });
+
+  const loginContainer = new Block('div', {
+    children: [loginForm, signupaside],
+  });
+
+  return loginContainer;
 };
 
 export default loginPage;
