@@ -1,15 +1,15 @@
-import Block from '../components/block';
+import Block from '../components/block/block';
 import notFoundPage from '../pages/notFound';
 import serverErrorPage from '../pages/serverError';
 import { routes } from './routes';
 import Route from './route';
 
-export default class Router {
+class Router {
   public routes: Route[] = [];
   public history: History = window.history;
   private _currentRoute: null | Route = null;
-  private _rootQuery = routes.login();
   static __instance: Router;
+  private _rootQuery!: string;
 
   constructor(rootQuery: string) {
     if (Router.__instance) {
@@ -24,11 +24,12 @@ export default class Router {
     Router.__instance = this;
   }
 
-  use(pathname: string, block: Block) {
+  use(pathname: string, block: typeof Block) {
     const route: Route = new Route(pathname, block, {
       rootQuery: this._rootQuery,
     });
     this.routes.push(route);
+
     return this;
   }
 
@@ -52,15 +53,13 @@ export default class Router {
         this._currentRoute = route;
         route.render();
       } else {
-        const route = notFoundPage();
-        this._currentRoute = new Route(pathname, route, {
+        this._currentRoute = new Route(pathname, notFoundPage, {
           rootQuery: this._rootQuery,
         });
         this._currentRoute.render();
       }
     } catch {
-      const route = serverErrorPage();
-      this._currentRoute = new Route(pathname, route, {
+      this._currentRoute = new Route(pathname, serverErrorPage, {
         rootQuery: this._rootQuery,
       });
       this._currentRoute.render();
@@ -84,3 +83,7 @@ export default class Router {
     return this.routes.find((route) => route.match(pathname));
   }
 }
+
+const router = new Router('app');
+
+export default router;

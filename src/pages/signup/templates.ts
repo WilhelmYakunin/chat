@@ -4,7 +4,7 @@ export const labelTemplate =
   '<label for={{forAttr}} class={{labelClass}}></label>';
 
 export const inputTemplate =
-  '<input name={{name}} class={{class}} placeholder={{{placeholder}}}></input>';
+  '<input type={{type}} name={{name}} class={{class}} placeholder={{{placeholder}}}></input>';
 
 export const submitBtnTemplate =
   '<input type={{type}} class={{class}} value={{{value}}}></input>';

@@ -54,6 +54,15 @@
         color: $foo-main-text;
     }
 
+    &__logoutButton {
+        cursor: pointer;
+        margin-left: auto;
+        padding: 5px 10px;
+        color: $foo-main-text;
+        background-color: $foo-fiature-color;
+        box-shadow: 0px 0px 0px gray, 3px 3px 2px #000;
+    }
+
     &__addTree {
         cursor: pointer;
         height: 30px;

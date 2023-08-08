@@ -1,3 +1,6 @@
+import { Http2ServerResponse, IncomingHttpHeaders } from 'http2';
+import { User } from '../pages/settings/model';
+
 const METHODS = {
   GET: 'GET',
   POST: 'POST',
@@ -20,9 +23,8 @@ const queryStringify = (data: XMLHttpRequestBodyInit) => {
 
 const request = (
   url: string,
-  options: reqOptions,
-  timeout = 5000
-): Promise<XMLHttpRequest> => {
+  options: reqOptions
+): Promise<XMLHttpRequest | User> => {
   const { method, data } = options;
 
   return new Promise((resolve, reject) => {
@@ -31,23 +33,43 @@ const request = (
       return;
     }
 
-    const xhr = new XMLHttpRequest();
+    const xhr = new window.XMLHttpRequest();
     const isGet = method === METHODS.GET;
 
-    xhr.open(method, isGet && !!data ? `${url}${queryStringify(data)}` : url);
+    xhr.withCredentials = true;
 
-    // Object.keys(headers).forEach((key) =>
-    //   xhr.setRequestHeader(key, headers[key])
-    // );
+    xhr.open(
+      method,
+      isGet && !!data ? `${url}${queryStringify(data)}` : url,
+      true
+    );
+
+    const headers = options.headers;
+    if (headers) {
+      Object.entries(headers).forEach(([header, value]: [string, string]) =>
+        xhr.setRequestHeader(header, value)
+      );
+    }
 
     xhr.onload = function () {
+      let resp: Http2ServerResponse = '';
+
+      if (xhr.response === 'OK') {
+        resp = { status: 'OK' };
+      } else {
+        resp = JSON.parse(xhr.response);
+      }
+
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(resp);
+      } else {
+        reject(resp);
+      }
+
       resolve(xhr);
     };
 
-    xhr.onabort = reject;
-    xhr.onerror = reject;
-
-    xhr.timeout = timeout;
+    if (options.timeout) xhr.timeout = options.timeout;
     xhr.ontimeout = reject;
 
     if (isGet || !data) {
@@ -55,17 +77,20 @@ const request = (
     } else {
       xhr.send(data);
     }
+
+    xhr.onabort = reject;
+    xhr.onerror = reject;
   });
 };
 
 export const get = (url: string, options: reqOptions) =>
-  request(url, { ...options, method: METHODS.GET }, options.timeout);
+  request(url, { ...options, method: METHODS.GET });
 export const post = (url: string, options: reqOptions) =>
-  request(url, { ...options, method: METHODS.POST }, options.timeout);
+  request(url, { ...options, method: METHODS.POST });
 export const put = (url: string, options: reqOptions) =>
-  request(url, { ...options, method: METHODS.PUT }, options.timeout);
+  request(url, { ...options, method: METHODS.PUT });
 export const delet = (url: string, options: reqOptions) =>
-  request(url, { ...options, method: METHODS.DELET }, options.timeout);
+  request(url, { ...options, method: METHODS.DELET });
 
 export const fetchWithRetry = (
   url: string,
@@ -106,7 +131,7 @@ interface IncomingHttpHeaders {
   'content-length'?: string | undefined;
   'content-location'?: string | undefined;
   'content-range'?: string | undefined;
-  'content-type'?: string | undefined;
+  'Content-type'?: string | undefined;
   cookie?: string | undefined;
   date?: string | undefined;
   etag?: string | undefined;
@@ -148,9 +173,9 @@ interface IncomingHttpHeaders {
 }
 
 type reqOptions = {
-  headers: IncomingHttpHeaders;
-  timeout: number;
-  method: string;
-  data: XMLHttpRequestBodyInit;
+  headers?: IncomingHttpHeaders;
+  timeout?: number;
+  method?: string;
+  data?: XMLHttpRequestBodyInit;
   tries: number;
 };

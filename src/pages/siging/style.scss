@@ -3,12 +3,15 @@
 $foo-inputwidth: 260px;
 
 .login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
     &__wrapper {
-        position: relative;
         min-width: $foo-inputwidth;
         display: flex;
         flex-direction: column;
-        padding: 20px;
     }
 
     &__header {
@@ -43,11 +46,11 @@ $foo-inputwidth: 260px;
         }
     }
 
-    &__pattern {
+    &__rule {
         font-size: 12px;
         color: transparent;
 
-        &--shown {
+        &--show {
             color: red;
         }
     }
@@ -123,7 +126,7 @@ $foo-inputwidth: 260px;
     }
 
     &__aside {
-        margin-bottom: 40px;
+        align-self: flex-start;
         display: flex;
         gap: $foo-bottom-aside;
         color: $foo-main-text;
@@ -131,7 +134,10 @@ $foo-inputwidth: 260px;
 
     &__signupLink {
         cursor: pointer;
+        font-size: 16px;
         text-decoration: none;
+        background-color: transparent;
+        border: 0;
         color: $foo-fiature-color;
     }
 } 

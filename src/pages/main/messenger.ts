@@ -3,17 +3,20 @@ import { getImageUrl } from '../../components/helpers';
 import { words } from '../../langs';
 import { messageFileds } from './model';
 import { validateInput } from '../../components/helpers/validate';
-import { messageFormSchema } from './service';
+import { logOut, messageFormSchema } from './service';
 
 import './style.scss';
 import bem from 'bem-ts';
-import Block from '../../components/block';
+import Block from '../../components/block/block';
 import {
   formTemplate,
   inputTemplate,
   labelTemplate,
   patternTemplate,
 } from './templates';
+import state from '../../state';
+import router from '../../router/router';
+import { routes } from '../../router/routes';
 
 const block = bem('chat');
 
@@ -42,10 +45,29 @@ const mainPage = (): Block => {
     data: { class: block('addTree') },
   });
 
+  const logoutBtn = new Block('button', {
+    template: "<button type='button' class={{class}}>{{{text}}}</button>",
+    data: { class: block('logoutButton'), text: words.LOGOUT },
+    events: [
+      {
+        eventName: 'click',
+        callback: async (e: Event) => {
+          e.preventDefault();
+          await logOut()
+            .then(() => {
+              // state.user.isLogged = false;
+              router.go(routes.login());
+            })
+            .catch((err) => alert(err.reason));
+        },
+      },
+    ],
+  });
+
   const addChatSection = new Block('div', {
     template: '<div class={{class}}></div>',
     data: { class: block('addChat') },
-    children: [avatar, chatsHeader, addChat],
+    children: [avatar, chatsHeader, logoutBtn, addChat],
   });
 
   const serch = new Block('input', {
@@ -102,6 +124,15 @@ const mainPage = (): Block => {
       alt: 'showAllChats',
       imglink: getImageUrl('/pictures/settings.svg'),
     },
+    events: [
+      {
+        eventName: 'click',
+        callback: (e: Event) => {
+          e.preventDefault();
+          router.go(routes.settings());
+        },
+      },
+    ],
   });
 
   const chatControls = new Block('div', {
@@ -191,7 +222,9 @@ const mainPage = (): Block => {
     children: [board, chatBox],
   });
 
-  return chatContainer;
+  const coverage = new Block('div', { children: [chatContainer] });
+
+  return coverage;
 };
 
 export default mainPage;

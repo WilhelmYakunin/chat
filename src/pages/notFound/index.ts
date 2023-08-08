@@ -1,8 +1,40 @@
-import Block from '../../components/block';
-import { template } from './template';
+import bem from 'bem-ts';
+import Block from '../../components/block/block';
+import { words } from '../../langs/index';
+import router from '../../router/router';
 
 import './style.scss';
+import Input from '../../components/input/input';
 
-const notFoundPage = (): Block => new Block('div', { template });
+const block = bem('notfound');
+export default class NotFoundPage extends Block {
+  goBack(e: Event) {
+    e.preventDefault();
+    router.back();
+  }
 
-export default notFoundPage;
+  render(): HTMLElement | DocumentFragment {
+    const goBackLink = new Input({
+      type: 'button',
+      classInput: block('backNavigate'),
+      value: words.TO_HOME,
+      events: [
+        {
+          eventName: 'click',
+          callback: this.goBack,
+        },
+      ],
+    });
+
+    this.children.goBack = goBackLink;
+    const ctx = this.children;
+
+    const temp = `<div class=${block('container')}>
+                    <span>404</span>
+                    <span>${words.NOT_FOUND}</span>
+                    <% this.goBack %>
+                  </div>`;
+
+    return this.compile(temp, ctx);
+  }
+}

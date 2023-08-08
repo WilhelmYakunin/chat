@@ -1,10 +1,14 @@
-@import '../../../global.scss'; 
+@import '../../../global.scss';
 
-$foo-inputwidth: 250px;
+$foo-inputwidth: 260px;
 
 .signup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
     &__wrapper {
-        position: relative;
         min-width: $foo-inputwidth;
         display: flex;
         flex-direction: column;
@@ -42,26 +46,31 @@ $foo-inputwidth: 250px;
         }
     }
 
-    &__pattern {
+    &__rule {
         font-size: 12px;
         color: transparent;
 
-        &--shown {
+        &--show {
             color: red;
         }
     }
 
-    &__policy {
+    &__rememberContainer {
         display: flex;
+        justify-content: space-between;
     }
 
-    &__remember {
+    &__rememberWrapper {
         display: flex;
         gap: 5px;
         color: $foo-main-text;
     }
 
-    &__policyInput {
+    &__rememberLabel {
+        cursor: pointer;
+    }
+
+    &__inputRemember {
         display: none;
 
         + label::before {
@@ -76,7 +85,7 @@ $foo-inputwidth: 250px;
             opacity: .6;
             transition: all .12s, border-color .08s;
         }
-        
+
         &:checked + label::before {
             width: 10px;
             top: -7px;
@@ -95,11 +104,10 @@ $foo-inputwidth: 250px;
             padding-left: 30px;
             color: $foo-main-text;
             user-select: none;
-          }
+        }
     }
 
-    &__policyLink {
-        margin-left: 5px;
+    &__forgotLink {
         cursor: pointer;
         text-decoration: none;
         color: $foo-fiature-color;
@@ -118,27 +126,18 @@ $foo-inputwidth: 250px;
     }
 
     &__aside {
-        margin-top: 20px;
+        align-self: flex-start;
         display: flex;
         gap: $foo-bottom-aside;
         color: $foo-main-text;
     }
 
-    &__signinLink {
+    &__signupLink {
         cursor: pointer;
+        font-size: 16px;
         text-decoration: none;
+        background-color: transparent;
+        border: 0;
         color: $foo-fiature-color;
-    }
-
-    &__pattern {
-        color: transparent;
-
-        &--shown {
-            margin: 0;
-            padding: 0;
-            display: inline;
-            font-size: 12px;
-            color: red;
-        }
     }
 } 
