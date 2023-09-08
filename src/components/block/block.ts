@@ -2,6 +2,8 @@ import { v4 as uuid } from 'uuid';
 import EventBus from './eventBus';
 import Templator from './templator';
 import { cloneDeep, merge } from 'lodash';
+import { controlsButtons } from '../../pages/messenger/model';
+import { Chat } from '../../state';
 // import router from '../../router/router';
 
 // export interface TProps {
@@ -20,8 +22,10 @@ import { cloneDeep, merge } from 'lodash';
 export type someObj = {
   [x: string]: unknown;
   children?: { [x: string]: Block };
-  errors?: { [x: string]: unknown };
+  errors?: { [x: string]: boolean };
   events?: { eventName: string; callback: (e: Event) => void }[];
+  modal?: { type?: string; inputValue?: string };
+  chatList?: Chat[];
 };
 
 class Block {

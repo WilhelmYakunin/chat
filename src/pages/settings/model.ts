@@ -19,3 +19,21 @@ export interface User {
   email: string;
   phone: string;
 }
+
+export interface UserDTO {
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+}
+
+export enum requiredFileds {
+  first_name,
+  second_name,
+  display_name,
+  login,
+  email,
+  phone,
+}

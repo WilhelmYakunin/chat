@@ -1,5 +1,6 @@
 import { signup } from '../../API/serverPaths';
 import { post } from '../../API';
+import { signupFields } from './model';
 
 export type ISignup = {
   first_name: string;
@@ -16,4 +17,18 @@ export const sigUp = async (userinfo: ISignup) => {
     data: JSON.stringify(userinfo),
     tries: 0,
   });
+};
+
+export const getProperType = (fieldName: string | boolean) => {
+  switch (fieldName) {
+    case signupFields.email:
+      return 'email';
+    case signupFields.phone:
+      return 'tel';
+    case signupFields.password_confirm:
+    case signupFields.password:
+      return 'password';
+    default:
+      return 'text';
+  }
 };

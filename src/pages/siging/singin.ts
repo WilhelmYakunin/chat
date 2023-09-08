@@ -15,7 +15,7 @@ import Block, { someObj } from '../../components/block/block';
 import router from '../../router/router';
 import store from '../../state';
 
-const block = bem('login');
+const block = bem('signin');
 export default class Login extends Block {
   constructor(props: someObj) {
     const errors: someObj = { login: false, password: false };
@@ -26,7 +26,7 @@ export default class Login extends Block {
       isLogging: store.getState().signin.isLogging,
       errors: { login: false, password: false },
     };
-    console.log(defaultValues);
+
     const propsAndChildren = { ...props, ...errors, ...defaultValues };
 
     super(propsAndChildren);
@@ -71,14 +71,14 @@ export default class Login extends Block {
       const isValid = Object.values(this.props.errors).every(
         (value) => value === true
       );
-      if (!isValid) return;
+      if (isValid) return;
     }
 
     this.setProps({ isLogging: true });
 
     await login(data as ILogin)
       .then(() => {
-        this.setProps({ user: { isLogging: false } });
+        this.setProps({ isLogging: false });
         router.go(routes.messenger());
       })
       .catch((err) => alert(err.reason))

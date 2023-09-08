@@ -7,11 +7,9 @@ export const login = ({
 }: {
   login: string;
   password: string;
-}): Promise<unknown> => {
-  const url = signin;
-  return post(url, {
+}): Promise<unknown> =>
+  post(signin, {
     headers: { 'Content-type': 'application/json; charset=UTF-8' },
     data: JSON.stringify({ login, password }),
     tries: 0,
   });
-};

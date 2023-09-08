@@ -2,7 +2,7 @@ import Header from '../../components/header/header';
 import Input from '../../components/input/input';
 import LabeledInput from '../../components/labeledInput/LabeledInput';
 import ErrMessage from '../../components/errMessage/ErrMessage';
-import { sigUp } from './service';
+import { getProperType, sigUp } from './service';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
 
@@ -14,6 +14,7 @@ import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
 import store from '../../state';
+import { requiredFileds } from '../settings/model';
 
 const block = bem('signup');
 
@@ -93,10 +94,27 @@ export default class Login extends Block {
     }, {});
 
     if (this.props.errors) {
-      const isValid = await Object.values(this.props.errors).every(
-        (value) => value === true
+      const requiredFiledsErrState = {
+        first_name: this.props.errors.first_name,
+        second_name: this.props.errors.second_name,
+        password: this.props.errors.password,
+        login: this.props.errors.login,
+        email: this.props.errors.email,
+        phone: this.props.errors.phone,
+      };
+
+      const message = Object.entries(requiredFiledsErrState).reduce(
+        (acc: string, [key, value]): string => {
+          if (value) acc += key + ' ';
+          return acc;
+        },
+        ' '
       );
-      if (!isValid) return;
+
+      const isValid = await Object.values(requiredFiledsErrState).every(
+        (value) => value === false
+      );
+      if (!isValid) return alert(words.FILL_ALL_REQUIRED + message);
     }
 
     this.setProps({ isSignup: true });
@@ -114,11 +132,12 @@ export default class Login extends Block {
 
   goSignin(e: Event) {
     e.preventDefault();
-    router.go(routes.login());
+    router.go(routes.sigin());
   }
 
   render() {
     const header = new Header({ class: block('header'), text: words.SIGN_UP });
+    const requiredFields = Object.keys(requiredFileds);
 
     const [
       first_name,
@@ -135,17 +154,14 @@ export default class Login extends Block {
           forAttr: words.inputs[fieldName].name,
           children: {
             input: new Input({
-              type:
-                fieldName ===
-                (signupFields.password || signupFields.password_confirm)
-                  ? 'password'
-                  : 'text',
+              type: getProperType(fieldName),
               name: words.inputs[fieldName].name,
               classInput: block('input'),
               tabindex: fieldName === signupFields.first_name && 1,
               placeholder: words.inputs[fieldName].placeholder,
               value: this.props[fieldName],
               disabled: this.props.isSignup,
+              required: requiredFields.includes(fieldName),
               events: [
                 {
                   eventName: 'blur',

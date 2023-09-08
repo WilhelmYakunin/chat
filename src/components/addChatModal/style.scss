@@ -1,0 +1,100 @@
+@import '../../../global.scss';
+
+.modal {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    overflow: auto;
+    background:  rgba(222, 211, 211, 0.5);
+    z-index: 9999;
+    min-height: 100%;
+    box-sizing: border-box;
+    transition: background-color 2s ease-in-out;
+
+    &__container {
+        width: 90%;
+        height: 250px;
+        border-radius: 25px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column; 
+        margin: auto;
+        background-color: $foo-main-background;
+
+        @media(min-width: 640px) {
+            width: 25%;
+        }
+    }
+
+    &__header {
+        padding: 15px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    &__close {
+        color: $foo-main-text;
+        background: transparent;
+        border: 0;
+        align-self: flex-start;
+
+        &:hover {
+            cursor: pointer;
+            color: $foo-fiature-color;
+        }
+    }
+
+    &__input {
+        margin: 20px; 
+        color: $foo-main-text;
+        padding: 10px 20px;
+        border-radius: 20px;
+        border-width: 0;
+        background-color: $foo-main-background;
+        outline: 0;
+        box-shadow: inset 0 -1px 3px gray, inset 3px 3px 3px #000;
+
+        &::placeholder {
+            color: $foo-main-text;;
+        }
+
+        &--invalid {
+            border: 1px solid $foo-fiature-color;
+        }
+    }
+
+    &__footer {
+        padding: 15px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    &__confirm {
+        padding: 10px 25px;
+        width: 45%;
+        background-color: transparent;
+        color: $foo-main-text;
+        border: 1px solid;
+
+        &:hover {
+            cursor: pointer;
+            color: $foo-fiature-color;
+        }
+    }
+
+    &__abolution {
+        padding: 10px 25px;
+        width: 45%;
+        background-color: transparent;
+        color: $foo-main-text;
+        border: 1px solid;
+            
+        &:hover {
+            cursor: pointer;
+            color: $foo-fiature-color;
+        }
+    }
+}

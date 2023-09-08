@@ -9,7 +9,9 @@ export default class Input extends Block {
                     <% if (this.tabindex) { %> tabindex="<% this.tabindex %>"<% } %>
                     <% if (this.placeholder) { %> placeholder="<% this.placeholder %>"<% } %>
                     <% if (this.value) { %> value="<% this.value %>"<% } %>
-                    <% if (this.disabled) { %> disabled <% } %>>`;
+                    <% if (this.disabled) { %> disabled <% } %>
+                    <% if (this.required) { %> required <% } %>
+                    >`;
 
     return this.compile(temp, this.props);
   }

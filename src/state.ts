@@ -1,6 +1,28 @@
 import EventBus from './components/block/eventBus';
 import { isEqual, merge, cloneDeep } from 'lodash';
 
+export type Message = {
+  user: {
+    first_name: string;
+    second_name: string;
+    avatar: null | string;
+    email: string;
+    login: string;
+    phone: string;
+  };
+  time: Date;
+  content: string;
+};
+
+export type Chat = {
+  id: string;
+  title: string;
+  avatar: null | string;
+  unread_count: number;
+  created_by: string;
+  last_message: null | Message;
+};
+
 class Store {
   private _state: IState;
 
@@ -19,12 +41,15 @@ class Store {
     USE: '@@use',
   };
 
+  public isLoad: boolean;
+
   constructor(initialState: IState) {
     const eventBus = new EventBus();
     this._state = this._makeStateProxy(initialState);
     this._oldState = { ...this._state };
     this._subscribers = {};
     this.eventBus = () => eventBus;
+    this.isLoad = false;
 
     // Регистрируем события жизненного цикла
     eventBus.on(Store.EVENTS.INIT, this._init.bind(this));
@@ -46,7 +71,9 @@ class Store {
     this.storeDidMount();
   }
 
-  public storeDidMount() {}
+  public storeDidMount() {
+    this.isLoad = true;
+  }
 
   private _storeDidUpdate(oldState: unknown, newState: unknown) {
     const response = this.storeDidUpdate(oldState, newState);
@@ -80,6 +107,9 @@ class Store {
     }
     const merged = merge(cloneDeep(this._state), newState);
     this._state = merged;
+    for (const listener of Object.values(this._subscribers)) {
+      listener(this._state);
+    }
   }
 
   public getState() {
@@ -106,7 +136,6 @@ interface IState {
   signup: { isSignup: boolean; login: string; password: string };
   settings: {
     isLoading: boolean;
-    isAtSet: boolean;
     id: string;
     avatar: string;
     first_name: string;
@@ -116,7 +145,22 @@ interface IState {
     old_password: string;
     email: string;
     phone: string;
+    errors: {
+      first_name: boolean;
+      second_name: boolean;
+      display_name: boolean;
+      login: boolean;
+      email: boolean;
+      old_password: boolean;
+      new_password: boolean;
+      phone: boolean;
+    };
   };
+  modal: {
+    type: string;
+    inputValue: string;
+  };
+  chats: chat[];
 }
 
 const defaultState = {
@@ -124,7 +168,6 @@ const defaultState = {
   signup: { isSignup: false, login: '', password: '' },
   settings: {
     isLoading: false,
-    isAtSet: false,
     id: '',
     avatar: '',
     first_name: '',
@@ -134,7 +177,22 @@ const defaultState = {
     old_password: '',
     email: '',
     phone: '',
+    errors: {
+      first_name: false,
+      second_name: false,
+      display_name: false,
+      login: false,
+      email: false,
+      old_password: false,
+      new_password: false,
+      phone: false,
+    },
   },
+  modal: {
+    type: 'none',
+    inputValue: '',
+  },
+  chats: [],
 };
 
 export default new Store(defaultState);

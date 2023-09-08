@@ -8,6 +8,9 @@ interface IWords {
       rule?: string;
     };
   };
+  modal: {
+    [x: string]: string;
+  };
 }
 export const words: IWords = {
   inputs: {
@@ -20,13 +23,13 @@ export const words: IWords = {
     password: {
       name: 'password',
       placeholder: 'Password',
-      matchPttern: /(^[A-Z]{1}[a-z\\-]$)|(^[А-Я]{1}[а-я\\-]$)/,
+      matchPttern: /(^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$)/,
       rule: '8 to 40 characters, at least one Big letter and number',
     },
     password_confirm: {
       name: 'password_confirm',
       placeholder: 'Password confirm',
-      matchPttern: /(^[A-Z]{1}[a-z\\-]$)|(^[А-Я]{1}[а-я\\-]$)/,
+      matchPttern: /(^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$)/,
       rule: '8 to 40 characters, at least one Big letter and number',
     },
     first_name: {
@@ -58,7 +61,7 @@ export const words: IWords = {
     display_name: {
       name: 'display_name',
       placeholder: 'Display name',
-      matchPttern: /^\s+$/,
+      matchPttern: /(?!^$)([^\s])/,
       rule: 'Must be not empty',
     },
     old_password: {
@@ -73,6 +76,15 @@ export const words: IWords = {
       matchPttern: /(^[A-Z]{1}[a-z\\-]{1,14}$)|(^[А-Я]{1}[а-я\\-]{1,14}$)/,
       rule: 'Latin/Cyrillic, first letter is capital, no spaces and no numbers, only - is allowed',
     },
+    avatar: {
+      placeholder: 'Update photo',
+      matchPttern: '',
+    },
+  },
+  modal: {
+    CONFIRM: 'OK',
+    ABOLUTION: 'CANCEL',
+    ADD_CHAT_PLACEHOLDER: 'Put a title here',
   },
   SIGN_IN: 'Sign&#160;in',
   LOGOUT: 'Logout',
@@ -89,7 +101,7 @@ export const words: IWords = {
   CONFIRM_POLICY: 'I Agree with',
   PRIVACY: 'privacy policy',
   PROFILE: "User's settings",
-  CHANGE_AVATAR: 'Change&#160;avatar',
+  AVATAR_ALT: 'Avatar',
   DISPLAY_NAME: 'Dispaly&#160;name',
   OLD_PASSWORD: 'Old&#160;password',
   NEW_PASSWORD: 'New&#160;password',
@@ -102,6 +114,7 @@ export const words: IWords = {
   CHATS_HEADER: 'Chats',
   MESSAGE: 'Put&#160;a&#160;message',
   SEARCH_PLACEHOLDER: 'Search',
+  FILL_ALL_REQUIRED: 'Fill all required fields:',
   VALIDATION: {
     UNKNOWN_FIELD: 'Unknow input field: ',
     ON_ERROR: 'invalid',

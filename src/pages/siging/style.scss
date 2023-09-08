@@ -2,7 +2,8 @@
 
 $foo-inputwidth: 260px;
 
-.login {
+.signin {
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,6 +16,7 @@ $foo-inputwidth: 260px;
     }
 
     &__header {
+        padding: 20px 0;
         color: $foo-main-text;
     }
 

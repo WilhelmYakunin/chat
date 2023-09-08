@@ -1,5 +1,7 @@
 import { Http2ServerResponse, IncomingHttpHeaders } from 'http2';
 import { User } from '../pages/settings/model';
+import { OutgoingHttpHeaders } from 'http2';
+import { Chat } from '../state';
 
 const METHODS = {
   GET: 'GET',
@@ -95,7 +97,7 @@ export const delet = (url: string, options: reqOptions) =>
 export const fetchWithRetry = (
   url: string,
   options: reqOptions
-): Promise<XMLHttpRequest> => {
+): Promise<XMLHttpRequest | User | Chat> => {
   const { tries } = options;
 
   const onReject = (err: unknown) => {
@@ -173,7 +175,7 @@ interface IncomingHttpHeaders {
 }
 
 type reqOptions = {
-  headers?: IncomingHttpHeaders;
+  headers?: IncomingHttpHeaders | OutgoingHttpHeaders;
   timeout?: number;
   method?: string;
   data?: XMLHttpRequestBodyInit;

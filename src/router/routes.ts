@@ -1,7 +1,7 @@
 const host = '/';
 
 export const routes = {
-  login: () => host,
+  sigin: () => host,
   singup: () => host + 'sign-up',
   messenger: () => host + 'messenger',
   settings: () => host + 'settings',

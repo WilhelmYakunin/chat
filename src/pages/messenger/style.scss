@@ -1,6 +1,6 @@
 @import '../../../global.scss';
 
-.chat {
+.messenger {
     @media (width <= 1200px) {
         width: 90vw;
     }
@@ -41,8 +41,9 @@
         align-items: center;
     }
 
-    &__avatar > img {
-        height: 32px;
+    &__avatar {
+        height: 64px;
+        width: 64px;
         object-fit: cover;
         border: 2px solid $foo-main-background;
         border-radius: 50%;
@@ -60,7 +61,8 @@
         padding: 5px 10px;
         color: $foo-main-text;
         background-color: $foo-fiature-color;
-        box-shadow: 0px 0px 0px gray, 3px 3px 2px #000;
+        border-radius: 25px;
+        box-shadow: 0px 0px 0px gray, 1px 1px 1px #000;
     }
 
     &__addTree {
@@ -74,7 +76,13 @@
         color: $foo-main-text;
         margin-left: auto;
         border-width: 0;
-        box-shadow: -2px -2px 3px gray, 3px 3px 2px #000;
+        box-shadow: 3px 3px 2px #000;
+
+        &--pressed {
+            background-color: transparent;
+            border-color: transparent;
+            filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%);
+        }
     }
 
     &__search {
@@ -97,7 +105,7 @@
         padding: 5px 15px;
         border: 1px solid $foo-main-background;
         border-radius: 20px;
-        box-shadow: 0 -1px 3px gray, 3px 3px 3px #000;
+        box-shadow: 0 -1px 3px gray, 2px 2px 2px #000;
     }
 
     &__appControlSetter {
@@ -105,14 +113,10 @@
         padding: 10px;
         display: inline-flex;
         border-radius: 100%;
-        box-shadow: 3px 3px 3px #000;
+        box-shadow: 1px 1px 1px #000;
 
         &--pressed {
-            cursor: pointer;
-            padding: 10px;
-            display: inline-flex;
-            border-radius: 100%;
-            box-shadow: inset 3px 3px 3px #000;
+            filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%);
         }
     }
 
