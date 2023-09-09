@@ -1,8 +1,9 @@
 import Block from '../components/block/block';
+import Route from './route';
+
 import notFoundPage from '../pages/notFound';
 import serverErrorPage from '../pages/serverError';
-import { routes } from './routes';
-import Route from './route';
+import Loader from '../components/loader/loader';
 
 class Router {
   public routes: Route[] = [];
@@ -82,8 +83,16 @@ class Router {
   getRoute(pathname: string) {
     return this.routes.find((route) => route.match(pathname));
   }
+
+  addSuspense(Suspense: typeof Block) {
+    const initStateOfLoad = false;
+    const child = new Suspense({ isLoad: initStateOfLoad });
+    const parent = document.getElementById(this._rootQuery);
+    parent?.appendChild(child.getContent());
+  }
 }
 
 const router = new Router('app');
+router.addSuspense(Loader);
 
 export default router;

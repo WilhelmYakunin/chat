@@ -2,7 +2,7 @@ import Header from '../../components/header/header';
 import Input from '../../components/input/input';
 import LabeledInput from '../../components/labeledInput/LabeledInput';
 import ErrMessage from '../../components/errMessage/ErrMessage';
-import { getProperType, sigUp } from './service';
+import { getProperType, sigUp } from './actions';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
 
@@ -13,7 +13,7 @@ import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
-import store from '../../state';
+import store from '../../store/store';
 import { requiredFileds } from '../settings/model';
 
 const block = bem('signup');
@@ -29,7 +29,6 @@ export default class Login extends Block {
     const defaultValues = {
       login: store.getState().signup.login,
       password: store.getState().signup.password,
-      isSipup: store.getState().signup.isSignup,
       errors: {
         email: false,
         first_name: false,
@@ -44,16 +43,6 @@ export default class Login extends Block {
     const propsAndChildren = { ...props, ...errors, ...defaultValues };
 
     super(propsAndChildren);
-  }
-
-  componentDidMount() {
-    store.subscribe((state) => {
-      this.setProps({
-        isSipup: state.signup.isSignup,
-        login: state.signup.login,
-        password: state.signup.password,
-      });
-    }, 'sigup');
   }
 
   validate(fieldName: string, value: string) {
@@ -117,7 +106,7 @@ export default class Login extends Block {
       if (!isValid) return alert(words.FILL_ALL_REQUIRED + message);
     }
 
-    this.setProps({ isSignup: true });
+    store.setState({ isLload: true });
 
     await sigUp(data as ISignup)
       .then(() => {
@@ -126,7 +115,7 @@ export default class Login extends Block {
       })
       .catch((err) => alert(err.reason))
       .finally(() => {
-        this.setProps({ isSignup: false });
+        store.setState({ isLload: false });
       });
   }
 
@@ -160,7 +149,6 @@ export default class Login extends Block {
               tabindex: fieldName === signupFields.first_name && 1,
               placeholder: words.inputs[fieldName].placeholder,
               value: this.props[fieldName],
-              disabled: this.props.isSignup,
               required: requiredFields.includes(fieldName),
               events: [
                 {
@@ -185,7 +173,6 @@ export default class Login extends Block {
       type: 'submit',
       classInput: block('authButton'),
       value: words.SIGN_UP,
-      disabled: this.props.isSignup,
     });
 
     const sigUpLink = new Input({

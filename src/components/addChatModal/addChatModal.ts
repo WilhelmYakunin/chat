@@ -5,15 +5,15 @@ import bem from 'bem-ts';
 import './style.scss';
 import { words } from '../../langs';
 
-import store from '../../state';
+import store from '../../store/store';
 import { addChat } from './actions';
+import { getChats } from '../../pages/messenger/actions';
 
 export default class AddChatModal extends Block {
   constructor() {
     const { type, inputValue } = store.getState().modal;
 
     const defaultValues = {
-      isLoad: false,
       isOpen: type === 'addChatModal',
       inputValue,
     };
@@ -40,19 +40,21 @@ export default class AddChatModal extends Block {
     store.setState({ modal: { inputValue: value } });
   }
 
-  onSubmit(e: Event) {
-    this.setProps({ isLoad: true });
+  async onSubmit(e: Event) {
+    store.setState({ isLoad: true });
     e.preventDefault();
 
     const title = store.getState().modal.inputValue;
 
     try {
-      addChat({ title });
+      await addChat({ title });
+      const chatList = await getChats();
+      store.setState({ chatList });
       this.close();
     } catch (err) {
       console.log(err);
     } finally {
-      this.setProps({ isLoad: false });
+      store.setState({ isLoad: false });
     }
   }
 
@@ -63,14 +65,12 @@ export default class AddChatModal extends Block {
       classInput: block('close'),
       type: 'button',
       value: 'X',
-      disabled: this.props.isLoad,
       events: [{ eventName: 'click', callback: this.close }],
     });
 
     const input = new Input({
       type: 'text',
       classInput: block('input'),
-      disabled: this.props.isLoad,
       name: 'title',
       required: true,
       value: this.props.inputValue,
@@ -87,10 +87,13 @@ export default class AddChatModal extends Block {
       classInput: block('confirm'),
       type: 'button',
       value: words.modal.CONFIRM,
-      disabled: this.props.isLoad,
       events: [
         {
           eventName: 'click',
+          callback: ((e: Event) => this.onSubmit(e)).bind(this),
+        },
+        {
+          eventName: 'submit',
           callback: ((e: Event) => this.onSubmit(e)).bind(this),
         },
       ],
@@ -100,7 +103,6 @@ export default class AddChatModal extends Block {
       classInput: block('abolution'),
       type: 'button',
       value: words.modal.ABOLUTION,
-      disabled: this.props.isLoad,
       events: [{ eventName: 'click', callback: this.close }],
     });
 
@@ -116,7 +118,7 @@ export default class AddChatModal extends Block {
       },
     ];
 
-    const temp = `<div <% if (this.isOpen) { %> class=${block()} <% } %>  <% if (!this.show) { %> hidden <% } %> >
+    const temp = `<div <% if (this.isOpen) { %> class=${block()} <% } %>  <% if (!this.isOpen) { %> hidden <% } %> >
                     <form class=${block('container')} class=${block('form')}>
                         <div class=${block('header')} >
                           <% this.close %>

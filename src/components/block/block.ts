@@ -2,22 +2,7 @@ import { v4 as uuid } from 'uuid';
 import EventBus from './eventBus';
 import Templator from './templator';
 import { cloneDeep, merge } from 'lodash';
-import { controlsButtons } from '../../pages/messenger/model';
-import { Chat } from '../../state';
-// import router from '../../router/router';
-
-// export interface TProps {
-//   [x: string]: unknown;
-//   rootQuery?: string;
-//   template?: string;
-//   data?: unknown;
-//   children?: Block[];
-//   events?: {
-//     eventName: keyof HTMLElementEventMap;
-//     callback: EventListener;
-//   }[];
-// };
-// // Нельзя создавать экземпляр данного класса
+import { Chat } from '../../store/store';
 
 export type someObj = {
   [x: string]: unknown;
@@ -42,70 +27,6 @@ class Block {
 
   public children: { [id: string]: Block } = {};
   public events: { eventName: string; callback: (e: Event) => void }[] = [];
-
-  // Дефолтный customEvent для поддержки роутерных ссылок
-  // public customEvents: ICustomEvent[] = [
-  //   {
-  //     selector: '.router-link',
-  //     events: {
-  //       click: (e: Event) => {
-  //         e.preventDefault();
-
-  //         if (e.currentTarget) {
-  //           const element = e.currentTarget as HTMLElement;
-  //           if (element.getAttribute('router-force')) {
-  //             router.go(element.getAttribute('href'), true);
-  //           } else {
-  //             router.go(element.getAttribute('href'));
-  //           }
-  //         }
-  //       },
-  //     },
-  //   },
-  //   {
-  //     selector: '.dropdown',
-  //     events: {
-  //       click: (e: Event) => {
-  //         const target = e.target as HTMLElement;
-
-  //         if (e.currentTarget && target.parentElement == e.currentTarget) {
-  //           const element = e.currentTarget as HTMLElement;
-  //           element
-  //             .querySelector('.dropdown-content')!
-  //             .classList.add('dropdown-content-visible');
-  //         }
-  //       },
-  //     },
-  //   },
-  //   {
-  //     selector: '.sidebar, .content',
-  //     events: {
-  //       click: (e: Event) => {
-  //         const dropdownList = document.querySelectorAll(
-  //           '.dropdown'
-  //         ) as NodeList;
-  //         const dropdownContentList = document.querySelectorAll(
-  //           '.dropdown-content'
-  //         ) as NodeList;
-
-  //         let outside = true;
-  //         dropdownList.forEach((elem) => {
-  //           if (e.composedPath().includes(elem)) {
-  //             outside = false;
-  //           }
-  //         });
-
-  //         dropdownContentList.forEach((elem) => {
-  //           if (outside) {
-  //             const dropdownCont = elem as HTMLElement;
-  //             dropdownCont.classList!.remove('dropdown-content-visible');
-  //           }
-  //         });
-  //       },
-  //     },
-  //   },
-  // ];
-
   protected eventBus: () => EventBus;
 
   public props: someObj = {};
@@ -113,11 +34,6 @@ class Block {
   constructor(propsAndChildren: someObj = {}) {
     const { children, props } = this._getChildren(propsAndChildren);
     this.children = children;
-    // this.events = events;
-    // if (customEvents.length > 0) {
-    //   this.customEvents = [...this.customEvents, ...customEvents];
-    // }
-
     const eventBus = new EventBus();
 
     this.props = this._makePropsProxy(props);
@@ -211,42 +127,6 @@ class Block {
       );
     }
   }
-
-  // this.customEvents.forEach((elem) => {
-  //   Object.keys(elem.events).forEach((eventName) => {
-  //     if (this.element) {
-  //       if (this.element!.querySelectorAll(elem.selector).length > 0) {
-  //         this.element!.querySelectorAll(elem.selector).forEach(
-  //           (currentValue) => {
-  //             currentValue.removeEventListener(
-  //               eventName,
-  //               elem.events[eventName],
-  //               true
-  //             );
-  //             // Проверяем, не навесили ли мы на этот элемент eventListener ранее
-  //             if (!currentValue.getAttribute(`event-${eventName}`)) {
-  //               currentValue.addEventListener(
-  //                 eventName,
-  //                 elem.events[eventName]
-  //               );
-  //             }
-  //             // Добавляем на элемент специальный атрибут, указывающий на то, что на него навешен eventListener
-  //             currentValue.setAttribute(`event-${eventName}`, 'true');
-  //           }
-  //         );
-  //       }
-  //     }
-  //   });
-  // });
-
-  // Костыльный метод, блокирующий вызовы blur, при отправке формы
-  // protected removeChildrenListeners() {
-  //   Object.entries(this.children).forEach((elem) => {
-  //     if (elem[1].props.events) {
-  //       elem[1].setProps({ events: {} });
-  //     }
-  //   });
-  // }
 
   protected init() {
     this._createResources();
@@ -356,7 +236,6 @@ class Block {
   }
 
   private _createDocumentElement(tagName: string) {
-    // Можно сделать метод, который через фрагменты в цикле создаёт сразу несколько блоков
     const element = document.createElement(tagName);
 
     return element;

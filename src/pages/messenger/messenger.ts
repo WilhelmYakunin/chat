@@ -11,22 +11,22 @@ import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
-import store, { Chat } from '../../state';
-import { getAvatar, getChats, logOut } from './service';
-import { getUserInfo } from '../settings/service';
+import store from '../../store/store';
+import { getAvatar, getChats, logOut } from './actions';
+import { getUserInfo } from '../settings/actions';
 import { User } from '../settings/model';
 import { controlsButtons } from './model';
 import IconedButton from '../../components/iconedButton/iconedButton';
 import { getImageUrl } from '../../components/helpers';
+import { Chat } from '../../store/model';
 
 export default class Messenger extends Block {
   constructor(props: someObj) {
-    const { avatar, isLoading } = store.getState().settings;
-    const chants = store.getState().chats;
+    const { avatar } = store.getState().settings;
+    const chants = store.getState().chatList;
 
     const defaultValues = {
       avatar: avatar,
-      isLoading: isLoading,
       modal: { type: 'none' },
       currentControl: controlsButtons.chats,
       chants,
@@ -46,23 +46,29 @@ export default class Messenger extends Block {
 
   async setUserInfo() {
     try {
-      this.setProps({ isLoading: true });
+      store.setState({ isLoad: true });
       const { avatar }: User = await getUserInfo();
-      const chats = await getChats();
+      const chatList: Chat[] = await getChats();
       this.setProps({
         avatar,
-        chats,
+        chatList,
       });
+      store.setState({ chatList });
     } catch (err) {
       console.log(err);
     } finally {
-      this.setProps({ isLoading: false });
+      store.setState({ isLoad: false });
     }
   }
 
   async logout() {
-    await logOut();
-    router.go(routes.sigin());
+    try {
+      await logOut();
+      store.setState({ isAuth: false });
+      router.go(routes.sigin());
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   showAddChatModal() {
@@ -153,7 +159,7 @@ export default class Messenger extends Block {
 
     const chatList = new ChatList({
       class: block('chatList'),
-      chatList: this.props.chats,
+      chatList: this.props.chatList,
     });
 
     this.children.logout = logoutButton;

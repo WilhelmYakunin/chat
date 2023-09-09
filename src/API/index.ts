@@ -1,7 +1,7 @@
 import { Http2ServerResponse, IncomingHttpHeaders } from 'http2';
 import { User } from '../pages/settings/model';
 import { OutgoingHttpHeaders } from 'http2';
-import { Chat } from '../state';
+import { Chat } from '../store/store';
 
 const METHODS = {
   GET: 'GET',
@@ -26,7 +26,7 @@ const queryStringify = (data: XMLHttpRequestBodyInit) => {
 const request = (
   url: string,
   options: reqOptions
-): Promise<XMLHttpRequest | User> => {
+): Promise<XMLHttpRequest | User | Chat[]> => {
   const { method, data } = options;
 
   return new Promise((resolve, reject) => {
@@ -97,7 +97,7 @@ export const delet = (url: string, options: reqOptions) =>
 export const fetchWithRetry = (
   url: string,
   options: reqOptions
-): Promise<XMLHttpRequest | User | Chat> => {
+): Promise<XMLHttpRequest | User | Chat[]> => {
   const { tries } = options;
 
   const onReject = (err: unknown) => {

@@ -2,7 +2,7 @@ import Header from '../../components/header/header';
 import Input from '../../components/input/input';
 import LabeledInput from '../../components/labeledInput/LabeledInput';
 import ErrMessage from '../../components/errMessage/ErrMessage';
-import { login } from './service';
+import { login } from './actions';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
 
@@ -13,31 +13,24 @@ import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
-import store from '../../state';
+import store from '../../store/store';
 
 const block = bem('signin');
 export default class Login extends Block {
   constructor(props: someObj) {
+    const { login, password } = store.getState().signin;
+
     const errors: someObj = { login: false, password: false };
 
     const defaultValues = {
-      login: store.getState().signin.login,
-      password: store.getState().signin.password,
-      isLogging: store.getState().signin.isLogging,
+      login,
+      password,
       errors: { login: false, password: false },
     };
 
     const propsAndChildren = { ...props, ...errors, ...defaultValues };
 
     super(propsAndChildren);
-  }
-
-  componentDidMount() {
-    store.subscribe((state) => {
-      this.setProps({
-        isLogging: state.signin.isLogging,
-      });
-    }, 'user');
   }
 
   validate(fieldName: string, value: string) {
@@ -74,7 +67,7 @@ export default class Login extends Block {
       if (isValid) return;
     }
 
-    this.setProps({ isLogging: true });
+    store.setState({ isLoad: true });
 
     await login(data as ILogin)
       .then(() => {
@@ -83,7 +76,7 @@ export default class Login extends Block {
       })
       .catch((err) => alert(err.reason))
       .finally(() => {
-        this.setProps({ isLogging: false });
+        store.setState({ isLoad: false });
       });
   }
 
@@ -108,7 +101,6 @@ export default class Login extends Block {
               tabindex: fieldName === loginFields.login && 1,
               placeholder: words.inputs[fieldName].placeholder,
               value: this.props[fieldName],
-              disabled: this.props.isLogging,
               events: [
                 {
                   eventName: 'blur',
@@ -132,7 +124,6 @@ export default class Login extends Block {
       type: 'submit',
       classInput: block('authButton'),
       value: words.SIGN_IN,
-      disabled: this.props.isLogging,
     });
 
     const sigUpLink = new Input({

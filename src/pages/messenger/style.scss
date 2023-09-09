@@ -179,4 +179,41 @@
             color: red;
         }
     }
+
+    &__chatList {
+        padding: 20px;
+    
+        max-height: 70vh;
+        overflow: auto;
+    }
+
+    :root {
+        --scrollbarBgColor: rgba(0, 0, 0, .05);
+        --scrollbarThumbColor: rgba(0, 0, 0, .15);
+        --scrollbarThumbColorSecond: rgba(255, 255, 255, .7);
+        --scrollbarWidth: 2rem;
+        --scrollbarBorder: 0 solid var(--scrollbarBgColor);
+        --scrollbarBorderRadius: calc(var(--scrollbarWidth) / 4);
+      }
+      &__chatList{
+        scrollbar-width: var(--scrollbarWidth);
+        scrollbar-color: var(--scrollbarThumbColor) var(--scrollbarBgColor);
+      }
+      &__chatList::-webkit-scrollbar {
+        width: var(--scrollbarWidth);
+      }
+      &__chatList::-webkit-scrollbar-track {
+        background: var(--scrollbarBgColor);
+        border-radius: var(--scrollbarBorderRadius);
+      }
+      &__chatList::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbarThumbColor);
+        border-radius: var(--scrollbarBorderRadius);
+        border: var(--scrollbarBorder);
+        background-image: linear-gradient(
+          180deg,
+          var(--scrollbarThumbColor) 0%,
+          var(--scrollbarThumbColorSecond) 90%
+        );
+      }
 }

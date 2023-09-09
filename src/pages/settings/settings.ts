@@ -9,7 +9,7 @@ import {
   getAvatar,
   getProperType,
   getUserInfo,
-} from './service';
+} from './actions';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
 
@@ -20,7 +20,7 @@ import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
-import store from '../../state';
+import store from '../../store/store';
 
 const block = bem('settings');
 
@@ -35,7 +35,6 @@ export default class SettingsPage extends Block {
       login,
       email,
       phone,
-      isLoading,
       errors,
     } = store.getState().settings;
 
@@ -48,7 +47,6 @@ export default class SettingsPage extends Block {
       login: login,
       email: email,
       phone: phone,
-      isLoading: isLoading,
       errors: {
         first_name: errors.first_name,
         second_name: errors.second_name,
@@ -67,18 +65,9 @@ export default class SettingsPage extends Block {
     this.setUserInfo();
   }
 
-  componentDidMount() {
-    store.subscribe((state) => {
-      this.setProps({
-        isLoading: state.signup.isSignup,
-        login: state.signup.login,
-      });
-    }, 'settings');
-  }
-
   async setUserInfo() {
+    store.setState({ isLoad: true });
     try {
-      this.setProps({ isLoading: true });
       const {
         avatar,
         login,
@@ -102,7 +91,7 @@ export default class SettingsPage extends Block {
     } catch (err) {
       console.log(err);
     } finally {
-      this.setProps({ isLoading: false });
+      store.setState({ isLoad: false });
     }
   }
 
@@ -125,6 +114,7 @@ export default class SettingsPage extends Block {
   }
 
   async handleAvatarInput(e: Event) {
+    store.setState({ isLoad: true });
     try {
       const [file] = (e.target as HTMLInputElement).files as FileList;
 
@@ -134,12 +124,14 @@ export default class SettingsPage extends Block {
     } catch (err) {
       console.log(err);
     } finally {
-      this.setProps({ isLoading: false });
+      store.setState({ isLoad: false });
     }
   }
 
   async handleChanges(e: Event): Promise<void> {
+    store.setState({ isLoad: true });
     e.preventDefault();
+
     const form = e.target as HTMLFormElement;
 
     const data = Object.keys(userInfoFields).reduce(
@@ -183,13 +175,14 @@ export default class SettingsPage extends Block {
         return alert(words.FILL_ALL_REQUIRED + requiredFieldMessage);
     }
 
-    this.setProps({ isLoading: true });
-    await changeUserInfo(data as UserDTO)
-      .then(() => router.go(routes.messenger()))
-      .catch((err) => alert(err.reason))
-      .finally(() => {
-        this.setProps({ isLoading: false });
-      });
+    try {
+      await changeUserInfo(data as UserDTO);
+      router.go(routes.messenger());
+    } catch (err) {
+      console.log(err);
+    } finally {
+      store.setState({ isLoad: false });
+    }
   }
 
   goBack(e: Event) {

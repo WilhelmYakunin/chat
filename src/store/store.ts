@@ -1,27 +1,6 @@
-import EventBus from './components/block/eventBus';
+import EventBus from '../components/block/eventBus';
 import { isEqual, merge, cloneDeep } from 'lodash';
-
-export type Message = {
-  user: {
-    first_name: string;
-    second_name: string;
-    avatar: null | string;
-    email: string;
-    login: string;
-    phone: string;
-  };
-  time: Date;
-  content: string;
-};
-
-export type Chat = {
-  id: string;
-  title: string;
-  avatar: null | string;
-  unread_count: number;
-  created_by: string;
-  last_message: null | Message;
-};
+import { getChats } from '../pages/messenger/actions';
 
 class Store {
   private _state: IState;
@@ -41,15 +20,12 @@ class Store {
     USE: '@@use',
   };
 
-  public isLoad: boolean;
-
   constructor(initialState: IState) {
     const eventBus = new EventBus();
     this._state = this._makeStateProxy(initialState);
     this._oldState = { ...this._state };
     this._subscribers = {};
     this.eventBus = () => eventBus;
-    this.isLoad = false;
 
     // Регистрируем события жизненного цикла
     eventBus.on(Store.EVENTS.INIT, this._init.bind(this));
@@ -71,9 +47,7 @@ class Store {
     this.storeDidMount();
   }
 
-  public storeDidMount() {
-    this.isLoad = true;
-  }
+  public storeDidMount() {}
 
   private _storeDidUpdate(oldState: unknown, newState: unknown) {
     const response = this.storeDidUpdate(oldState, newState);
@@ -129,13 +103,45 @@ class Store {
       },
     });
   }
+
+  async checkAuth() {
+    try {
+      const chatList = await getChats();
+      this.setState({ chatList });
+      this.setState({ isAuth: true });
+    } catch {
+      this.setState({ isAuth: false });
+    }
+  }
 }
 
+export type Message = {
+  user: {
+    first_name: string;
+    second_name: string;
+    avatar: null | string;
+    email: string;
+    login: string;
+    phone: string;
+  };
+  time: Date;
+  content: string;
+};
+
+export type Chat = {
+  id: string;
+  title: string;
+  avatar: null | string;
+  unread_count: number;
+  created_by: string;
+  last_message: null | Message;
+};
+
 interface IState {
-  signin: { isLogging: boolean; login: string; password: string };
-  signup: { isSignup: boolean; login: string; password: string };
+  isLoad: boolean;
+  signin: { login: string; password: string };
+  signup: { login: string; password: string };
   settings: {
-    isLoading: boolean;
     id: string;
     avatar: string;
     first_name: string;
@@ -160,14 +166,14 @@ interface IState {
     type: string;
     inputValue: string;
   };
-  chats: chat[];
+  chatList: Chat[];
 }
 
 const defaultState = {
-  signin: { isLogging: false, login: '', password: '' },
-  signup: { isSignup: false, login: '', password: '' },
+  isLoad: false,
+  signin: { login: '', password: '' },
+  signup: { login: '', password: '' },
   settings: {
-    isLoading: false,
     id: '',
     avatar: '',
     first_name: '',
@@ -192,7 +198,7 @@ const defaultState = {
     type: 'none',
     inputValue: '',
   },
-  chats: [],
+  chatList: [],
 };
 
 export default new Store(defaultState);
