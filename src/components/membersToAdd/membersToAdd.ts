@@ -36,7 +36,7 @@ export default class MembersToAdd extends Block {
 
 class UserCard extends Block {
   render() {
-    const cn = bem('userChatCard');
+    const cn = bem('chatcard');
     const { id, avatar, first_name, second_name } = this.props.user as User;
 
     const temp = `<li keyid=${id} class=${cn()}>

@@ -90,7 +90,7 @@ export default class ChatList extends Block {
 
 class NoLastMessage extends Block {
   render() {
-    const cn = bem('chatCard');
+    const cn = bem('chatcard');
 
     const { avatar, title, id } = this.props;
 

@@ -94,14 +94,14 @@ export default class Proposals extends Block {
 
 class UserProposal extends Block {
   onProposalClick() {
-    (this as unknown as HTMLLIElement).className === 'userProposal'
+    (this as unknown as HTMLLIElement).className === 'proposalitem'
       ? ((this as unknown as HTMLLIElement).className =
-          'userProposal userProposal--pressed')
-      : ((this as unknown as HTMLLIElement).className = 'userProposal');
+          'proposalitem proposalitem--pressed')
+      : ((this as unknown as HTMLLIElement).className = 'proposalitem');
   }
 
   render() {
-    const cn = bem('userProposal');
+    const cn = bem('proposalitem');
     const { id, avatar, first_name, second_name } = this.props.user as User;
 
     const temp = `<li keyid=${id} class=${cn()}>

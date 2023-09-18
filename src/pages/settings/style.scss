@@ -31,7 +31,8 @@ $foo-inputwidth: 250px;
         border-top: 2px solid white;
         border-left: 2px solid white;
         transform: rotate(-45deg);
-        @media (min-width: 640px) {
+        
+        @media (width >= 640px) {
             @include visually-hidden;
 
         }
@@ -176,9 +177,10 @@ $foo-inputwidth: 250px;
     }
 
     &__gobackLink {
-        @media (max-width: 640px) {
+        @media (width <= 640px) {
             @include visually-hidden;
         }
+
         margin: 20px 0;
         cursor: pointer;
         text-decoration: none;

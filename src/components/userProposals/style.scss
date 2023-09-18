@@ -3,12 +3,11 @@
 .proposals {
     width: 90%;
     position: absolute;
-
     display: flex;
     flex-direction: column;
     background-color: $foo-modal-background;
 
-    @media (min-width: 640px) {
+    @media (width >= 640px) {
         width: 30%;
     }
 
@@ -45,7 +44,7 @@
     }
 }
 
-.userProposal {
+.proposalitem {
     cursor: pointer;
     padding: 10px;
     color: $foo-main-text;
@@ -61,7 +60,6 @@
     }
 
     &__avatar {
-        
         height: 16px;
         width: 16px;
         object-fit: contain;
