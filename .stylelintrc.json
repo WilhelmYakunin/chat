@@ -3,6 +3,7 @@
     "plugins": [
         "stylelint-scss"
       ],
+      "customSyntax": "sugarss",
       "rules": {
         "color-hex-case": "lower",
         "at-rule-no-unknown": null,
