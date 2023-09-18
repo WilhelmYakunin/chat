@@ -1,6 +1,6 @@
 import EventBus from '../components/block/eventBus';
 import { isEqual, merge, cloneDeep } from 'lodash';
-import { getChats } from '../pages/messenger/actions';
+import { User } from '../pages/settings/model';
 
 class Store {
   private _state: IState;
@@ -27,7 +27,6 @@ class Store {
     this._subscribers = {};
     this.eventBus = () => eventBus;
 
-    // Регистрируем события жизненного цикла
     eventBus.on(Store.EVENTS.INIT, this._init.bind(this));
     eventBus.on(Store.EVENTS.STORE_DM, this._storeDidMount.bind(this));
     eventBus.on(
@@ -86,6 +85,14 @@ class Store {
     }
   }
 
+  public setCurrentChatUsersToValue(value: User[]) {
+    this._state.currentChat.members = value;
+  }
+
+  public setCurrentChattoAddUsersToValue(value: User[]) {
+    this._state.currentChat.toAddUsers = value;
+  }
+
   public getState() {
     return this._state;
   }
@@ -103,16 +110,6 @@ class Store {
       },
     });
   }
-
-  async checkAuth() {
-    try {
-      const chatList = await getChats();
-      this.setState({ chatList });
-      this.setState({ isAuth: true });
-    } catch {
-      this.setState({ isAuth: false });
-    }
-  }
 }
 
 export type Message = {
@@ -128,7 +125,7 @@ export type Message = {
   content: string;
 };
 
-export type Chat = {
+export type IChat = {
   id: string;
   title: string;
   avatar: null | string;
@@ -145,7 +142,7 @@ interface IState {
     id: string;
     avatar: string;
     first_name: string;
-    last_name: string;
+    second_name: string;
     display_name: string;
     login: string;
     old_password: string;
@@ -166,7 +163,13 @@ interface IState {
     type: string;
     inputValue: string;
   };
-  chatList: Chat[];
+  chatList: IChat[];
+  currentChat: {
+    id: string;
+    members: User[];
+    isOpen: boolean;
+    toAddUsers?: User[];
+  };
 }
 
 const defaultState = {
@@ -177,7 +180,7 @@ const defaultState = {
     id: '',
     avatar: '',
     first_name: '',
-    last_name: '',
+    second_name: '',
     display_name: '',
     login: '',
     old_password: '',
@@ -197,8 +200,10 @@ const defaultState = {
   modal: {
     type: 'none',
     inputValue: '',
+    users: null,
   },
   chatList: [],
+  currentChat: { id: 'none', members: [], isOpen: false },
 };
 
 export default new Store(defaultState);

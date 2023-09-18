@@ -11,7 +11,7 @@ export type Message = {
   content: string;
 };
 
-export type Chat = {
+export type IChat = {
   id: string;
   title: string;
   avatar: null | string;
@@ -50,5 +50,5 @@ export interface IState {
     type: string;
     inputValue: string;
   };
-  chatList: Chat[];
+  chatList: IChat[];
 }

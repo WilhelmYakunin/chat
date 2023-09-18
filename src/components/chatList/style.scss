@@ -30,6 +30,7 @@
     }
 
     &__nomsg {
+        color: $foo-app-info-text;
         font-style: italic;
     }
 }

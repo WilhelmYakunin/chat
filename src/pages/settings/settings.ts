@@ -30,7 +30,7 @@ export default class SettingsPage extends Block {
       avatar,
       id,
       first_name,
-      last_name,
+      second_name,
       display_name,
       login,
       email,
@@ -39,14 +39,14 @@ export default class SettingsPage extends Block {
     } = store.getState().settings;
 
     const defaultValues = {
-      avatar: avatar,
-      id: id,
-      first_name: first_name,
-      last_name: last_name,
-      display_name: display_name,
-      login: login,
-      email: email,
-      phone: phone,
+      avatar,
+      id,
+      first_name,
+      second_name,
+      display_name,
+      login,
+      email,
+      phone,
       errors: {
         first_name: errors.first_name,
         second_name: errors.second_name,

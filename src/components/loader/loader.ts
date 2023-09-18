@@ -5,11 +5,7 @@ import './style.scss';
 import store from '../../store/store';
 
 export default class ChatList extends Block {
-  async checkAuth() {
-    await store.checkAuth();
-  }
   componentDidMount() {
-    this.checkAuth();
     store.subscribe((state) => {
       if (state.isLoad !== this.props.isLoad)
         this.setProps({ isLoad: state.isLoad });

@@ -1,7 +1,6 @@
 import Input from '../../components/input/input';
 import LabeledInput from '../../components/labeledInput/LabeledInput';
-import ErrMessage from '../../components/errMessage/ErrMessage';
-import AddChatModal from '../../components/addChatModal/addChatModal';
+import Chat from '../../components/chat/chat';
 import ChatList from '../../components/chatList/chatList';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
@@ -14,11 +13,9 @@ import router from '../../router/router';
 import store from '../../store/store';
 import { getAvatar, getChats, logOut } from './actions';
 import { getUserInfo } from '../settings/actions';
-import { User } from '../settings/model';
-import { controlsButtons } from './model';
+import { controlsButtons, messageFileds } from './model';
 import IconedButton from '../../components/iconedButton/iconedButton';
 import { getImageUrl } from '../../components/helpers';
-import { Chat } from '../../store/model';
 
 export default class Messenger extends Block {
   constructor(props: someObj) {
@@ -27,7 +24,6 @@ export default class Messenger extends Block {
 
     const defaultValues = {
       avatar: avatar,
-      modal: { type: 'none' },
       currentControl: controlsButtons.chats,
       chants,
     };
@@ -47,13 +43,13 @@ export default class Messenger extends Block {
   async setUserInfo() {
     try {
       store.setState({ isLoad: true });
-      const { avatar }: User = await getUserInfo();
-      const chatList: Chat[] = await getChats();
+      const user = await getUserInfo();
+      const chatList = await getChats();
       this.setProps({
-        avatar,
+        avatar: user.avatar,
         chatList,
       });
-      store.setState({ chatList });
+      store.setState({ settings: user, chatList });
     } catch (err) {
       console.log(err);
     } finally {
@@ -72,7 +68,7 @@ export default class Messenger extends Block {
   }
 
   showAddChatModal() {
-    store.setState({ modal: { type: 'addChatModal' } });
+    store.setState({ modal: { type: words.modal.ADD_CHAT } });
   }
 
   setCurrentControl(name: string) {
@@ -81,6 +77,21 @@ export default class Messenger extends Block {
 
   goSettings() {
     router.go(routes.settings());
+  }
+
+  validate(fieldName: string, value: string) {
+    const error = value.match(words.inputs[fieldName].matchPttern);
+    !error
+      ? this.setProps({ errors: { [fieldName]: true } })
+      : this.setProps({ errors: { [fieldName]: false } });
+  }
+
+  handleInput(e: Event, fieldName: string) {
+    e.preventDefault();
+    const value = (e.target as HTMLInputElement).value;
+    this.setProps({ [fieldName]: value });
+    store.setState({ messageInput: { [fieldName]: value } });
+    this.validate(fieldName, value);
   }
 
   render() {
@@ -101,7 +112,7 @@ export default class Messenger extends Block {
     const addChat = new Input({
       type: 'button',
       classInput:
-        this.props.modal?.type === 'addChatModal'
+        this.props.modal?.type === words.modal.ADD_CHAT
           ? block('addTree', { pressed: true })
           : block('addTree'),
       value: '+',
@@ -155,8 +166,6 @@ export default class Messenger extends Block {
       },
     ];
 
-    const addChatModal = new AddChatModal();
-
     const chatList = new ChatList({
       class: block('chatList'),
       chatList: this.props.chatList,
@@ -165,16 +174,43 @@ export default class Messenger extends Block {
     this.children.logout = logoutButton;
     this.children.addChat = addChat;
     this.children.searhChat = searhChat;
+    this.children.chatList = chatList;
     this.children.switchChats = switchChats;
     this.children.switchBanList = switchBanList;
     this.children.switchCamera = switchCamera;
     this.children.switchSettings = switchSettings;
-    this.children.modal = addChatModal;
-    this.children.chatList = chatList;
+
+    const messageInput = new LabeledInput({
+      classLabel: block('label'),
+      forAttr: messageFileds.message,
+      children: {
+        input: new Input({
+          type: 'text',
+          name: messageFileds.message,
+          classInput: block('input'),
+          tabindex: 1,
+          required: true,
+          placeholder: words.MESSAGE,
+          value: this.props[messageFileds.message],
+          events: [
+            {
+              eventName: 'blur',
+              callback: ((e: Event) =>
+                this.handleInput(e, messageFileds.message)).bind(this),
+            },
+          ],
+        }),
+      },
+    });
+
+    this.children.messageInput = messageInput;
+
+    const chat = new Chat({ currentChat: store.getState().currentChat.id });
+
+    this.children.chat = chat;
 
     const ctx = this.children;
     const temp = `<div class=${block()}>
-                    <% this.modal %>
                     <section class=${block('board')}>
                       <div class=${block('controls')}>
                       <div class=${block('addChat')}>
@@ -189,7 +225,9 @@ export default class Messenger extends Block {
                       </div>
                       <% this.searhChat %>
                       </div>
-                      <% this.chatList %>
+                      <div class=${block('chatList')}>
+                        <% this.chatList %>
+                      </div>
                       <div class=${block('appControls')}>
                         <% this.switchChats %>
                         <% this.switchBanList %>
@@ -197,242 +235,13 @@ export default class Messenger extends Block {
                         <% this.switchSettings %>
                       </div>
                     </section>
-                    <form class=${block('wrapper')} >
-                        <% this.messageInput %>
-                        <% this.button %>
-                    </form>
+                    <section class=${block('chatBox')}>
+                      <% this.chat %>
+                      <form class=${block('wrapper')} >
+                          <% this.messageInput %>
+                      </form>
+                    </section>
                   </div>`;
     return this.compile(temp, ctx);
   }
 }
-
-// import { getImageUrl } from '../../components/helpers';
-
-// import { words } from '../../langs';
-// import { messageFileds } from './model';
-// import { validateInput } from '../../components/helpers/validate';
-// import { logOut, messageFormSchema } from './service';
-
-// import './style.scss';
-// import bem from 'bem-ts';
-// import Block from '../../components/block/block';
-// import {
-//   formTemplate,
-//   inputTemplate,
-//   labelTemplate,
-//   patternTemplate,
-// } from './templates';
-// import state from '../../state';
-// import router from '../../router/router';
-// import { routes } from '../../router/routes';
-
-// const block = bem('chat');
-
-// const mainPage = (): Block => {
-//   const img = new Block('img', {
-//     template: "<img src={{icolink}} alt='user depiction'> </img>",
-//     data: { icolink: getImageUrl('/pictures/test_ico.png') },
-//   });
-
-//   const avatar = new Block('div', {
-//     template: '<div class={{class}}></div>',
-//     data: { class: block('avatar') },
-//     children: [img],
-//   });
-
-//   const chatsHeader = new Block('h2', {
-//     template: '<h2 class={{class}}>{{{text}}}</h2>',
-//     data: {
-//       text: words.CHATS_HEADER,
-//       class: block('chatsHeader'),
-//     },
-//   });
-
-//   const addChat = new Block('button', {
-//     template: "<button type='button' class={{class}}>+</button>",
-//     data: { class: block('addTree') },
-//   });
-
-//   const logoutBtn = new Block('button', {
-//     template: "<button type='button' class={{class}}>{{{text}}}</button>",
-//     data: { class: block('logoutButton'), text: words.LOGOUT },
-//     events: [
-//       {
-//         eventName: 'click',
-//         callback: async (e: Event) => {
-//           e.preventDefault();
-//           await logOut()
-//             .then(() => {
-//               // state.user.isLogged = false;
-//               router.go(routes.login());
-//             })
-//             .catch((err) => alert(err.reason));
-//         },
-//       },
-//     ],
-//   });
-
-//   const addChatSection = new Block('div', {
-//     template: '<div class={{class}}></div>',
-//     data: { class: block('addChat') },
-//     children: [avatar, chatsHeader, logoutBtn, addChat],
-//   });
-
-//   const serch = new Block('input', {
-//     template:
-//       "<input name='search' class={{class}} type='text' placeholder={{{text}}}></input>",
-//     data: { text: words.SEARCH_PLACEHOLDER, class: block('search') },
-//   });
-
-//   const controls = new Block('div', {
-//     template: '<div class={{class}}></div>',
-//     data: { class: block('controls') },
-//     children: [addChatSection, serch],
-//   });
-
-//   const chatList = new Block('div', {
-//     template: '<div class={{class}}></div>',
-//     data: { class: block('chatList') },
-//   });
-
-//   const controlsTemplate =
-//     '<span class={{class}}><img alt={{alt}} src={{imglink}} /></span>';
-
-//   const showChats = new Block('span', {
-//     template: controlsTemplate,
-//     data: {
-//       class: block('appControlSetter', { pressed: true }).split(' ')[1],
-//       alt: 'showAllChats',
-//       imglink: getImageUrl('/pictures/envelope.svg'),
-//     },
-//   });
-
-//   const showBanList = new Block('span', {
-//     template: controlsTemplate,
-//     data: {
-//       class: block('appControlSetter'),
-//       alt: 'showAllChats',
-//       imglink: getImageUrl('/pictures/pirate.svg'),
-//     },
-//   });
-
-//   const showCamera = new Block('span', {
-//     template: controlsTemplate,
-//     data: {
-//       class: block('appControlSetter'),
-//       alt: 'showAllChats',
-//       imglink: getImageUrl('/pictures/camera.svg'),
-//     },
-//   });
-
-//   const showSettings = new Block('span', {
-//     template: controlsTemplate,
-//     data: {
-//       class: block('appControlSetter'),
-//       alt: 'showAllChats',
-//       imglink: getImageUrl('/pictures/settings.svg'),
-//     },
-//     events: [
-//       {
-//         eventName: 'click',
-//         callback: (e: Event) => {
-//           e.preventDefault();
-//           router.go(routes.settings());
-//         },
-//       },
-//     ],
-//   });
-
-//   const chatControls = new Block('div', {
-//     template: '<div class={{class}}></div>',
-//     data: { class: block('appControls') },
-//     children: [showChats, showBanList, showCamera, showSettings],
-//   });
-
-//   const messageInput = new Block('input', {
-//     template: inputTemplate,
-//     data: {
-//       name: messageFileds.message,
-//       class: block('input'),
-//       placeholder: words.MESSAGE,
-//       tabIndex: 1,
-//     },
-//     events: [
-//       {
-//         eventName: 'blur',
-//         callback: (e: Event) =>
-//           validateInput({
-//             target: e.target as HTMLElement,
-//             rule: messageFormSchema.message.pattern,
-//           }),
-//       },
-//     ],
-//   });
-
-//   const messagePattern = new Block('div', {
-//     template: patternTemplate,
-//     data: {
-//       class: block('pattern'),
-//       text: words.VALIDATION.PATTERTNS.MESSAGE,
-//     },
-//   });
-
-//   const inputMessageLabel = new Block('label', {
-//     template: labelTemplate,
-//     data: {
-//       forAttr: messageFileds.message,
-//       labelClass: block('label'),
-//     },
-//     children: [messageInput, messagePattern],
-//   });
-
-//   const messageForm = new Block('form', {
-//     template: formTemplate,
-//     children: [inputMessageLabel],
-//     events: [
-//       {
-//         eventName: 'submit',
-//         callback: (e: Event): void => {
-//           e.preventDefault();
-//           const data: { [x: string]: unknown } = {};
-//           for (const key in messageFormSchema) {
-//             const el = (e.target as HTMLFormElement).elements[
-//               key as keyof HTMLFormControlsCollection
-//             ];
-//             data[key] = (el as unknown as HTMLInputElement).value;
-//             validateInput({
-//               target: el as HTMLElement,
-//               rule: messageFormSchema[key].pattern,
-//             });
-//           }
-
-//           console.log(data);
-//         },
-//       },
-//     ],
-//   });
-
-//   const chatBox = new Block('section', {
-//     template: '<section class={{class}}></section>',
-//     data: { class: block('chatBox') },
-//     children: [messageForm],
-//   });
-
-//   const board = new Block('section', {
-//     template: '<section class={{class}}></section>',
-//     data: { class: block('board') },
-//     children: [controls, chatList, chatControls],
-//   });
-
-//   const chatContainer = new Block('div', {
-//     template: '<div class={{class}}></div>',
-//     data: { class: block() },
-//     children: [board, chatBox],
-//   });
-
-//   const coverage = new Block('div', { children: [chatContainer] });
-
-//   return coverage;
-// };
-
-// export default mainPage;

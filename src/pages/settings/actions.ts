@@ -45,5 +45,7 @@ export const changeUserAvatar = async (file: File) => {
   });
 };
 
-export const getAvatar = (imgLink: string) =>
-  getImageUrl(resoursecURL.concat(imgLink));
+export const getAvatar = (imgLink: string | null) => {
+  if (!imgLink) return getImageUrl('pictures/' + 'noava' + '.svg');
+  return getImageUrl(resoursecURL.concat(imgLink));
+};

@@ -4,6 +4,8 @@ import Route from './route';
 import notFoundPage from '../pages/notFound';
 import serverErrorPage from '../pages/serverError';
 import Loader from '../components/loader/loader';
+import Modal from '../components/modal/modal';
+import ChatSettings from '../components/chatSettings/chatSettings';
 
 class Router {
   public routes: Route[] = [];
@@ -90,9 +92,17 @@ class Router {
     const parent = document.getElementById(this._rootQuery);
     parent?.appendChild(child.getContent());
   }
+
+  addModal(Modal: typeof Block) {
+    const child = new Modal();
+    const parent = document.getElementById(this._rootQuery);
+    parent?.appendChild(child.getContent());
+  }
 }
 
 const router = new Router('app');
+router.addModal(Modal);
+router.addModal(ChatSettings);
 router.addSuspense(Loader);
 
 export default router;

@@ -97,7 +97,7 @@ export const delet = (url: string, options: reqOptions) =>
 export const fetchWithRetry = (
   url: string,
   options: reqOptions
-): Promise<XMLHttpRequest | User | Chat[]> => {
+): Promise<XMLHttpRequest | User | Chat[] | User[] | Chat> => {
   const { tries } = options;
 
   const onReject = (err: unknown) => {

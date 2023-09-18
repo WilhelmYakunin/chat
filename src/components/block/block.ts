@@ -2,7 +2,8 @@ import { v4 as uuid } from 'uuid';
 import EventBus from './eventBus';
 import Templator from './templator';
 import { cloneDeep, merge } from 'lodash';
-import { Chat } from '../../store/store';
+import { IChat } from '../../store/store';
+import { User } from '../../pages/settings/model';
 
 export type someObj = {
   [x: string]: unknown;
@@ -10,7 +11,12 @@ export type someObj = {
   errors?: { [x: string]: boolean };
   events?: { eventName: string; callback: (e: Event) => void }[];
   modal?: { type?: string; inputValue?: string };
-  chatList?: Chat[];
+  chatList?: IChat[];
+  chat?: IChat;
+  id?: string;
+  isOpen?: boolean;
+  proposals?: User[];
+  toAddUsers?: User[];
 };
 
 class Block {
@@ -25,7 +31,7 @@ class Block {
 
   public id = uuid();
 
-  public children: { [id: string]: Block } = {};
+  public children: { [id: string]: Block } | { [id: string]: null } = {};
   public events: { eventName: string; callback: (e: Event) => void }[] = [];
   protected eventBus: () => EventBus;
 
@@ -164,11 +170,15 @@ class Block {
     Object.assign(this.props, merged);
   };
 
+  public setPropsToValue = (propretyname: string, value: unknown) => {
+    this.props[propretyname] = value;
+  };
+
   protected compile(template: string, props: someObj) {
     const propsAndStubs = { ...props };
 
     Object.entries(this.children).forEach(([key, child]) => {
-      propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
+      if (child) propsAndStubs[key] = `<div data-id="${child.id}"></div>`;
     });
 
     const fragment = this._createDocumentElement(
@@ -178,11 +188,14 @@ class Block {
     fragment.innerHTML = new Templator(template).compile(propsAndStubs);
 
     Object.values(this.children).forEach((child) => {
-      const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
-      if (stub) {
-        stub.replaceWith(child.getContent());
+      if (child) {
+        const stub = fragment.content.querySelector(`[data-id="${child.id}"]`);
+        if (stub) {
+          stub.replaceWith(child.getContent());
+        }
       }
     });
+
     return fragment.content;
   }
 

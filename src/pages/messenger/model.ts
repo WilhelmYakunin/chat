@@ -4,7 +4,7 @@ export enum messageFileds {
 
 export enum controlsButtons {
   chats = 'chats',
-  banlist = 'banlist',
   camera = 'camera',
+  banlist = 'banlist',
   settings = 'settings',
 }

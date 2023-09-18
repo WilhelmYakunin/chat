@@ -14,8 +14,10 @@ export default class ChatList extends Block {
     }, this.id);
   }
 
-  onChatCardClick() {
-    console.log(this);
+  onChatCardClick(e: Event, id: string) {
+    e.preventDefault();
+    if (id === store.getState().currentChat.id) return;
+    store.setState({ currentChat: { id } });
   }
 
   render() {
@@ -45,24 +47,34 @@ export default class ChatList extends Block {
           )
           .join('');
 
-      const name = getCamel(chat.title);
+      const name = getCamel(chat.title + id);
 
       if (!last_message) {
         this.children[name] = new NoLastMessage({
           avatar,
           title,
           id,
-          events: [{ eventName: 'click', callback: this.onChatCardClick }],
+          events: [
+            {
+              eventName: 'click',
+              callback: (e: Event) => this.onChatCardClick(e, id),
+            },
+          ],
         });
       } else {
-        this.children[name] = new ordinaryChatCard({
+        this.children[name] = new OrdinaryChatCard({
           avatar: last_message.user.avatar,
           first_name: last_message.user.first_name,
           second_name: last_message.user.second_name,
           id,
           unread_count,
           time: last_message.time,
-          events: [{ eventName: 'click', callback: this.onChatCardClick }],
+          events: [
+            {
+              eventName: 'click',
+              callback: (e: Event) => this.onChatCardClick(e, id),
+            },
+          ],
         });
       }
 
@@ -70,9 +82,7 @@ export default class ChatList extends Block {
       return acc;
     }, ``);
 
-    const temp = `<div <% if (this.class) { %> class="<% this.class %>"<% } %> > 
-                        ${chats}
-                    </div>`;
+    const temp = `<div>${chats}</div>`;
 
     return this.compile(temp, this.props);
   }
@@ -92,13 +102,13 @@ class NoLastMessage extends Block {
                         <span class=${cn('title')}>${title}</span>
                         <span class=${cn('nomsg')}>${words.EMPTY_CHAT}</span>
                       </div>
-              </div>`;
+                  </div>`;
 
     return this.compile(temp, this.props);
   }
 }
 
-class ordinaryChatCard extends Block {
+class OrdinaryChatCard extends Block {
   render() {
     const cn = bem('chatCard');
 
@@ -107,8 +117,8 @@ class ordinaryChatCard extends Block {
 
     const temp = `<div keyId=${id} class=${cn()}>
                   <img class=${cn('avatar')}
-                  alt=${words.AVATAR_ALT}
-                  src=${getAvatar(avatar as string)}> </img>
+                    alt=${words.AVATAR_ALT}
+                    src=${getAvatar(avatar as string)}> </img>
                   <div class=${cn('lastmsgInfo')}>
                     <span>${first_name + ' ' + second_name}</span>
                   </div>
@@ -121,52 +131,3 @@ class ordinaryChatCard extends Block {
     return this.compile(temp, this.props);
   }
 }
-
-// if (chatList?.length !== 0 && undefined !== chatList) {
-//   const cn = bem('chatCard');
-
-//   const handleChatClick = (e: Event) => {
-//     console.log(e);
-//   };
-
-//   content = chatList.reduce((acc, chat) => {
-//     const { id, avatar, title, unread_count, last_message } = chat;
-//     let member;
-
-//     if (last_message) {
-//       const {
-//         user: { first_name, second_name, avatar },
-//         time,
-//       } = last_message;
-
-//       member = `<div id=${id} class=${cn()}>
-//                   <img class=${cn('avatar')}
-//                   alt=${words.AVATAR_ALT}
-//                   src=${getAvatar(avatar)}> </img>
-//                   <div class=${cn('lastmsgInfo')}>
-//                     <span>${first_name + ' ' + second_name}</span>
-//                   </div>
-//                   <div class=${cn('unreadedInfo')}>
-//                     <span>${unread_count}</span>
-//                     <span>${time}</span>
-//                   </div>
-//                 </div>`;
-//     } else {
-//       member = `<div class=${cn()}>
-//                       <img class=${cn('avatar')}
-//                       alt=${words.AVATAR_ALT}
-//                       src=${setChatAvatart(avatar)}> </img>
-//                       <div class=${cn('chatInfo')}>
-//                         <span class=${cn('title')}>${title}</span>
-//                         <span class=${cn('nomsg')}>${
-//         words.EMPTY_CHAT
-//       }</span>
-//                       </div>
-//               </div>`;
-//     }
-//     acc += member;
-//     return acc;
-//   }, ``);
-// } else {
-//   content = `<span>${words.EMPTY_CHATLIST}</span>`;
-// }

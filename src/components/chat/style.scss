@@ -1,0 +1,38 @@
+@import '../../../global.scss';
+
+.chat {
+    &__header {
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+    }    
+
+    &__info {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+    }
+
+    &__appControlSetter {
+        margin-left: auto;
+        cursor: pointer;
+        padding: 10px;
+        display: inline-flex;
+        border-radius: 100%;
+        box-shadow: 1px 1px 1px #000;
+
+        &--pressed {
+            background-color: red;
+            filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%);
+        }
+    }
+}
+
+.participants {
+    cursor: pointer;
+    color: $foo-app-info-text;
+}
+
+    
+   
+   

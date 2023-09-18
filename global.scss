@@ -1,7 +1,11 @@
 $foo-main-text: #fff;
+$foo-app-info-text: #ffffffa7;
+$foo-text-hover-text:  rgba(69, 181, 255);
 $foo-fiature-color: #e54;
 $foo-main-background: rgb(46 51 57);
+$foo-modal-background:  rgba(222, 211, 211, 0.5);
 $foo-bottom-aside: 20px;
+
 
 @mixin visually-hidden {
     position: absolute;

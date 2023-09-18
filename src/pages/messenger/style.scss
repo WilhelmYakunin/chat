@@ -9,8 +9,6 @@
         width: 1200px;        
     }
 
-    padding: 20px;
-    min-height: 90vh;
     box-sizing: content-box;
     display: flex;
     justify-content: space-between;
@@ -21,12 +19,19 @@
         }
 
         @media (width >= 540px) {
-            min-width: 300px;        
+            min-width: 300px;
+            max-width: 30%;        
         }
              
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+
+    }
+
+    &__chatList {
+        min-height: 60vh;
+        max-height: 65vh;
+        overflow: auto;
     }
 
     &__controls {
@@ -99,7 +104,8 @@
         }
     }
 
-    &__appControls {
+    &__appControls {      
+        margin: auto 0; 
         display: flex;
         justify-content: space-between;
         padding: 5px 15px;
@@ -144,13 +150,11 @@
     }
 
     &__label {
-        padding: 0 10px;
         display: flex;
-        flex-direction: column;     
+        flex-direction: column;
     }
 
     &__input { 
-        flex:  .85;
         color: $foo-main-text;;
         padding: 10px 20px;
         border-radius: 20px;
@@ -168,7 +172,7 @@
         }
     }
     
-    &__pattern {
+    &__rule {
         color: transparent;
 
         &--shown {
@@ -179,41 +183,4 @@
             color: red;
         }
     }
-
-    &__chatList {
-        padding: 20px;
-    
-        max-height: 70vh;
-        overflow: auto;
-    }
-
-    :root {
-        --scrollbarBgColor: rgba(0, 0, 0, .05);
-        --scrollbarThumbColor: rgba(0, 0, 0, .15);
-        --scrollbarThumbColorSecond: rgba(255, 255, 255, .7);
-        --scrollbarWidth: 2rem;
-        --scrollbarBorder: 0 solid var(--scrollbarBgColor);
-        --scrollbarBorderRadius: calc(var(--scrollbarWidth) / 4);
-      }
-      &__chatList{
-        scrollbar-width: var(--scrollbarWidth);
-        scrollbar-color: var(--scrollbarThumbColor) var(--scrollbarBgColor);
-      }
-      &__chatList::-webkit-scrollbar {
-        width: var(--scrollbarWidth);
-      }
-      &__chatList::-webkit-scrollbar-track {
-        background: var(--scrollbarBgColor);
-        border-radius: var(--scrollbarBorderRadius);
-      }
-      &__chatList::-webkit-scrollbar-thumb {
-        background-color: var(--scrollbarThumbColor);
-        border-radius: var(--scrollbarBorderRadius);
-        border: var(--scrollbarBorder);
-        background-image: linear-gradient(
-          180deg,
-          var(--scrollbarThumbColor) 0%,
-          var(--scrollbarThumbColorSecond) 90%
-        );
-      }
 }

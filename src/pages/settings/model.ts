@@ -10,12 +10,12 @@ export enum userInfoFields {
 }
 
 export interface User {
-  id: number;
+  id: string;
   first_name: string;
   second_name: string;
   display_name: string;
   login: string;
-  avatar: string;
+  avatar: string | null;
   email: string;
   phone: string;
 }

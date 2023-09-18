@@ -9,3 +9,7 @@ export const userinfo = baseURL.concat('/auth/user');
 export const changeUserinfo = baseURL.concat('/user/profile');
 export const changeUserAvatart = baseURL.concat('/user/profile/avatar');
 export const chats = baseURL.concat('/chats');
+export const getChatUsers = (id: string) =>
+  baseURL.concat('/chats/', id, '/users');
+export const usersChat = baseURL.concat('/chats/users');
+export const usersSearch = baseURL.concat('/user/search');

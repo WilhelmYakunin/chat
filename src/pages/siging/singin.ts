@@ -2,7 +2,7 @@ import Header from '../../components/header/header';
 import Input from '../../components/input/input';
 import LabeledInput from '../../components/labeledInput/LabeledInput';
 import ErrMessage from '../../components/errMessage/ErrMessage';
-import { login } from './actions';
+import { getChats, getUserInfo, login } from './actions';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
 
@@ -13,7 +13,7 @@ import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
-import store from '../../store/store';
+import store, { IChat } from '../../store/store';
 
 const block = bem('signin');
 export default class Login extends Block {
@@ -71,7 +71,6 @@ export default class Login extends Block {
 
     await login(data as ILogin)
       .then(() => {
-        this.setProps({ isLogging: false });
         router.go(routes.messenger());
       })
       .catch((err) => alert(err.reason))
