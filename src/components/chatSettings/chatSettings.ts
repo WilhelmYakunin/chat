@@ -13,7 +13,7 @@ import { addUserToChat, searchForUser } from './actions';
 import Proposals from '../userProposals/userProposals';
 import MembersToAdd from '../membersToAdd/membersToAdd';
 
-const cn = bem('chatSettings');
+const cn = bem('chatsettings');
 
 export default class ChatSettings extends Block {
   constructor(props: someObj) {

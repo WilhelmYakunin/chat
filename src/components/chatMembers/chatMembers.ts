@@ -35,7 +35,7 @@ export default class ChatMembers extends Block {
 
 class UserCard extends Block {
   render() {
-    const cn = bem('userChatCard');
+    const cn = bem('userchatcard');
     const { id, avatar, first_name, second_name } = this.props.user as User;
 
     this.children.deleteButton =
