@@ -144,6 +144,7 @@ class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected componentDidMount() {}
 
   protected dispatchComponentDidMount() {

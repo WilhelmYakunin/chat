@@ -46,6 +46,7 @@ class Store {
     this.storeDidMount();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   public storeDidMount() {}
 
   private _storeDidUpdate(oldState: unknown, newState: unknown) {
