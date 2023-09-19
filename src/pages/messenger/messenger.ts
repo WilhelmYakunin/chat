@@ -47,7 +47,7 @@ export default class Messenger extends Block {
       const chatList = await getChats();
       this.setProps({
         avatar: user.avatar,
-        chatList,
+        chatList: chatList as [],
       });
       store.setState({ settings: user, chatList });
     } catch (err) {

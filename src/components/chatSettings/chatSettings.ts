@@ -35,7 +35,7 @@ export default class ChatSettings extends Block {
   async getMambers() {
     try {
       const members = await getParticipants(store.getState().currentChat.id);
-      setChatOwnerFirst(members as User[]);
+      setChatOwnerFirst(members as []);
       this.setProps({ members });
     } catch (err) {
       console.log(err);
@@ -80,7 +80,7 @@ export default class ChatSettings extends Block {
     }
     try {
       const proposals = await searchForUser(value);
-      this.setProps({ inputValue: value, proposals: proposals as User[] });
+      this.setProps({ inputValue: value, proposals: proposals as [] });
       console.log(this.props);
       this.focusOnInput();
     } catch (err) {

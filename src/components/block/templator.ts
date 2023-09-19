@@ -1,4 +1,4 @@
-import { TProps } from './block';
+import { someObj } from './block';
 
 export default class Templator {
   // Регулярное выражение для поиска тегов шаблонизатора вида <% %>
@@ -10,13 +10,13 @@ export default class Templator {
 
   private _template: string;
 
-  private props!: TProps;
+  private props!: someObj;
 
   constructor(template: string) {
     this._template = template;
   }
 
-  public compile(ctx: TProps) {
+  public compile(ctx: someObj) {
     this.props = ctx;
     return this._compileTemplate();
   }
