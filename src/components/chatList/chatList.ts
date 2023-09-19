@@ -4,7 +4,7 @@ import { words } from '../../langs';
 import { setChatAvatart, getAvatar } from './actions';
 
 import store from '../../store/store';
-import './style.scss';
+import './style.sass';
 
 export default class ChatList extends Block {
   componentDidMount() {

@@ -3,7 +3,7 @@ import { words } from '../../langs';
 import { User } from '../../pages/settings/model';
 import Block from '../block/block';
 
-import './style.scss';
+import './style.sass';
 import { getAvatar } from '../../pages/settings/actions';
 
 export default class MembersToAdd extends Block {

@@ -4,7 +4,7 @@ import Block, { someObj } from '../block/block';
 import { words } from '../../langs';
 import { setChatAvatart } from '../chatList/actions';
 
-import './style.scss';
+import './style.sass';
 
 export default class Chat extends Block {
   constructor(props: someObj) {

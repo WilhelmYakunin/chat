@@ -8,7 +8,7 @@ import { routes } from '../../router/routes';
 
 import { loginFields } from './model';
 
-import './style.scss';
+import './style.sass';
 import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 

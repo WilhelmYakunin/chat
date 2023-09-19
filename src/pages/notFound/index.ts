@@ -3,7 +3,7 @@ import Block from '../../components/block/block';
 import { words } from '../../langs/index';
 import router from '../../router/router';
 
-import './style.scss';
+import './style.sass';
 import Input from '../../components/input/input';
 
 const block = bem('notfound');

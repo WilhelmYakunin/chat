@@ -7,7 +7,7 @@ import Input from '../input/input';
 import store from '../../store/store';
 import { getAvatar } from './actions';
 
-import './style.scss';
+import './style.sass';
 
 export default class Proposals extends Block {
   render() {

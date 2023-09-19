@@ -5,7 +5,7 @@ import ChatList from '../../components/chatList/chatList';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
 
-import './style.scss';
+import './style.sass';
 import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 

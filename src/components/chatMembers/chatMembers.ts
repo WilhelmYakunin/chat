@@ -4,7 +4,7 @@ import { User } from '../../pages/settings/model';
 import store from '../../store/store';
 import Block from '../block/block';
 
-import './style.scss';
+import './style.sass';
 import Input from '../input/input';
 import { deleteChatUsers } from './actions';
 import { getAvatar } from '../../pages/settings/actions';

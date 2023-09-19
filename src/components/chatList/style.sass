@@ -1,0 +1,31 @@
+@import '../../../global.sass'
+
+.chatcard
+    cursor: pointer
+    padding: 10px
+    color: $foo-main-text
+    display: flex
+    min-height: 50px
+    gap: 20px
+    align-items: center
+
+    &__avatar
+        padding: 5px
+        width: 32px
+        height: 32px
+        object-fit: cover
+        border: 1px solid $foo-main-text
+        border-radius: 50%
+
+    &__chatInfo
+        font-size: 10pt
+        display: flex
+        flex-direction: column
+        justify-content: center
+
+    &__title
+        font-weight: bold
+
+    &__nomsg
+        color: $foo-app-info-text
+        font-style: italic

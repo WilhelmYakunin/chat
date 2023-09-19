@@ -4,6 +4,7 @@ import { words } from '../../langs/index';
 import router from '../../router/router';
 import Block from '../../components/block/block';
 
+import './style.sass';
 const block = bem('servererror');
 export default class ServerErrorPage extends Block {
   goBack(e: Event) {

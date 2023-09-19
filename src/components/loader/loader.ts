@@ -1,7 +1,7 @@
 import Block from '../block/block';
 import bem from 'bem-ts';
 
-import './style.scss';
+import './style.sass';
 import store from '../../store/store';
 
 export default class ChatList extends Block {

@@ -3,7 +3,7 @@ import store from '../../store/store';
 import Block, { someObj } from '../block/block';
 import Input from '../input/input';
 
-import './style.scss';
+import './style.sass';
 import { words } from '../../langs';
 import { addChat } from './actions';
 import { getChats } from '../../pages/messenger/actions';
