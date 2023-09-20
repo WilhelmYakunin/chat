@@ -8,7 +8,7 @@ import { getAvatar } from '../../pages/settings/actions';
 
 export default class MembersToAdd extends Block {
   render() {
-    const cn = bem('members');
+    const cn = bem('memberstoadd');
 
     if (undefined === this.props.members)
       return this.compile('<div></div>', this.props);
@@ -23,9 +23,9 @@ export default class MembersToAdd extends Block {
       return acc;
     }, ``);
 
-    const temp = `<div>
+    const temp = `<div class=${cn()}>
                     ${words.MEMBERS_To_ADD}
-                    <ul class=${cn()}>
+                    <ul class=${cn('list')}>
                       ${users}
                     </ul>
                   </div>`;
@@ -36,7 +36,7 @@ export default class MembersToAdd extends Block {
 
 class UserCard extends Block {
   render() {
-    const cn = bem('chatcard');
+    const cn = bem('supposedmember');
     const { id, avatar, first_name, second_name } = this.props.user as User;
 
     const temp = `<li keyid=${id} class=${cn()}>

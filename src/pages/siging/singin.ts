@@ -69,14 +69,16 @@ export default class Login extends Block {
 
     store.setState({ isLoad: true });
 
-    await login(data as ILogin)
-      .then(() => {
-        router.go(routes.messenger());
-      })
-      .catch((err) => alert(err.reason))
-      .finally(() => {
-        store.setState({ isLoad: false });
-      });
+    try {
+      await login(data as ILogin);
+      router.go(routes.messenger());
+    } catch (err: unknown) {
+      if ((err as { reason: string }).reason === 'User already in system')
+        return router.go(routes.messenger());
+      console.log(err);
+    } finally {
+      store.setState({ isLoad: false });
+    }
   }
 
   goSignup(e: Event) {

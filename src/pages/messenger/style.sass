@@ -1,29 +1,34 @@
 @import '../../../global.sass'
 
 .messenger
+    box-sizing: content-box
+    display: flex
+    gap: 20px
+
     @media (width <= 1200px)
         width: 90vw
 
     @media (width >= 1200px)
         width: 1200px
-        box-sizing: content-box
-        display: flex
-        justify-content: space-between
 
     &__board
+        display: flex
+        flex-direction: column
+
         @media (width <= 1200px)
             width: 90vw
 
         @media (width >= 540px)
-            min-width: 300px
-            max-width: 30%
-            display: flex
-            flex-direction: column
+            width: 50%
+
+            @media (width > 800px)
+                width: 30%
 
     &__chatList
         min-height: 60vh
         max-height: 65vh
         overflow: auto
+        display: flex
 
     &__controls
         display: flex
@@ -52,9 +57,12 @@
         margin-left: auto
         padding: 5px 10px
         color: $foo-main-text
-        background-color: $foo-fiature-color
         border-radius: 25px
+        border: 0
         box-shadow: 1px 1px 1px #000
+        background-color: transparent
+        border-color: transparent
+        filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%)
 
     &__addTree
         cursor: pointer
@@ -106,22 +114,14 @@
             filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%)
 
     &__chatBox
-        @media (width <= 540px)
-            border-width: 0 !important
-            clip: rect(1px, 1px, 1px, 1px) !important
-            height: 1px !important
-            overflow: hidden !important
-            padding: 0 !important
-            position: absolute !important
-            white-space: nowrap !important
-            width: 1px !important
+        width: 70%
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        color: $foo-main-text
 
-        @media (width >= 540px)
-            min-width: 70%
-            display: flex
-            flex-direction: column
-            justify-content: space-between
-            color: $foo-main-text
+        @media (width < 540px)
+            @include visually-hidden
 
     &__label
         display: flex

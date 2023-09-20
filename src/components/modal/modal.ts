@@ -20,7 +20,7 @@ export default class Modal extends Block {
 
   close() {
     store.setState({ modal: { type: 'none' } });
-    this.setProps({ type: 'none' });
+    this.setProps({ type: 'none', inputValue: '' });
   }
 
   handleInput(e: Event) {
@@ -31,10 +31,13 @@ export default class Modal extends Block {
   }
 
   async onSubmit(e: Event) {
-    store.setState({ isLoad: true });
     e.preventDefault();
-
     const title = store.getState().modal.inputValue;
+    if (title === '' || title.match(/^\s+$/)) {
+      return this.close();
+    }
+
+    store.setState({ isLoad: true });
 
     try {
       await addChat(title);
@@ -112,7 +115,7 @@ export default class Modal extends Block {
                                 <% this.close %>
                             </div>
                         </div>
-                            <% this.input %>            
+                        <% this.input %>            
                         <div class=${cn('footer')}>
                             <% this.abolution %>
                             <% this.confirm %>

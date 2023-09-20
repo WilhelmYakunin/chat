@@ -20,14 +20,16 @@ export default class ChatSettings extends Block {
     super({ ...props });
     store.subscribe((state) => {
       if (state.currentChat.isOpen) {
-        this.setProps({ isOpen: true });
+        this.setProps({ isOpen: true, inputValue: '' });
         this.getMambers();
       }
       if (state.currentChat.toAddUsers) {
         state.currentChat.toAddUsers.length !== 0 &&
           this.setProps({
             toAddUsers: state.currentChat.toAddUsers as User[],
+            inputValue: '',
           });
+        this.setPropsToValue('proposals', undefined);
       }
     }, this.id);
   }

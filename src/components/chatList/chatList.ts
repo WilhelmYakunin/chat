@@ -25,7 +25,7 @@ export default class ChatList extends Block {
 
     if (store.getState().isLoad) {
       return this.compile(
-        '<span style="color: white" >Loading...</span>',
+        `<span class=${bem('load')()} >Loading...</span>`,
         this.props
       );
     }

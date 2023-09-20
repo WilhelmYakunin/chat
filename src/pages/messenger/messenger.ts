@@ -51,6 +51,8 @@ export default class Messenger extends Block {
       });
       store.setState({ settings: user, chatList });
     } catch (err) {
+      if ((err as { reason: string }).reason === 'Cookie is not valid')
+        router.go(routes.sigin());
       console.log(err);
     } finally {
       store.setState({ isLoad: false });
@@ -216,7 +218,10 @@ export default class Messenger extends Block {
                       <div class=${block('addChat')}>
                         <img class=${block('avatar')} 
                         alt=${words.AVATAR_ALT} 
-                        src=${getAvatar(this.props.avatar as string)}>
+                        src=${
+                          this.props.avatar &&
+                          getAvatar(this.props.avatar as string)
+                        }>
                         <h2 class=${block('chatsHeader')}>
                         ${words.CHATS_HEADER}
                         </h2>

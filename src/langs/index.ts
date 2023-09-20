@@ -95,7 +95,7 @@ export const words: IWords = {
     SEARCH_NEW_MEMBER: 'Search for user by login',
   },
   SEARCH_ARIADESCRIPTION: 'Search results will appear below',
-  MEMBERS_To_ADD: 'Will add user(s) below?',
+  MEMBERS_To_ADD: 'Add user(s) below?',
   DELETE_USER: 'delete',
   NO_RESULTS: 'Not a match',
   CLEAR_SEARCH: 'Clear',
