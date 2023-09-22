@@ -103,6 +103,7 @@ export const words: IWords = {
   PARTICIPANTS: 'Partisipants',
   ADD_USERS_TO_CHAT: 'Add users',
   EMPTY_CHAT: 'No message yet',
+  YESTERDAY: 'Yesterday',
   EMPTY_CHATLIST: 'No chats here yet',
   AUTHOR: 'Started by: ',
   CHAT_MEMBERS: 'Chat&#160members',

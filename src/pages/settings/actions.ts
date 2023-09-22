@@ -7,6 +7,7 @@ import {
 import { get, put } from '../../API';
 import { User, UserDTO, userInfoFields } from './model';
 import { getImageUrl } from '../../components/helpers';
+import noWriterAva from './pictures/writer-svgrepo-com.svg';
 
 export const getUserInfo = async (): Promise<User> =>
   get(userinfo, { tries: 0 }) as unknown as User;
@@ -35,7 +36,7 @@ export const getProperType = (fieldName: string | boolean) => {
 export const changeUserAvatar = async (file: File) => {
   const formData = new FormData();
   formData.append('avatar', file);
-  put(changeUserAvatart, {
+  return put(changeUserAvatart, {
     headers: {
       'Access-Control-Allow-Origin': origin,
       'Access-Control-Allow-Methods': 'PUT',
@@ -46,6 +47,6 @@ export const changeUserAvatar = async (file: File) => {
 };
 
 export const getAvatar = (imgLink: string | null) => {
-  if (!imgLink) return getImageUrl('pictures/' + 'noava' + '.svg');
+  if (!imgLink) return getImageUrl(noWriterAva);
   return getImageUrl(resoursecURL.concat(imgLink));
 };

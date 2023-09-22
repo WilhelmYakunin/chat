@@ -218,10 +218,7 @@ export default class Messenger extends Block {
                       <div class=${block('addChat')}>
                         <img class=${block('avatar')} 
                         alt=${words.AVATAR_ALT} 
-                        src=${
-                          this.props.avatar &&
-                          getAvatar(this.props.avatar as string)
-                        }>
+                        src=${getAvatar(this.props.avatar as string)}>
                         <h2 class=${block('chatsHeader')}>
                         ${words.CHATS_HEADER}
                         </h2>

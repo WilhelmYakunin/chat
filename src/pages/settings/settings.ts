@@ -119,8 +119,8 @@ export default class SettingsPage extends Block {
       const [file] = (e.target as HTMLInputElement).files as FileList;
 
       this.setProps({ isLoading: true });
-      await changeUserAvatar(file);
-      await this.setUserInfo();
+      const { avatar } = (await changeUserAvatar(file)) as User;
+      this.setProps({ avatar });
     } catch (err) {
       console.log(err);
     } finally {
@@ -187,6 +187,7 @@ export default class SettingsPage extends Block {
 
   goBack(e: Event) {
     e.preventDefault();
+    console.log(111);
     router.go(routes.messenger());
   }
 
