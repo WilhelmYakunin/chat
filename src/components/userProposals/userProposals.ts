@@ -25,11 +25,11 @@ export default class Proposals extends Block {
 
     const users = (this.props.proposals as User[]).reduce(
       (acc, user): string => {
-        const { id, login } = user;
+        const { id } = user;
 
         if ((this.props.users as User[]).map((el) => el.id).includes(id))
           return acc;
-        const blocName = login[0] + id + login[length - 1];
+        const blocName = 'name' + id + 'name';
         this.children[blocName] = new UserProposal({
           user,
           events: [

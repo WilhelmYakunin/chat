@@ -17,6 +17,7 @@ export type someObj = {
   isOpen?: boolean;
   proposals?: User[];
   toAddUsers?: User[];
+  members?: User[];
 };
 
 class Block {

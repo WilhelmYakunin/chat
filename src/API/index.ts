@@ -24,7 +24,7 @@ const queryStringify = (data: XMLHttpRequestBodyInit) => {
 const request = (
   url: string,
   options: reqOptions
-): Promise<XMLHttpRequest | User | IChat[]> => {
+): Promise<XMLHttpRequest | User | User[] | IChat[] | IChat> => {
   const { method, data } = options;
 
   return new Promise((resolve, reject) => {

@@ -6,6 +6,13 @@ $foo-main-background: rgb(46 51 57)
 $foo-modal-background: rgba(222 211 211 / 50%)
 $foo-bottom-aside: 20px
 
+:root
+  --hue: 320
+  --bg: oklch(35% .3 var(--hue))
+  --text: oklch(85% .1 var(--hue))
+  --shadow: oklch(25% .2 var(--hue))
+  --highlight: oklch(98% .05 var(--hue))
+
 @mixin visually-hidden
   position: absolute
   width: 1px
@@ -17,3 +24,17 @@ $foo-bottom-aside: 20px
   clip-path: inset(100%)
   clip: rect(0 0 0 0)
   overflow: hidden
+
+@mixin modal-layout
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  height: 100%
+  overflow: auto
+  background: rgba(222 211 211 / 50%)
+  z-index: 9995
+  min-height: 100%
+  box-sizing: border-box
+  transition: background-color 2s ease-in-out

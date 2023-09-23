@@ -187,7 +187,6 @@ export default class SettingsPage extends Block {
 
   goBack(e: Event) {
     e.preventDefault();
-    console.log(111);
     router.go(routes.messenger());
   }
 

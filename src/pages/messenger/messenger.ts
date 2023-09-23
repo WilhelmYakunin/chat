@@ -16,6 +16,7 @@ import { getUserInfo } from '../settings/actions';
 import { controlsButtons, messageFileds } from './model';
 import IconedButton from '../../components/iconedButton/iconedButton';
 import { getImageUrl } from '../../components/helpers';
+import { modalTypes } from '../../components/modal/model';
 
 export default class Messenger extends Block {
   constructor(props: someObj) {
@@ -59,18 +60,12 @@ export default class Messenger extends Block {
     }
   }
 
-  async logout() {
-    try {
-      await logOut();
-      store.setState({ isAuth: false });
-      router.go(routes.sigin());
-    } catch (err) {
-      console.log(err);
-    }
+  showAddChatModal() {
+    store.setState({ modal: { type: modalTypes.addChat } });
   }
 
-  showAddChatModal() {
-    store.setState({ modal: { type: words.modal.ADD_CHAT } });
+  showLogoutModal() {
+    store.setState({ modal: { type: modalTypes.logout } });
   }
 
   setCurrentControl(name: string) {
@@ -106,7 +101,7 @@ export default class Messenger extends Block {
       events: [
         {
           eventName: 'click',
-          callback: this.logout,
+          callback: this.showLogoutModal,
         },
       ],
     });

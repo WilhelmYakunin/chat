@@ -21,7 +21,7 @@ export default class ChatSettings extends Block {
     store.subscribe((state) => {
       if (state.currentChat.isOpen) {
         this.setProps({ isOpen: true, inputValue: '' });
-        this.getMambers();
+        this.getMembers();
       }
       if (state.currentChat.toAddUsers) {
         state.currentChat.toAddUsers.length !== 0 &&
@@ -34,11 +34,11 @@ export default class ChatSettings extends Block {
     }, this.id);
   }
 
-  async getMambers() {
+  async getMembers() {
     try {
       const members = await getParticipants(store.getState().currentChat.id);
-      setChatOwnerFirst(members as []);
-      this.setProps({ members });
+      setChatOwnerFirst(members as User[]);
+      this.setProps({ members: members as User[] });
     } catch (err) {
       console.log(err);
     }
@@ -83,7 +83,6 @@ export default class ChatSettings extends Block {
     try {
       const proposals = await searchForUser(value);
       this.setProps({ inputValue: value, proposals: proposals as [] });
-      console.log(this.props);
       this.focusOnInput();
     } catch (err) {
       console.log(err);
@@ -104,7 +103,10 @@ export default class ChatSettings extends Block {
         try {
           await addUserToChat({ chatId, usersIds });
           this.setProps({
-            members: [this.props.usersIds, ...this.props.toAddUsers],
+            members: [
+              ...(this.props.members as User[]),
+              ...this.props.toAddUsers,
+            ],
           });
           this.setPropsToValue('toAddUsers', undefined);
         } catch (err) {

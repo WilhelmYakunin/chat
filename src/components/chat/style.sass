@@ -1,17 +1,35 @@
 @import '../../../global.sass'
 
 .chat
+    &__init
+        margin: auto
+        text-shadow: 0 .15ch 15px var(--shadow), 0 0px 0 var(--highlight)
+
     &__header
         padding: 0 10px
         display: flex
         align-items: center
+
+    &__avatar
+        padding: 5px
+        width: 32px
+        height: 32px
+        object-fit: cover
+        border: 1px solid $foo-main-text
+        border-radius: 50%
 
     &__info
         display: flex
         flex-direction: column
         margin-left: 10px
 
-    &__appControlSetter
+    &__title
+        text-shadow: 0 .15ch 15px var(--shadow), 0 0px 0 var(--highlight)
+
+    &__rename
+        height: 18px
+        width: 18px
+        object-fit: contain
         margin-left: auto
         cursor: pointer
         padding: 10px
@@ -19,8 +37,21 @@
         border-radius: 100%
         box-shadow: 1px 1px 1px #000
 
+    &--pressed
+        padding: 100px
+        filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%)
+
+    &__delete
+        height: 18px
+        width: 18px
+        object-fit: contain
+        cursor: pointer
+        padding: 10px
+        display: inline-flex
+        border-radius: 100%
+        box-shadow: 1px 1px 1px #000
+
         &--pressed
-            background-color: red
             filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%)
 
 .participants

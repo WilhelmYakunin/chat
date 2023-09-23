@@ -1,4 +1,7 @@
 export enum modalTypes {
-  addChat = 'Add a new chat',
-  chatInfo = 'Chat members',
+  close = 'none',
+  logout = 'Logout',
+  addChat = 'AddNewChat',
+  changeChatAvatar = 'changeChatAvatar',
+  deleteChat = 'deleteChat',
 }

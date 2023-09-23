@@ -94,6 +94,12 @@ class Store {
     this._state.currentChat.toAddUsers = value;
   }
 
+  public deleteChat(id: string) {
+    this._state.chatList = this._state.chatList.filter(
+      (chat) => chat.id !== id
+    );
+  }
+
   public getState() {
     return this._state;
   }
@@ -167,6 +173,7 @@ interface IState {
   chatList: IChat[];
   currentChat: {
     id: string;
+    avatar: string;
     members: User[];
     isOpen: boolean;
     toAddUsers?: User[];
@@ -204,7 +211,7 @@ const defaultState = {
     users: null,
   },
   chatList: [],
-  currentChat: { id: 'none', members: [], isOpen: false },
+  currentChat: { id: 'none', members: [], isOpen: false, avatar: 'none' },
 };
 
 export default new Store(defaultState);

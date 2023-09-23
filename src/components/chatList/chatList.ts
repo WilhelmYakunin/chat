@@ -58,9 +58,8 @@ export default class ChatList extends Block {
       } else {
         this.children[name] = new OrdinaryChatCard({
           content: last_message.content,
-          avatar: last_message.user.avatar,
-          first_name: last_message.user.first_name,
-          second_name: last_message.user.second_name,
+          avatar,
+          title,
           id,
           unread_count,
           time: last_message.time,
@@ -107,8 +106,7 @@ class OrdinaryChatCard extends Block {
   render() {
     const cn = bem('chatcard');
 
-    const { avatar, first_name, second_name, unread_count, id, time, content } =
-      this.props;
+    const { avatar, title, unread_count, id, time, content } = this.props;
 
     const now = new Date();
     const lastmsgTime = new Date(time as string);
@@ -120,8 +118,10 @@ class OrdinaryChatCard extends Block {
           return words.YESTERDAY;
         default:
           return (
-            lastmsgTime.getDay() +
-            lastmsgTime.getMonth() +
+            lastmsgTime.getDate() +
+            '.' +
+            (Number(lastmsgTime.getMonth()) + 1) +
+            '.' +
             lastmsgTime.getFullYear()
           );
       }
@@ -132,7 +132,7 @@ class OrdinaryChatCard extends Block {
                       alt=${words.AVATAR_ALT}
                       src=${getAvatar(avatar as string)}> </img>
                     <div class=${cn('lastmsgInfo')}>
-                      <span>${first_name + ' ' + second_name}</span>
+                      <span class=${cn('title')}>${title}</span>
                       <span>${(content as string).slice(-3)}</span>
                     </div>
                     <div class=${cn('unreadedInfo')}>

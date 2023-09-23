@@ -13,3 +13,4 @@ export const getChatUsers = (id: string) =>
   baseURL.concat('/chats/', id, '/users');
 export const usersChat = baseURL.concat('/chats/users');
 export const usersSearch = baseURL.concat('/user/search');
+export const chatAvatar = baseURL.concat('/chats/avatar');

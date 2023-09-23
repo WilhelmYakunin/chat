@@ -1,5 +1,5 @@
-import { chats } from '../../API/serverPaths';
-import { post } from '../../API';
+import { chats } from '../../../../API/serverPaths';
+import { post } from '../../../../API';
 
 export const addChat = async (title: string) =>
   post(chats, {
