@@ -87,7 +87,7 @@ export default class ChangePasswordModal extends Block {
           forAttr: words.inputs[fieldName].name,
           children: {
             input: new Input({
-              type: getProperType(fieldName),
+              type: 'password',
               name: words.inputs[fieldName].name,
               classInput: cn('input'),
               tabindex: fieldName === changePasswordFields.old_password && 1,

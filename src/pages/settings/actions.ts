@@ -25,9 +25,6 @@ export const getProperType = (fieldName: string | boolean) => {
       return 'email';
     case userInfoFields.phone:
       return 'tel';
-    case userInfoFields.old_password:
-    case userInfoFields.new_password:
-      return 'password';
     default:
       return 'text';
   }
