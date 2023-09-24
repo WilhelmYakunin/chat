@@ -5,8 +5,6 @@ import { cloneDeep, merge } from 'lodash';
 import { IChat } from '../../store/store';
 import { User } from '../../pages/settings/model';
 
-declare type Message = {};
-
 export type someObj = {
   [x: string]: unknown;
   children?: { [x: string]: Block };

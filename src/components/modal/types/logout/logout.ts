@@ -1,6 +1,6 @@
 import bem from 'bem-ts';
 import store from '../../../../store/store';
-import Block, { someObj } from '../../../block/block';
+import Block from '../../../block/block';
 import Input from '../../../input/input';
 
 import './style.sass';
