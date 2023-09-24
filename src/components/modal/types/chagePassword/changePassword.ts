@@ -7,7 +7,6 @@ import { chagePasswrod } from './actions';
 import { modalTypes } from '../../model';
 import { changePasswordFields } from './model';
 import LabeledInput from '../../../labeledInput/LabeledInput';
-import { getProperType } from '../../../../pages/settings/actions';
 import ErrMessage from '../../../errMessage/ErrMessage';
 
 import './style.sass';
