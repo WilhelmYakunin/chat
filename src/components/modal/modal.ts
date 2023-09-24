@@ -8,6 +8,7 @@ import './style.sass';
 import { modalTypes } from './model';
 import DeleteChatModal from './types/deleteChat/deleteChat';
 import changeChatAvatar from './types/changeChatAvatar/changeChatAvatar';
+import ChangePasswordModal from './types/chagePassword/changePassword';
 
 export default class Modal extends Block {
   constructor(props: someObj) {
@@ -35,6 +36,8 @@ export default class Modal extends Block {
           return { name: modalTypes.deleteChat, Child: DeleteChatModal };
         case modalTypes.changeChatAvatar:
           return { name: modalTypes.changeChatAvatar, Child: changeChatAvatar };
+        case modalTypes.chagePassword:
+          return { name: modalTypes.chagePassword, Child: ChangePasswordModal };
         default:
           return { name: modalTypes.addChat, Child: AddNewChat };
       }

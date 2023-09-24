@@ -98,6 +98,7 @@ export const words: IWords = {
     ADD_CHAT_PLACEHOLDER: 'Put a title here',
     SEARCH_NEW_MEMBER: 'Search for user by login',
     UPLOAD_AVATAR: 'Upload image',
+    CHAGE_PASSWORD: 'Change password: ',
   },
   SEARCH_ARIADESCRIPTION: 'Search results will appear below',
   MEMBERS_To_ADD: 'Add user(s) below?',

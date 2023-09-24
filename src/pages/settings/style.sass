@@ -78,7 +78,6 @@ $foo-inputwidth: 250px
         outline: 0
         border-width: 0
         box-shadow: inset 0 -1px 1px gray, inset 1px 1px 1px #000
-
         &--invalid
             border-width: 1px
             border-color: $foo-fiature-color
@@ -88,59 +87,26 @@ $foo-inputwidth: 250px
     &__rule
         font-size: 12px
         color: transparent
-
         &--show
             color: red
 
-    &__rememberContainer
-        display: flex
-        justify-content: space-between
-
-    &__rememberWrapper
-        display: flex
-        gap: 5px
+    &__changePasswordButton
         color: $foo-main-text
+        display: flex
+        align-items: center
+        gap: 10px
+        font-weight: bold
 
-    &__rememberLabel
+    &__repassword
+        height: 32px
+        width: 32px
+        display: inline-flex
         cursor: pointer
-
-    &__inputRemember
-        display: none
-
-        + label::before
-            content: ''
-            display: block
-            width: 20px
-            height: 20px
-            border: 1px solid $foo-main-text
-            position: absolute
-            left: 0
-            top: -2px
-            opacity: .6
-            transition: all .12s, border-color .08s
-
-        &:checked + label::before
-            width: 10px
-            top: -7px
-            left: 7px
-            border-radius: 0
-            opacity: 1
-            border-top-color: transparent
-            border-left-color: transparent
-            transform: rotate(45deg)
-
-        + label
-            cursor: pointer
-            display: block
-            position: relative
-            padding-left: 30px
-            color: $foo-main-text
-            user-select: none
-
-    &__forgotLink
-        cursor: pointer
-        text-decoration: none
-        color: $foo-fiature-color
+        padding: 10px
+        border-radius: 100%
+        box-shadow: 1px 1px 1px #000
+        &--pressed
+            filter: brightness(0) saturate(100%) invert(38%) sepia(68%) saturate(1151%) hue-rotate(330deg) brightness(98%) contrast(91%)
 
     &__applyButton
         cursor: pointer

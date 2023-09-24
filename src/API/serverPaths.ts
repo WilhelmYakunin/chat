@@ -8,6 +8,7 @@ export const signin = baseURL.concat('/auth/signin');
 export const logout = baseURL.concat('/auth/logout');
 export const userinfo = baseURL.concat('/auth/user');
 export const changeUserinfo = baseURL.concat('/user/profile');
+export const changePassword = baseURL.concat('/user/password');
 export const changeUserAvatart = baseURL.concat('/user/profile/avatar');
 export const chats = baseURL.concat('/chats');
 export const getChatUsers = (id: string) =>

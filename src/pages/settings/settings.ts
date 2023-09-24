@@ -21,6 +21,9 @@ import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
 import store from '../../store/store';
+import IconedButton from '../../components/iconedButton/iconedButton';
+import { modalTypes } from '../../components/modal/model';
+import { getImageUrl } from '../../components/helpers';
 
 const block = bem('settings');
 
@@ -205,48 +208,39 @@ export default class SettingsPage extends Block {
     const header = new Header({ class: block('header'), text: words.PROFILE });
     const requiredFields = Object.keys(requiredFileds);
 
-    const [
-      first_name,
-      second_name,
-      display_name,
-      login,
-      email,
-      old_password,
-      new_password,
-      phone,
-    ] = Object.keys(userInfoFields).map(
-      (fieldName: string) =>
-        new LabeledInput({
-          classLabel: block('label'),
-          forAttr: words.inputs[fieldName].name,
-          children: {
-            input: new Input({
-              type: getProperType(fieldName),
-              name: words.inputs[fieldName].name,
-              classInput: block('input'),
-              tabindex: fieldName === userInfoFields.first_name && 1,
-              placeholder: words.inputs[fieldName].placeholder,
-              value: this.props[fieldName],
-              required: requiredFields.includes(fieldName),
-              disabled: this.props.isLoading,
-              events: [
-                {
-                  eventName: 'blur',
-                  callback: ((e: Event) => this.handleInput(e, fieldName)).bind(
-                    this
-                  ),
-                },
-              ],
-            }),
-            error: new ErrMessage({
-              hasError: this.props.errors?.[fieldName],
-              rule: words.inputs[fieldName].rule,
-              noErrClass: block('rule'),
-              errorClass: block('rule', { show: true }),
-            }),
-          },
-        })
-    );
+    const [first_name, second_name, display_name, login, email, phone] =
+      Object.keys(userInfoFields).map(
+        (fieldName: string) =>
+          new LabeledInput({
+            classLabel: block('label'),
+            forAttr: words.inputs[fieldName].name,
+            children: {
+              input: new Input({
+                type: getProperType(fieldName),
+                name: words.inputs[fieldName].name,
+                classInput: block('input'),
+                tabindex: fieldName === userInfoFields.first_name && 1,
+                placeholder: words.inputs[fieldName].placeholder,
+                value: this.props[fieldName],
+                required: requiredFields.includes(fieldName),
+                disabled: this.props.isLoading,
+                events: [
+                  {
+                    eventName: 'blur',
+                    callback: ((e: Event) =>
+                      this.handleInput(e, fieldName)).bind(this),
+                  },
+                ],
+              }),
+              error: new ErrMessage({
+                hasError: this.props.errors?.[fieldName],
+                rule: words.inputs[fieldName].rule,
+                noErrClass: block('rule'),
+                errorClass: block('rule', { show: true }),
+              }),
+            },
+          })
+      );
 
     const applyBtn = new Input({
       type: 'submit',
@@ -288,11 +282,26 @@ export default class SettingsPage extends Block {
     this.children.display_name = display_name;
     this.children.login = login;
     this.children.email = email;
-    this.children.old_password = old_password;
-    this.children.new_password = new_password;
     this.children.phone = phone;
     this.children.applyBtn = applyBtn;
     this.children.gobackLink = gobackLink;
+
+    this.children.chagePassword = new IconedButton({
+      class:
+        modalTypes.chagePassword === store.getState().modal.type
+          ? block('repassword', { pressed: true })
+          : block('repassword'),
+      alt: modalTypes.chagePassword,
+      src: getImageUrl('/pictures/' + 'password' + '.svg'),
+      value: 'change password',
+      events: [
+        {
+          eventName: 'click',
+          callback: () =>
+            store.setState({ modal: { type: modalTypes.chagePassword } }),
+        },
+      ],
+    });
 
     this.events = [
       {
@@ -305,8 +314,8 @@ export default class SettingsPage extends Block {
     const temp = `<div class=${block()}> 
                     <form class=${block('wrapper')}>
                         <div class=${block('headerWrapper')}>
-                        <% this.backwardsMobile %>
-                        <% this.header %>
+                          <% this.backwardsMobile %>
+                          <% this.header %>
                         </div>
                         <label class=${block('avatarWrapper')}>
                           <img alt=${words.AVATAR_ALT} class=${block('avatar')} 
@@ -314,13 +323,16 @@ export default class SettingsPage extends Block {
                           <span>${words.inputs.avatar.placeholder}</span>
                           <% this.avatarInput %>
                         </label>
+                        <label class=${block('changePasswordButton')}>
+                            ${
+                              words.modal.CHAGE_PASSWORD
+                            } <% this.chagePassword %>
+                        </label>
                         <% this.first_name %>
                         <% this.second_name %>
                         <% this.display_name %>
                         <% this.login %>
                         <% this.email %>
-                        <% this.old_password %>
-                        <% this.new_password %>
                         <% this.phone %>
                         <% this.applyBtn %>
                         <% this.gobackLink %>

@@ -4,4 +4,5 @@ export enum modalTypes {
   addChat = 'AddNewChat',
   changeChatAvatar = 'changeChatAvatar',
   deleteChat = 'deleteChat',
+  chagePassword = 'changePassword',
 }
