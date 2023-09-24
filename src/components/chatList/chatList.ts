@@ -1,11 +1,12 @@
 import Block from '../block/block';
 import bem from 'bem-ts';
 import { words } from '../../langs';
-import { setChatAvatart, getAvatar } from './actions';
+import { setChatAvatart, getAvatar, getToken } from './actions';
 import { v4 as uuid } from 'uuid';
 
 import store from '../../store/store';
 import './style.sass';
+import messageSocket from '../../API/messageSocket';
 
 export default class ChatList extends Block {
   componentDidMount() {
@@ -15,10 +16,27 @@ export default class ChatList extends Block {
     }, this.id);
   }
 
-  onChatCardClick(e: Event, id: string) {
+  async onChatCardClick(e: Event, id: string) {
     e.preventDefault();
     if (id === store.getState().currentChat.id) return;
+    store.setState({ isLoad: true });
     store.setState({ currentChat: { id } });
+    store.setCurrentChatMessagesToValue([]);
+    try {
+      const { token } = (await getToken(id)) as unknown as {
+        token: string;
+      };
+      messageSocket.closeConnection();
+      messageSocket.connect({
+        userId: Number(store.getState().settings.id),
+        chatId: Number(id),
+        token: token as string,
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      store.setState({ isLoad: false });
+    }
   }
 
   render() {

@@ -8,7 +8,7 @@ import './style.sass';
 import IconedButton from '../iconedButton/iconedButton';
 import { getImageUrl } from '../helpers';
 import { modalTypes } from '../modal/model';
-
+import Messages from '../message/message';
 export default class Chat extends Block {
   constructor(props: someObj) {
     const defaultValues = {
@@ -19,8 +19,6 @@ export default class Chat extends Block {
     super(propsAndChildren);
     store.subscribe((state) => {
       state.currentChat.id === 'none' && this.setProps({ currentChat: 'none' });
-      state.currentChat.avatar !== 'none' &&
-        this.setProps({ avatar: state.currentChat.avatar });
     }, this.id);
   }
 
@@ -89,6 +87,7 @@ export default class Chat extends Block {
     });
 
     this.children.renameChat = renameChat;
+    this.children.messages = new Messages();
 
     const ctx = this.children;
     const temp = `<div class=${cn()}>
@@ -103,6 +102,7 @@ export default class Chat extends Block {
                         <% this.renameChat %>
                         <% this.deleteChat %>
                       </div>
+                        <% this.messages %>
                     </div>`;
 
     return this.compile(temp, ctx);

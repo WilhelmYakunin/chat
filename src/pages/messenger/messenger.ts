@@ -11,12 +11,13 @@ import Block, { someObj } from '../../components/block/block';
 
 import router from '../../router/router';
 import store from '../../store/store';
-import { getAvatar, getChats, logOut } from './actions';
+import { getAvatar, getChats } from './actions';
 import { getUserInfo } from '../settings/actions';
 import { controlsButtons, messageFileds } from './model';
 import IconedButton from '../../components/iconedButton/iconedButton';
 import { getImageUrl } from '../../components/helpers';
 import { modalTypes } from '../../components/modal/model';
+import messageSocket from '../../API/messageSocket';
 
 export default class Messenger extends Block {
   constructor(props: someObj) {
@@ -76,19 +77,16 @@ export default class Messenger extends Block {
     router.go(routes.settings());
   }
 
-  validate(fieldName: string, value: string) {
-    const error = value.match(words.inputs[fieldName].matchPttern);
-    !error
-      ? this.setProps({ errors: { [fieldName]: true } })
-      : this.setProps({ errors: { [fieldName]: false } });
-  }
-
-  handleInput(e: Event, fieldName: string) {
+  onMessage(e: Event, fieldName: string) {
     e.preventDefault();
-    const value = (e.target as HTMLInputElement).value;
-    this.setProps({ [fieldName]: value });
-    store.setState({ messageInput: { [fieldName]: value } });
-    this.validate(fieldName, value);
+    const message = (e.target as HTMLFormElement)[messageFileds.message].value;
+    this.setProps({ [fieldName]: message });
+    store.setState({ messageInput: { [fieldName]: message } });
+    try {
+      messageSocket.sendMessage({ message });
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   render() {
@@ -191,22 +189,33 @@ export default class Messenger extends Block {
           value: this.props[messageFileds.message],
           events: [
             {
-              eventName: 'blur',
+              eventName: 'submit',
               callback: ((e: Event) =>
-                this.handleInput(e, messageFileds.message)).bind(this),
+                this.onMessage(e, messageFileds.message)).bind(this),
             },
           ],
         }),
       },
     });
 
-    this.children.messageInput = messageInput;
+    this.children.messageInput =
+      store.getState().currentChat.id !== 'none' ? messageInput : null;
 
     const chat = new Chat({ currentChat: store.getState().currentChat.id });
 
     this.children.chat = chat;
 
     const ctx = this.children;
+
+    this.events = [
+      {
+        eventName: 'submit',
+        callback: ((e: Event) => this.onMessage(e, messageFileds.message)).bind(
+          this
+        ),
+      },
+    ];
+
     const temp = `<div class=${block()}>
                     <section class=${block('board')}>
                       <div class=${block('controls')}>

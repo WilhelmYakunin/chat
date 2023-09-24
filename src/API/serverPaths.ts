@@ -1,6 +1,7 @@
 export const origin = 'http://localhost:3000/';
 export const baseURL = 'https://ya-praktikum.tech/api/v2';
 export const resoursecURL = baseURL.concat('/resources');
+export const wsURL = 'wss://ya-praktikum.tech/ws';
 
 export const signup = baseURL.concat('/auth/signup');
 export const signin = baseURL.concat('/auth/signin');
@@ -14,3 +15,5 @@ export const getChatUsers = (id: string) =>
 export const usersChat = baseURL.concat('/chats/users');
 export const usersSearch = baseURL.concat('/user/search');
 export const chatAvatar = baseURL.concat('/chats/avatar');
+export const getChatToken = (chatId: string) =>
+  baseURL.concat('/chats/token/') + chatId;
