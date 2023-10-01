@@ -1,0 +1,41 @@
+$foo-main-text: #fff
+$foo-app-info-text: #ffffffa7
+$foo-text-hover-text: rgba(69 181 255)
+$foo-fiature-color: #e54
+$foo-main-background: #2e3339
+$foo-main-message-background: #181a1c
+$foo-modal-background: rgba(222 211 211 / 50%)
+$foo-bottom-aside: 20px
+
+:root
+  --hue: 320
+  --bg: oklch(35% .3 var(--hue))
+  --text: oklch(85% .1 var(--hue))
+  --shadow: oklch(25% .2 var(--hue))
+  --highlight: oklch(98% .05 var(--hue))
+
+@mixin visually-hidden
+  position: absolute
+  width: 1px
+  height: 1px
+  margin: -1px
+  border: 0
+  padding: 0
+  white-space: nowrap
+  clip-path: inset(100%)
+  clip: rect(0 0 0 0)
+  overflow: hidden
+
+@mixin modal-layout
+  position: fixed
+  display: flex
+  top: 0
+  left: 0
+  right: 0
+  height: 100%
+  overflow: auto
+  background: rgba(222 211 211 / 50%)
+  z-index: 9995
+  min-height: 100%
+  box-sizing: border-box
+  transition: background-color 2s ease-in-out

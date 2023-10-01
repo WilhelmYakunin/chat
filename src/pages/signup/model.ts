@@ -6,5 +6,13 @@ export enum signupFields {
   password = 'password',
   password_confirm = 'password_confirm',
   phone = 'phone',
-  policy = 'policy',
+}
+
+export enum requiredFileds {
+  first_name,
+  second_name,
+  password,
+  login,
+  email,
+  phone,
 }

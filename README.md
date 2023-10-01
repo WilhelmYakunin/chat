@@ -2,15 +2,15 @@
 
 # messenger
 
-The site core deployed [here](https://deploy--shiny-gecko-fbdfaa.netlify.app/)<br>
+The site core deployed [here](https://msggr.netlify.app/)<br>
 
 <ul>
-  <li>[Sign up](https://deploy--shiny-gecko-fbdfaa.netlify.app/signup)</li>
-  <li>[Log in](https://deploy--shiny-gecko-fbdfaa.netlify.app/login)</li>
-  <li>[404](https://deploy--shiny-gecko-fbdfaa.netlify.app/404)</li>
+  <li>[Messenger](https://msggr.netlify.app/messenger)</li> 
+  <li>[Sign up](https://msggr.netlify.app/sign-up)</li>
+  <li>[Log in](https://msggr.netlify.app)</li>
+  <li>[404](https://msggr.netlify.app/404)</li>
  </ul>
- 
- 
+  
  If you see a 5** page () please report me a bug. I really appreciate your feedbackk forward: https://t.me/wilhelm_yakunin
  
 ## Prerequisites

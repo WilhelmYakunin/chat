@@ -1,0 +1,32 @@
+export const defaultState = {
+  isAuth: false,
+  isLoad: false,
+  signin: { login: '', password: '' },
+  signup: { login: '', password: '' },
+  settings: {
+    id: '',
+    avatar: '',
+    first_name: '',
+    last_name: '',
+    display_name: '',
+    login: '',
+    old_password: '',
+    email: '',
+    phone: '',
+    errors: {
+      first_name: false,
+      second_name: false,
+      display_name: false,
+      login: false,
+      email: false,
+      old_password: false,
+      new_password: false,
+      phone: false,
+    },
+  },
+  modal: {
+    type: 'none',
+    inputValue: '',
+  },
+  chatList: [],
+};

@@ -1,0 +1,60 @@
+@import '../../../../../global.sass'
+
+.logoutmodal
+    &__wrapper
+        color: $foo-main-text
+        padding: 20px
+        width: 90%
+        margin: auto
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+        text-align: center
+        gap: 40px
+        background-color: $foo-main-background
+        border-radius: 25px
+
+        @media (width >= 640px)
+            width: 30%
+
+    &__header
+        height: 10%
+        color: $foo-main-text
+        display: flex
+        justify-content: space-between
+        align-items: center
+
+    &__close
+        color: $foo-main-text
+        border: 0
+        background-color: transparent
+
+        &:hover
+            cursor: pointer
+            color: $foo-fiature-color
+
+    &__footer
+        display: flex
+        justify-content: space-between
+        align-items: center
+
+    &__confirm
+        width: 50%
+        color: $foo-main-text
+        background-color: transparent
+        border: 0
+
+        &:hover
+            cursor: pointer
+            color: $foo-fiature-color
+
+    &__abolution
+        width: 50%
+        color: $foo-main-text
+        background-color: transparent
+        border: 0
+        border-right: 1px solid $foo-fiature-color
+
+        &:hover
+            cursor: pointer
+            color: $foo-fiature-color

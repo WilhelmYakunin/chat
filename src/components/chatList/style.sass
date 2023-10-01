@@ -1,0 +1,61 @@
+@import '../../../global.sass'
+
+.chatlist
+    width: 100%
+
+    &__load
+        color: $foo-app-info-text
+        margin: auto
+
+.chatcard
+    cursor: pointer
+    padding: 10px
+    color: $foo-main-text
+    display: flex
+    min-height: 50px
+    gap: 20px
+    align-items: center
+
+    &__avatar
+        padding: 5px
+        width: 32px
+        height: 32px
+        object-fit: cover
+        border: 1px solid $foo-main-text
+        border-radius: 50%
+
+    &__chatInfo
+        font-size: 10pt
+        display: flex
+        flex-direction: column
+        justify-content: center
+
+    &__title
+        font-weight: bold
+
+    &__nomsg
+        color: $foo-app-info-text
+        font-style: italic
+
+    &__lastmsgInfo
+        display: flex
+        flex-direction: column
+        gap: 5px
+
+    &__unreadedInfo
+        margin-left: auto
+        display: flex
+        flex-direction: column
+        align-items: center
+
+    &__time
+        font-weight: bold
+        color: $foo-fiature-color
+
+    &__count
+        font-weight: bold
+        width: 50%
+        text-align: center
+        background-color: $foo-fiature-color
+        border: 0
+        border-radius: 25px
