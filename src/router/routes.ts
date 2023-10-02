@@ -5,4 +5,6 @@ export const routes = {
   singup: () => host + 'sign-up',
   messenger: () => host + 'messenger',
   settings: () => host + 'settings',
+  nonExisted: () => '*',
+  serverError: () => '5**',
 };

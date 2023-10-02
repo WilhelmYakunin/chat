@@ -19,7 +19,7 @@ import './style.sass';
 import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
-import router from '../../router/router';
+import router from '../../router/routerInit';
 import store from '../../store/store';
 import IconedButton from '../../components/iconedButton/iconedButton';
 import { modalTypes } from '../../components/modal/model';

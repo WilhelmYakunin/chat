@@ -1,7 +1,7 @@
 import bem from 'bem-ts';
 import Block from '../../components/block/block';
 import { words } from '../../langs/index';
-import router from '../../router/router';
+import router from '../../router/routerInit';
 
 import './style.sass';
 import Input from '../../components/input/input';

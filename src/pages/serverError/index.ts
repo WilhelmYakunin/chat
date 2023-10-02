@@ -1,10 +1,11 @@
 import bem from 'bem-ts';
 import Input from '../../components/input/input';
 import { words } from '../../langs/index';
-import router from '../../router/router';
+import router from '../../router/routerInit';
 import Block from '../../components/block/block';
 
 import './style.sass';
+
 const block = bem('servererror');
 export default class ServerErrorPage extends Block {
   goBack(e: Event) {

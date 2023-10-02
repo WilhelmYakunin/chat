@@ -13,7 +13,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["vite/client"],
+    "types": ["vite/client", "mocha"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -22,6 +22,6 @@
     "sourceMap": true,
     "strictNullChecks": true
   },
-  "include": ["src", ""],
+  "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
