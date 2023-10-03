@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { JSDOM } = require('jsdom');
 const tsNode = require('ts-node');
 
