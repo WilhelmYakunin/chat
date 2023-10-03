@@ -3,6 +3,10 @@ import { expect } from 'chai';
 import { get, post, put, delet } from './index';
 
 describe('API methods tests', () => {
+  beforeEach(function () {
+    this.timeout(10000);
+  });
+
   const url = 'https://jsonplaceholder.typicode.com/posts';
 
   it('Get requests data', async () => {
@@ -37,7 +41,7 @@ describe('API methods tests', () => {
   it('Put requests changes server data', async () => {
     const data = { id: 1, title: 'foo', body: 'bar', userId: 1 };
 
-    const res = await put('https://jsonplaceholder.typicode.com/posts/1', {
+    const res = await put(url.concat('/1'), {
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       data: JSON.stringify(data),
       tries: 0,
@@ -46,8 +50,8 @@ describe('API methods tests', () => {
     expect(JSON.stringify(res)).to.equal(JSON.stringify(data));
   });
 
-  it('Delete requests is undefined', async () => {
-    const res = await delet(url.concat('/5'), {
+  it('Delete request', async () => {
+    const res = await delet(url.concat('/1'), {
       headers: { 'Content-type': 'application/json; charset=UTF-8' },
       tries: 0,
     });
