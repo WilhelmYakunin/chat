@@ -7,7 +7,7 @@ import './style.sass';
 import { words } from '../../../../langs';
 import { logOut } from './actions';
 import { modalTypes } from '../../model';
-import router from '../../../../router/router';
+import router from '../../../../router/routerInit';
 import { routes } from '../../../../router/routes';
 
 export default class LogoutModal extends Block {

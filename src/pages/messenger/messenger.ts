@@ -4,12 +4,10 @@ import Chat from '../../components/chat/chat';
 import ChatList from '../../components/chatList/chatList';
 import { words } from '../../langs/index';
 import { routes } from '../../router/routes';
-
 import './style.sass';
 import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
-
-import router from '../../router/router';
+import router from '../../router/routerInit';
 import store from '../../store/store';
 import { getAvatar, getChats } from './actions';
 import { getUserInfo } from '../settings/actions';

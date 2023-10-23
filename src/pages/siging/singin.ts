@@ -12,7 +12,7 @@ import './style.sass';
 import bem from 'bem-ts';
 import Block, { someObj } from '../../components/block/block';
 
-import router from '../../router/router';
+import router from '../../router/routerInit';
 import store from '../../store/store';
 
 const block = bem('signin');

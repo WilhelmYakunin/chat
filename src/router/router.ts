@@ -1,18 +1,15 @@
 import Block from '../components/block/block';
 import Route from './route';
+import { routes } from './routes';
 
-import notFoundPage from '../pages/notFound';
-import serverErrorPage from '../pages/serverError';
-import Loader from '../components/loader/loader';
-import Modal from '../components/modal/modal';
-import ChatSettings from '../components/chatSettings/chatSettings';
-
-class Router {
+export default class Router {
   public routes: Route[] = [];
   public history: History = window.history;
   private _currentRoute: null | Route = null;
   static __instance: Router;
   private _rootQuery!: string;
+  private _nonExisted!: typeof Block | null;
+  private _onServerError!: typeof Block | null;
 
   constructor(rootQuery: string) {
     if (Router.__instance) {
@@ -23,6 +20,8 @@ class Router {
     this.history = window.history;
     this._currentRoute = null;
     this._rootQuery = rootQuery;
+    this._nonExisted = null;
+    this._onServerError = null;
 
     Router.__instance = this;
   }
@@ -32,6 +31,9 @@ class Router {
       rootQuery: this._rootQuery,
     });
     this.routes.push(route);
+
+    if (pathname === routes.nonExisted()) this._nonExisted = block;
+    if (pathname === routes.serverError()) this._onServerError = block;
 
     return this;
   }
@@ -56,17 +58,27 @@ class Router {
         this._currentRoute = route;
         route.render();
       } else {
-        this._currentRoute = new Route(pathname, notFoundPage, {
-          rootQuery: this._rootQuery,
-        });
-        this._currentRoute.render();
+        this.onNonExistedRoute(pathname);
       }
     } catch {
-      this._currentRoute = new Route(pathname, serverErrorPage, {
-        rootQuery: this._rootQuery,
-      });
-      this._currentRoute.render();
+      this.onError(pathname);
     }
+  }
+
+  onNonExistedRoute(pathname: string) {
+    if (!this._nonExisted) return;
+    this._currentRoute = new Route(pathname, this._nonExisted, {
+      rootQuery: this._rootQuery,
+    });
+    this._currentRoute.render();
+  }
+
+  onError(pathname: string) {
+    if (!this._onServerError) throw Error('Server Error');
+    this._currentRoute = new Route(pathname, this._onServerError, {
+      rootQuery: this._rootQuery,
+    });
+    this._currentRoute.render();
   }
 
   go(pathname: string) {
@@ -99,10 +111,3 @@ class Router {
     parent?.appendChild(child.getContent());
   }
 }
-
-const router = new Router('app');
-router.addModal(Modal);
-router.addModal(ChatSettings);
-router.addSuspense(Loader);
-
-export default router;
